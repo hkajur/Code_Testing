@@ -1,4 +1,3 @@
 <?php
 	echo "It works";
-?>echo test
-
+?>      echo "It still works";
