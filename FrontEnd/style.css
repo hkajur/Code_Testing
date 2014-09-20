@@ -1,0 +1,256 @@
+/*
+ * Home page style css
+ */
+
+/*
+ * Much of my code involves use of toggle on/off
+ * the border to 1px solid red so I can see
+ * the layout better and figure out why I have
+ * an problem with it
+ * Since I am new to CSS, this helped me out
+ * a lot and I suggest you keep the comments
+ * and toggle it on and off to see what the problem is
+ */
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html, body{
+    height: 100%;
+}
+
+
+#page {
+
+    /*
+     * This is what makes the footer
+     * stick to the bottom of page
+     * no matter what the size of the page is
+     * I originally had it so that there needs
+     * to be atleast 650px in the main content
+     * for the footer to be bottom of the page
+     * I found a better solution that was able 
+     * to get the footer stick to bottom no matter what
+     */
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -70px;
+}
+
+#header {
+    //background: #f8f8f8;
+    //background: #242121;
+    //background: #1E1E1E;
+    //background: #333333;
+    /* Taken from the html5 boilerplate website */
+    //background-color: #2f3135;
+    //background-image: url("bg.49f198b.png");
+    background: #303030;
+    //color: #FCF8F8;
+    //color: #ebebeb;
+    //opacity: 0.9; /* Delete this line if it doesn't work out */
+    color: #FFFFFF;
+    height: 96px;
+    width: 100%; 
+    position: fixed; /* This will make the header of the page to not move when scrolling*/
+}
+
+#header #banner {
+    //border: 1px solid red;
+    float: left;
+    height: 45px;
+    margin-top: 20px;
+    margin-left: 40px;
+    padding-top: 8px;
+    //padding-left: 20px;
+    width: 215px;
+}
+
+/*
+ * When hovering over the logo, the
+ * cursor changes to a pointer
+ * I want to make sure that it only stays
+ * as a pointer until the logo ends
+ * So I calculated the almost exact width 
+ * of the text inside the logo div
+ */
+
+#header #banner #logo {
+    width: 215px;
+}
+/*
+ * To remove the underline that comes default with all anchors
+ */
+#header #banner a {
+    text-decoration: none;
+}
+
+#header #banner h1 {
+    //color: #FCF8F8;
+    color: #ebebeb;
+    font-family: "Source Sans Pro", "Bodoni MT", Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif;
+    font-size: 30px;
+    //text-transform: uppercase;
+    font-style: normal;
+    font-weight: 400;
+    //color: #11a7db;
+}
+
+#header #banner h1:hover {
+    cursor: pointer;
+    color: #D5D3D3;
+}
+
+#header #login {
+    //border: 1px solid red;
+    float: right;
+    height: 55px;
+    margin-top: 20px;
+    //margin-left: 50%;
+    margin-right: 40px;
+    width: 520px;
+   
+    font-size: 12px;
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 100;
+}
+
+#header #login form[name="loginForm"] {
+    //border: 1px solid black;
+    //border: 1px solid red;
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 15px;
+    width: 600px;
+}
+
+#header #login #username, 
+#header #login #password {
+    //border: 1px solid red;
+    float: left;
+    font-size: 18px;
+    height: 25px;
+    margin-left: 5px;
+    margin-top: 7px;
+    width: 210px;
+    color: #ccc;
+}
+
+#header #login p.text {
+    float: left;
+    margin-top: 1px;
+}
+
+#header #login #submit {
+    //border: 1px solid red;
+    float: left;
+    height: 25px;
+    margin-top: 7px;
+    width: 70px;
+}
+
+/*
+ * To remove the default rounded corners 
+ * in Ipad for input buttons
+ */
+input {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+#header #login input[type="text"],
+#header #login input[type="password"] {
+    border: 1px solid #e7e7e7;
+    //float: left;
+    height: 16px;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    width: 120px;
+}
+
+#header #login #submit input[type="submit"] {
+    border: 1px solid black;
+    height: 23px;
+    //width: 70px;
+    width: 100%;
+    //background: #C0C0C0;
+    //background: #007295;
+    //color: #F9FCFD;
+    background-color: #008CBA;
+    border-color: #007295;
+    color: #FFFFFF;
+    box-shadow: 0px 0px 3px grey;
+    margin-left: 0px;
+}
+
+#header #login #submit input[type="submit"]:hover {
+    cursor: pointer;
+    background-color: #007295;
+}
+
+#main {
+    padding-top: 110px;
+    padding-bottom: 5px;
+    background: #1d1d1d;
+    color: #ccc;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 17px;
+    letter-spacing: 0em;
+    word-spacing: 0em;
+    line-height: 1.4;
+    font-style: normal;
+    font-weight: 200;
+}
+
+#main #content {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    //border-left: 1px solid black;
+    //border-right: 1px solid black;
+}
+
+#main #content p{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#footer {
+    //background: #939393;
+    //background: #1E1E1E;
+    //background: #333333;
+    //background-color: #2f3135;
+    //background-image: url("bg.49f198b.png");
+    background: #303030;
+    bottom: 0px;
+    //color: #f7f7f7;
+    //color: #FFFFFF;
+    color: #ccc;
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+#footer, #push {
+        height: 70px;
+}
+#footer #copyright {
+    float: left;
+    height: 20px;
+    padding-left: 40px;
+    padding-top: 25px;
+    width: 400px;
+}
+
+#footer #authors {
+    //border: 1px solid red;
+    float: right;
+    margin-top: 25px;
+    //padding-left: 10px;
+    margin-right: 40px;
+    //width: 400px;
+}
