@@ -5,7 +5,7 @@
         $username = $_POST["username"];
         $password = $_POST["passwd"];
 
-        $url = "http://web.njit.edu/~vk255/Code_Testing/MiddleEnd/loginSep6.php";
+        $url = "http://web.njit.edu/~vk255/Code_Testing/MiddleEnd/login.php";
 
         $field = "username=" . urlencode($username) . "&password=" . urlencode($password);
 
