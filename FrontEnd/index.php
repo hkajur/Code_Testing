@@ -135,7 +135,7 @@ Nam malesuada elit quis turpis congue, eu facilisis massa porta. Ut ultrices con
     
     <!-- Start of Authors -->
     <div id="authors">
-        <p>Developed by: Venkata Harish K Kajur, Andres Jimenez</p>
+        <p>Developed by: Harish, Andres, Dmitri, Christopher</p>
     </div> <!-- End of Authors -->
 
 </div> <!-- End of Footer -->
