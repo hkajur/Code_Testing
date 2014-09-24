@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CS490project</string>
+    <string name="action_settings">Settings</string>
+	<string name="hello_world">Login Screen</string>
+   	<string name="username">Username:</string>
+   	<string name="password">Password:</string>
+   	<string name="Login">Login:</string>
+
+</resources>
