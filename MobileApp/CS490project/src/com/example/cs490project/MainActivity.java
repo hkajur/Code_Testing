@@ -50,8 +50,9 @@ public class MainActivity extends Activity {
 			Intent intent = new Intent(this, Dashboard.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			
+//			JSONObject jsonObject = session.loginUser();	
 //			String jsonString = jsonObject.toString();
-//			intent.putExtra(EXTRA_MESSAGE, jsonString);
+			intent.putExtra(EXTRA_MESSAGE, session.getUcid() + " " + session.getPassword());
 			startActivity(intent);
 			finish();
 		}

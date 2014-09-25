@@ -21,7 +21,8 @@ public class loginFunctions {
 	private String user_password;
 	private String token = "0xACA021";
 	private JSONParser jsonParser;
-    private static String loginURL = "http://192.168.1.110/cstest/";
+//    private static String loginURL = "http://192.168.1.110/cstest/";
+	private static String loginURL = "localhost/cstest";
     private static String login_tag = "login";
     
 	public loginFunctions()
