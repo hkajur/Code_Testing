@@ -1,5 +1,13 @@
 package com.example.cs490project;
 
+/*
+ * loginFunctions.java
+ * 
+ * loginFunctions object that takes in 
+ * ucid, password, and tag. Can conduct 
+ * login given the above credentials
+ * */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +21,13 @@ public class loginFunctions {
 	private String user_password;
 	private String token = "0xACA021";
 	private JSONParser jsonParser;
-    private static String loginURL = "http://10.0.2.2/ah_login_api/";
+    private static String loginURL = "http://192.168.1.110/cstest/";
     private static String login_tag = "login";
     
-	public loginFunctions(){
+	public loginFunctions()
+	{
+		user_ucid = "root";
+		user_password = "default";
 		jsonParser = new JSONParser();
 	}
 	
@@ -39,7 +50,8 @@ public class loginFunctions {
 	
 //====================================================================================================
 	
-    public JSONObject loginUser(){
+    public JSONObject loginUser()
+    {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("tag", login_tag));
         params.add(new BasicNameValuePair("ucid", user_ucid));
@@ -47,6 +59,5 @@ public class loginFunctions {
         params.add(new BasicNameValuePair("token", token));
         JSONObject json = jsonParser.getJSONFromUrl(loginURL, params);
         return json;
-    }
-	
+    }	
 }

@@ -1,5 +1,13 @@
 package com.example.cs490project;
 
+/*
+ * JSONParser.java
+ * 
+ * JSONParser object that takes in URL 
+ * waiting for data, JSON parameters
+ * and returns the JSON response
+ * */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,10 +70,7 @@ public class JSONParser {
         catch (Exception e) {Log.e("Buffer Error", "Error converting result " + e.toString());}
  
         // try parse the string to a JSON object
-        try 
-        {
-            jObj = new JSONObject(json);            
-        }
+        try{jObj = new JSONObject(json);}
         catch (JSONException e) {Log.e("JSON Parser", "Error parsing data " + e.toString());}
  
         // return JSON String
