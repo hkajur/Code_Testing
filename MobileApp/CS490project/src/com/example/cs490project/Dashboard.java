@@ -20,7 +20,7 @@ public class Dashboard extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_dashboard);
+		setContentView(R.layout.activity_dashboard);
 		Intent intent = getIntent();
 		String jsonobject = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 		
