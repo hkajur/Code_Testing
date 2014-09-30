@@ -60,14 +60,20 @@ public class MainActivity extends Activity {
 		login = (Button)findViewById(R.id.button1);
 		
 		
+		//DEBUGGING ONLY
+		//Checks network connectivity		
+		
+		/*
 		ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()){
         	new DownloadWebpageTask().execute("http://192.168.1.102/cstest/index.php");
         }
         else{
-        	Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();	
+        	Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();	
         }
+        
+        */
 	}
 	
 //===============================================================================================================	
@@ -79,9 +85,13 @@ public class MainActivity extends Activity {
 		
 		loginFunctions session = new loginFunctions(ucid,pass);				
 
+//		AsyncTask<String, Void, String> response = new DownloadWebpageTask().execute("http://192.168.1.102/cstest/index.php");
+        AsyncTask<String, Void, String> response = new DownloadWebpageTask().execute(session.getURL(),session.getUcid(), session.getPassword(), session.getTag(), session.getToken());
+		Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
         
+		/*
 		if(session.getUcid() == "" || session.getPassword() == ""){
-			Toast.makeText(getApplicationContext(), "Missing UCID/Password", Toast.LENGTH_LONG);
+			Toast.makeText(getApplicationContext(), "Missing UCID/Password", Toast.LENGTH_LONG).show(0;
 		}
 		else if(session.getUcid().equals("admin") && session.getPassword().equals("admin")){
 			Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
@@ -96,6 +106,7 @@ public class MainActivity extends Activity {
 		else{
 			Toast.makeText(getApplicationContext(), "Incorrect UCID or password",Toast.LENGTH_SHORT).show();
 		}
+		*/
 	}
 
 	
@@ -107,10 +118,10 @@ public class MainActivity extends Activity {
     	protected String doInBackground(String... urls) 
     	{
     		try {
-    			return downloadUrl(urls[0]);
+    			return downloadUrl(urls[0],urls[1],urls[2],urls[3],urls[4]);
     		}
     		catch (IOException e){
-    			return "Unable to retrieve web page. URL may be invalid.";
+    			return "Cannot connect. Server is not responding.";
     		}
     	}
 //    	###################################################################################################################
@@ -123,7 +134,7 @@ public class MainActivity extends Activity {
 
 //    	###################################################################################################################		
            
-		private String downloadUrl(String myurl) throws IOException {
+		private String downloadUrl(String myurl,String ucid,String password,String tag,String token) throws IOException {
 		    InputStream is = null;
 		    // Only display the first 500 characters of the retrieved
 		    // web page content.
