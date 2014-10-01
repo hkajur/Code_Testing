@@ -13,8 +13,8 @@ public class loginFunctions {
 	private String user_ucid;
 	private String user_password;
 	private String token = "0xACA021";
-	private static String loginURL = "http://192.168.1.102/cstest/index.php";
-//  private static String loginURL = "http://10.200.170.129/cstest/index.php";
+//	private static String loginURL = "http://192.168.1.102/cstest/index.php";
+  private static String loginURL = "http://10.200.170.128/cstest/index.php";
 //	private static String loginURL = "www.web.njit.edu/~dm282/cs490/index.php";
 //    tag set to login by default
 	private static String tag = "login";

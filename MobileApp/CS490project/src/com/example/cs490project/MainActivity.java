@@ -14,7 +14,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,6 +30,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
@@ -39,6 +42,7 @@ public class MainActivity extends Activity {
 	
 	private EditText  	username=null;
 	private EditText  	password=null;
+	TextView textbox;
 	private Button 		login;
 //	CHECK
 //===============================================================================================================		
@@ -58,7 +62,7 @@ public class MainActivity extends Activity {
 		username = (EditText)findViewById(R.id.ucidText);
 		password = (EditText)findViewById(R.id.passText);
 		login = (Button)findViewById(R.id.button1);
-		
+		textbox = (TextView)findViewById(R.id.textView1);
 		
 		//DEBUGGING ONLY
 		//Checks network connectivity		
@@ -67,13 +71,13 @@ public class MainActivity extends Activity {
 		ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()){
-        	new DownloadWebpageTask().execute("http://192.168.1.102/cstest/index.php");
+        	new DownloadWebpageTask().execute("http://10.200.170.128/cstest/index.php");
         }
         else{
         	Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();	
         }
-        
         */
+        
 	}
 	
 //===============================================================================================================	
@@ -85,28 +89,9 @@ public class MainActivity extends Activity {
 		
 		loginFunctions session = new loginFunctions(ucid,pass);				
 
-//		AsyncTask<String, Void, String> response = new DownloadWebpageTask().execute("http://192.168.1.102/cstest/index.php");
         AsyncTask<String, Void, String> response = new DownloadWebpageTask().execute(session.getURL(),session.getUcid(), session.getPassword(), session.getTag(), session.getToken());
-		Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
-        
-		/*
-		if(session.getUcid() == "" || session.getPassword() == ""){
-			Toast.makeText(getApplicationContext(), "Missing UCID/Password", Toast.LENGTH_LONG).show(0;
-		}
-		else if(session.getUcid().equals("admin") && session.getPassword().equals("admin")){
-			Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
-			
-			Intent intent = new Intent(this, Dashboard.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			
-			intent.putExtra(EXTRA_MESSAGE, "NICE TRY");
-			startActivity(intent);
-			finish();
-		}
-		else{
-			Toast.makeText(getApplicationContext(), "Incorrect UCID or password",Toast.LENGTH_SHORT).show();
-		}
-		*/
+//		Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+		textbox.setText(response.toString());
 	}
 
 	
@@ -136,57 +121,34 @@ public class MainActivity extends Activity {
            
 		private String downloadUrl(String myurl,String ucid,String password,String tag,String token) throws IOException {
 		    InputStream is = null;
-		    // Only display the first 500 characters of the retrieved
-		    // web page content.
-		    int len = 500;
-		        
+		    String response = null;
+	       /*
 		    try {
-		        URL url = new URL(myurl);
-		        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		        conn.setReadTimeout(10000 /* milliseconds */);
-		        conn.setConnectTimeout(15000 /* milliseconds */);
-		        conn.setRequestMethod("GET");
-		        conn.setDoInput(true);
-		        // Starts the query
-		        conn.connect();
-		        int response = conn.getResponseCode();
-		        is = conn.getInputStream();
-
-		        // Convert the InputStream into a string
-//		        String contentAsString = readIt(is, len);
-		        String contentAsString = is.toString();
-		        return contentAsString;
-		        
-		    // Makes sure that the InputStream is closed after the app is
-		    // finished using it.
-		    } finally {
-		        if (is != null) {
-		            is.close();
-		        } 
-		    }
+	        	AuthenticatorConnection.sendGetRequest(myurl);
+	            response = AuthenticatorConnection.readSingleLineRespone();	           
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	        }
+	        AuthenticatorConnection.disconnect();
+	        */
+	         
+	         
+	        // test sending POST request
+	        Map<String, String> params = new HashMap<String, String>();
+	        params.put("ucid", ucid);
+	        params.put("password", password);
+	        params.put("tag", tag);
+	        params.put("token", token);
+	         
+	        try {
+	        	AuthenticatorConnection.sendPostRequest(myurl, params);
+	            response = AuthenticatorConnection.readSingleLineRespone();
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	        }
+	        AuthenticatorConnection.disconnect();
+	        
+			return response;
 		}
-
-//   	###################################################################################################################       
-//       THIS IS FINE
-       private String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException
-       {
-           StringBuilder result = new StringBuilder();
-           boolean first = true;
-
-           for (NameValuePair pair : params)
-           {
-               if (first)
-                   first = false;
-               else
-                   result.append("&");
-
-               result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
-               result.append("=");
-               result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
-           }
-
-           return result.toString();
-       }
-   }
-//===============================================================================================================		
+    }
 }
