@@ -22,53 +22,57 @@
         curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101206 Ubuntu/10.10 (maverick) Firefox/3.6.13');
-        //curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 
         $page = curl_exec($ch); // make request
 
         if(curl_errno($ch)){
-                echo 'Curl error: ' . curl_error($ch);
+                curl_close($ch);
+                return "";
         }
         
         if(strpos($page, 'Failed') !== false){
-            echo "Failed";
+            return "NJIT Failed";
         } else {
-            echo "Success";
+            return "NJIT Success";
         }
         
-        curl_close($ch);
-
+        curl_close($ch);    
     }
 
     function backend_login($username, $password){
-    
-
+            
         $ch = curl_init();
 
         $URL = "http://web.njit.edu/~caj9/Code_Testing/BackEnd/login.php";
-        
+
+        $postfields = 'username=' . $username . '&password=' . $password;
+
         curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101206 Ubuntu/10.10 (maverick) Firefox/3.6.13');
-        //curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 
         $page = curl_exec($ch); // make request
 
         if(curl_errno($ch)){
-                echo 'Curl error: ' . curl_error($ch);
+            echo 'Curl error: ' . curl_error($ch);
         }
-        
+
+        return $page; 
+
         if(strpos($page, 'Failed') !== false){
-            echo "Failed";
+            return "Backend Login Failed";
+        } else if(strpos($page, 'Success') !== false){
+            return "Backend Login Success";
         } else {
-            echo "Success";
+            return "Error";
         }
         
-        curl_close($ch);
     }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -76,21 +80,34 @@
         $username = rec_input($_POST["username"]);
         $password = rec_input($_POST["password"]);
 
-        $res = njit_login($username, $password);
+        $result = njit_login($username, $password);
 
-        if(strpos($res, 'Success') !== false){
-            echo "NJIT Login Success";
+        $jsonObj = "{ ";
+
+        if(strpos($result, 'Success') !== false){
+                $jsonObj .= "\"NJIT_Login\": \"Success\"";
+        } else if(strpos($result, 'Failed') !== false){
+                $jsonObj .= "\"NJIT_Login\": \"Failed\"";
         } else {
-
-            $res = backend_login($username, $password);
-            
-            if(strpos($res, 'Failed') !== false){
-                echo "Backend Failed";
-            }else {
-                echo "Backend Success";
-            }
+                $jsonObj .= "\"NJIT_Login\": \"Error\"";
         }
-        //$URL = 'https://www.njit.edu/cp/login.php';
+      
+        $jsonObj .= ", ";
+
+        $res = backend_login($username, $password);
+
+        if(strpos($res, 'Failed') !== false){
+            $jsonObj .= "\"Backend_Login\": \"Failed\"";
+        } else if(strpos($res, 'Success') !== false){
+            $jsonObj .= "\"Backend_Login\": \"Success\"";
+        } else {
+            $jsonObj .= "\"Backend_Login\": \"Error\"";
+        } 
+
+        $jsonObj .= " }";
+
+        echo $jsonObj;
+
     } else {
         die("Didn't post to the page");
     }
