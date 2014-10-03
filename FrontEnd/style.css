@@ -119,6 +119,19 @@ html, body{
     font-weight: 100;
 }
 
+#welcome {
+	//border: 1px solid red;	
+	float: right;
+	text-align: right;
+	width: 100%;
+	padding-right: 20px;
+
+	font-size: 15px;
+	font-family: "Source Sans Pro";
+	font-style: normal;
+	font-weight: 100;
+}
+
 #header #login form[name="loginForm"] {
     //border: 1px solid black;
     //border: 1px solid red;
