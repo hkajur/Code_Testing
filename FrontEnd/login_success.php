@@ -30,11 +30,10 @@
     <div id="welcome">
         
 	<?php 
-		echo "Welcome " . $_SESSION["user"]; 
-		if ($_SESSION["usertype"] = "UCID") {
+		echo "Welcome " . $_SESSION["user"];
+		if ($_SESSION["usertype"] == "UCID") {
 			echo ", you are now logged in with your UCID";
-		}
-		else if ($_SESSION["usertype"] = "USERNAME") {
+		} else if ($_SESSION["usertype"] == "USERNAME") {
 			echo ", you are now logged in with your Username";
 		}
 	?>

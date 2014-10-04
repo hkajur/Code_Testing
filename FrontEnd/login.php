@@ -25,27 +25,25 @@
 		$result = json_decode($resp, true);
 
 		if(curl_errno($ch)){
-			echo "Error";
+			echo "Request Error" . curl_error($ch);
 			exit;
 		}
 		
-		/*for testing curl and json results
-		echo $resp;
-		echo $result['NJIT_Login'];
-		echo $result['Backend_Login'];
-		*/
-
-		$_SESSION["user"] = $username;
+		//for testing curl and json results
+		//echo $resp;
+		//echo $result['NJIT_Login'];
+		//echo $result['Backend_Login'];
 		
+		//test for either a UCID or database username
+		$_SESSION["user"] = $username;
                 if($result['NJIT_Login'] == "Success") {
 			$_SESSION["usertype"] = "UCID";
-			header ('Location: login_success.php');
 		} else if ($result['Backend_Login'] == "Success") {
 			$_SESSION["usertype"] = "USERNAME";
-			header ('Location: login_success.php');
 		}
 
 		curl_close($ch);
+		header ('Location: login_success.php');
 
 	} else {
 		die("ERROR: Page must be posted");
