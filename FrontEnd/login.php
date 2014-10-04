@@ -29,6 +29,8 @@
 			exit;
 		}
 		
+		curl_close($ch);
+
 		//for testing curl and json results
 		//echo $resp;
 		//echo $result['NJIT_Login'];
@@ -38,12 +40,15 @@
 		$_SESSION["user"] = $username;
                 if($result['NJIT_Login'] == "Success") {
 			$_SESSION["usertype"] = "UCID";
+			header ('Location: login_success.php');
 		} else if ($result['Backend_Login'] == "Success") {
 			$_SESSION["usertype"] = "USERNAME";
+			header ('Location: login_success.php');
+		} else {
+			$_SESSION["usertype"] = "INVALID";
+			header ('Location: index.php');
 		}
 
-		curl_close($ch);
-		header ('Location: login_success.php');
 
 	} else {
 		die("ERROR: Page must be posted");
