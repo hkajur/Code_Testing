@@ -119,6 +119,19 @@ html, body{
     font-weight: 100;
 }
 
+#welcome {
+	//border: 1px solid red;	
+	float: right;
+	text-align: right;
+	width: 100%;
+	padding-right: 20px;
+
+	font-size: 15px;
+	font-family: "Source Sans Pro";
+	font-style: normal;
+	font-weight: 100;
+}
+
 #header #login form[name="loginForm"] {
     //border: 1px solid black;
     //border: 1px solid red;
@@ -165,18 +178,24 @@ input {
 
 #header #login input[type="text"],
 #header #login input[type="password"] {
-    border: 1px solid #e7e7e7;
+    border: 1px solid #008CBA;
     //float: left;
-    height: 16px;
+    height: 26px;
     margin-top: 0px;
     margin-bottom: 5px;
     margin-left: 5px;
-    width: 120px;
+    width: 150px;
+    font-family: "Source Sans Pro", sans-serif;
+    text-align: center;
+    font-size: 15px;
+    border-radius: 7px;
+    outline: none;
+    box-shadow: 0px 0px 6px #008CBA;
 }
 
 #header #login #submit input[type="submit"] {
     border: 1px solid black;
-    height: 23px;
+    height: 27px;
     //width: 70px;
     width: 100%;
     //background: #C0C0C0;
@@ -187,6 +206,11 @@ input {
     color: #FFFFFF;
     box-shadow: 0px 0px 3px grey;
     margin-left: 0px;
+    font-family: "Source Sans Pro", sans-serif;
+    text-align: center;
+    font-size: 15px;
+    border-radius: 7px;
+    outline: none;
 }
 
 #header #login #submit input[type="submit"]:hover {

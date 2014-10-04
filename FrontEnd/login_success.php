@@ -5,7 +5,6 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <title>Code Testing</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
@@ -27,29 +26,20 @@
     
     </div> <!-- End of Banner -->
    
-     <!-- Start of Login Div -->
-    <div id="login">
+     <!-- Start of Welcome Div -->
+    <div id="welcome">
         
-        <!-- Start of Login Form -->
-        <form name="loginForm" action="login.php" method="post">
-            <!-- Start of Username Div -->
-            <div  id="username">
-		<input type="text" name="username" placeholder="UCID or Username" value=""/>
-            </div> <!-- End of Username Div -->
-            
-            <!-- Start of Password Div -->
-            <div  id="password">
-                <input type="password" name="passwd" placeholder="Password" value=""/>
-            </div> <!-- End of Password Div -->
-            
-            <!-- Start of Submit Div -->
-            <div id="submit">
-                <input type="submit" value="Submit"/>
-            </div> <!-- End of Submit Div -->
-        
-        </form> <!-- End of Login Form -->
+	<?php 
+		if ($_SESSION["usertype"] == "UCID") {
+			echo "Welcome " . $_SESSION["user"];
+			echo ", you are now logged in with your UCID";
+		} else if ($_SESSION["usertype"] == "USERNAME") {
+			echo "Welcome " . $_SESSION["user"];
+			echo ", you are now logged in with your Username";
+		}
+	?>
     
-    </div> <!-- End of Login Div -->
+    </div> <!-- End of Welcome Div -->
 
 </div> <!-- End of Header -->
 
