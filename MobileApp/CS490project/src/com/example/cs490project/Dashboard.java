@@ -22,11 +22,12 @@ public class Dashboard extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		Intent intent = getIntent();
-		String jsonobject = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+		String name = intent.getStringExtra(MainActivity.NAME);
+		String type = intent.getStringExtra(MainActivity.TYPE);
 		
 	    TextView textView = new TextView(this);
 	    textView.setTextSize(40);
-	    textView.setText(jsonobject);
+	    textView.setText(name + " " + type);
 
 	    // Set the text view as the activity layout
 	    setContentView(textView);

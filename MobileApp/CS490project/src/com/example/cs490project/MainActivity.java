@@ -34,11 +34,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
 public class MainActivity extends Activity {
-	public final static String EXTRA_MESSAGE = "com.example.cs490project.MESSAGE";
+	public final static String NAME = "com.example.cs490project.MESSAGE";
+	public final static String TYPE = "com.example.cs490project.MESSAGE";
 	
 	private EditText  	username=null;
 	private EditText  	password=null;
@@ -63,6 +65,7 @@ public class MainActivity extends Activity {
 		password = (EditText)findViewById(R.id.passText);
 		login = (Button)findViewById(R.id.button1);
 		textbox = (TextView)findViewById(R.id.textView1);
+		textbox.setText("");
 		
 		//DEBUGGING ONLY
 		//Checks network connectivity		
@@ -86,12 +89,22 @@ public class MainActivity extends Activity {
 	public void login(View view){
 		String ucid = username.getText().toString();
 		String pass = password.getText().toString();
-		
-		loginFunctions session = new loginFunctions(ucid,pass);				
 
-        AsyncTask<String, Void, String> response = new DownloadWebpageTask().execute(session.getURL(),session.getUcid(), session.getPassword(), session.getTag(), session.getToken());
-//		Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
-		textbox.setText(response.toString());
+		if(pass==null || ucid==null || pass=="" || ucid=="")
+		{
+	        Toast.makeText(getApplicationContext(), "Missing credentials", Toast.LENGTH_LONG).show();			
+		}
+		else
+		{
+			loginFunctions session = new loginFunctions(ucid,pass);
+	        AsyncTask<String, Void, String> response = new DownloadWebpageTask().execute(session.getURL(),session.getUcid(), session.getPassword(), session.getTag(), session.getToken());
+		}
+		
+		
+        
+        //DEBUGGING ONLY
+        //Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+//		textbox.setText(response.toString());
 	}
 
 	
@@ -99,11 +112,13 @@ public class MainActivity extends Activity {
 	
     private class DownloadWebpageTask extends AsyncTask<String, Void, String> 
     {
+    	private Activity activity;
     	@Override
     	protected String doInBackground(String... urls) 
     	{
     		try {
     			return downloadUrl(urls[0],urls[1],urls[2],urls[3],urls[4]);
+//    			RETURN ONLY SUCCESS
     		}
     		catch (IOException e){
     			return "Cannot connect. Server is not responding.";
@@ -114,40 +129,82 @@ public class MainActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) 
 		{
-			Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+			JSONObject response;
+			String success = null;
+			String error = null;
+			String tag = null;
+			String name = null;
+			String type = null;			
+			
+			try {
+				response = new JSONObject(result);
+				if(response.get("success").toString().equals("1"))
+				{
+					Toast.makeText(getApplicationContext(), "Loggin in..", Toast.LENGTH_LONG).show();
+					Intent intent = new Intent(MainActivity.this,Dashboard.class);
+					intent.putExtra(NAME, response.get("name").toString());
+					intent.putExtra(TYPE, response.get("type").toString());
+					MainActivity.this.startActivity(intent);
+				}
+				else
+				{
+					Toast.makeText(getApplicationContext(), "Incorrect Credentials", Toast.LENGTH_LONG).show();
+				}
+				
+				error = response.getString("error");
+				tag = response.getString("tag");
+				name = response.getString("name");
+				type = response.getString("type");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+						
+//			Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG).show();
 		}
 
+//		###################################################################################################################
+	
+		private void accountConfirmed(String success, String error, String name, String type){
+			
+			if(success.equals("1"))
+			{
+				Toast.makeText(getApplicationContext(), "Loggin in..", Toast.LENGTH_LONG).show();
+				
+				Intent intent = new Intent(activity, Dashboard.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 			
+				intent.putExtra(NAME, name);
+				intent.putExtra(TYPE, type);
+				activity.startActivity(intent);
+				finish();
+				
+			}
+			else
+			{
+				Toast.makeText(getApplicationContext(), "Incorrect Credentials", Toast.LENGTH_LONG).show();	
+			}
+		}
+		
 //    	###################################################################################################################		
            
 		private String downloadUrl(String myurl,String ucid,String password,String tag,String token) throws IOException {
-		    InputStream is = null;
-		    String response = null;
-	       /*
-		    try {
-	        	AuthenticatorConnection.sendGetRequest(myurl);
-	            response = AuthenticatorConnection.readSingleLineRespone();	           
-	        } catch (IOException ex) {
-	            ex.printStackTrace();
-	        }
-	        AuthenticatorConnection.disconnect();
-	        */
+		    String response = null;	         
 	         
-	         
-	        // test sending POST request
+		    //PARAMETERS TO SEND
 	        Map<String, String> params = new HashMap<String, String>();
 	        params.put("ucid", ucid);
 	        params.put("password", password);
 	        params.put("tag", tag);
 	        params.put("token", token);
 	         
+	        //TRY TO POST PARAMETERS TO SERVER AND GET RESPONSE
 	        try {
 	        	AuthenticatorConnection.sendPostRequest(myurl, params);
 	            response = AuthenticatorConnection.readSingleLineRespone();
 	        } catch (IOException ex) {
 	            ex.printStackTrace();
 	        }
-	        AuthenticatorConnection.disconnect();
-	        
+	        //CLOSE CONNECTION AND RETURN THE JSON REPONSE
+	        AuthenticatorConnection.disconnect();	        
 			return response;
 		}
     }
