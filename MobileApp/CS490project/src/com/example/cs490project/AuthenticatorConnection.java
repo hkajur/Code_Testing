@@ -23,8 +23,8 @@ public class AuthenticatorConnection {
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
  
-        httpConn.setDoInput(true); // true if we want to read server's response
-        httpConn.setDoOutput(false); // false indicates this is a GET request
+        httpConn.setDoInput(true); 		// true if we want to read server's response
+        httpConn.setDoOutput(false); 	// false indicates this is a GET request
  
         return httpConn;
     }
@@ -35,7 +35,7 @@ public class AuthenticatorConnection {
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
  
-        httpConn.setDoInput(true); // true indicates the server returns response
+        httpConn.setDoInput(true); 		// true indicates the server returns response
  
         StringBuffer requestParams = new StringBuffer();
  
@@ -45,7 +45,8 @@ public class AuthenticatorConnection {
  
             // creates the params string, encode them using URLEncoder
             Iterator<String> paramIterator = params.keySet().iterator();
-            while (paramIterator.hasNext()) {
+            while (paramIterator.hasNext()) 
+            {
                 String key = paramIterator.next();
                 String value = params.get(key);
                 requestParams.append(URLEncoder.encode(key, "UTF-8"));
@@ -58,20 +59,21 @@ public class AuthenticatorConnection {
             writer.write(requestParams.toString());
             writer.flush();
         }
- 
         return httpConn;
     }
  
 //     Returns only one line from the server's response. This method should be used if the server returns only a single line of String.
     public static String readSingleLineRespone() throws IOException {
         InputStream inputStream = null;
-        if (httpConn != null) {
+        if (httpConn != null) 
+        {
             inputStream = httpConn.getInputStream();
-        } else {
+        }
+        else 
+        {
             throw new IOException("Connection is not established.");
         }
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                inputStream));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
  
         String response = reader.readLine();
         reader.close();
@@ -83,18 +85,21 @@ public class AuthenticatorConnection {
 //    Returns an array of lines from the server's response. This method should be used if the server returns multiple lines of String.
     public static String[] readMultipleLinesRespone() throws IOException {
         InputStream inputStream = null;
-        if (httpConn != null) {
+        if (httpConn != null) 
+        {
             inputStream = httpConn.getInputStream();
-        } else {
+        }
+        else 
+        {
             throw new IOException("Connection is not established.");
         }
  
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                inputStream));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         List<String> response = new ArrayList<String>();
  
         String line = "";
-        while ((line = reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) 
+        {
             response.add(line);
         }
         reader.close();
@@ -104,7 +109,7 @@ public class AuthenticatorConnection {
      
     //Closes the connection if opened
     public static void disconnect() {
-        if (httpConn != null) {
+        if (httpConn != null){
             httpConn.disconnect();
         }
     }

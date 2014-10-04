@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -39,22 +40,14 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends Activity {
-	public final static String NAME = "com.example.cs490project.MESSAGE";
-	public final static String TYPE = "com.example.cs490project.MESSAGE";
+	public final static String NJITLOGIN = "com.example.cs490project.MESSAGE";
+	public final static String BACKLOGIN = "com.example.cs490project.MESSAGE2";
 	
 	private EditText  	username=null;
 	private EditText  	password=null;
 	TextView textbox;
 	private Button 		login;
-//	CHECK
-//===============================================================================================================		
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-//	CHECK
+
 //===============================================================================================================		
 	
 	@Override
@@ -74,13 +67,36 @@ public class MainActivity extends Activity {
 		ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()){
-        	new DownloadWebpageTask().execute("http://10.200.170.128/cstest/index.php");
+        	new DownloadWebpageTask().execute("http://web.njit.edu/~dm282/cs490/index.php");
         }
         else{
         	Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();	
         }
+		if(isConnectedToServer("http://web.njit.edu/~dm282/cs490/index.php", 1500))
+		{
+			Toast.makeText(getApplicationContext(), "Server Online", Toast.LENGTH_SHORT).show();
+		}
+		else
+		{
+			Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();
+		}
         */
-        
+	}
+	
+//===============================================================================================================	
+
+	//USED TO TEST CONNECTION TO LOCAL SERVER
+	public boolean isConnectedToServer(String url, int timeout) {
+	    try{
+	        URL myUrl = new URL(url);
+	        URLConnection connection = myUrl.openConnection();
+	        connection.setConnectTimeout(timeout);
+	        connection.connect();
+	        return true;
+	    } catch (Exception e) {
+	        // Handle your exceptions
+	        return false;
+	    }
 	}
 	
 //===============================================================================================================	
@@ -100,11 +116,9 @@ public class MainActivity extends Activity {
 	        AsyncTask<String, Void, String> response = new DownloadWebpageTask().execute(session.getURL(),session.getUcid(), session.getPassword(), session.getTag(), session.getToken());
 		}
 		
-		
-        
         //DEBUGGING ONLY
         //Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
-//		textbox.setText(response.toString());
+		//textbox.setText(response.toString());
 	}
 
 	
@@ -112,7 +126,6 @@ public class MainActivity extends Activity {
 	
     private class DownloadWebpageTask extends AsyncTask<String, Void, String> 
     {
-    	private Activity activity;
     	@Override
     	protected String doInBackground(String... urls) 
     	{
@@ -130,58 +143,38 @@ public class MainActivity extends Activity {
 		protected void onPostExecute(String result) 
 		{
 			JSONObject response;
-			String success = null;
-			String error = null;
-			String tag = null;
-			String name = null;
-			String type = null;			
+			
+			/*
+			  	{ "NJIT_Login" : "Success", "Backend_Login" : "Failed" }
+				{ "NJIT_Login" : "Failed", "Backend_Login" : "Success" }
+				{ "NJIT_Login" : "Failed", "Backend_Login" : "Failed" }
+				Returns this JSON if there is curl error:
+					{ "NJIT_Login" : "Error", "Backend_Login" : "Failed" }
+			*/
 			
 			try {
 				response = new JSONObject(result);
-				if(response.get("success").toString().equals("1"))
+				if(response.get("NJIT_Login").toString().equals("Success") && response.get("Backend_Login").toString().equals("Success"))
 				{
 					Toast.makeText(getApplicationContext(), "Loggin in..", Toast.LENGTH_LONG).show();
 					Intent intent = new Intent(MainActivity.this,Dashboard.class);
-					intent.putExtra(NAME, response.get("name").toString());
-					intent.putExtra(TYPE, response.get("type").toString());
+					intent.putExtra(NJITLOGIN, "NJIT LOGIN IS " + response.get("NJIT_Login").toString());
+					intent.putExtra(BACKLOGIN, "BACKEND LOGIN IS " + response.get("Backend_Login").toString());
 					MainActivity.this.startActivity(intent);
 				}
+				else if(response.get("NJIT_Login").toString().equals("Success") && response.get("Backend_Login").toString().equals("Failed"))
+					Toast.makeText(getApplicationContext(), "NJIT: SUCCESS / BACKEND: FAILED", Toast.LENGTH_LONG).show();
+				else if(response.get("NJIT_Login").toString().equals("Failed") && response.get("Backend_Login").toString().equals("Success"))
+					Toast.makeText(getApplicationContext(), "NJIT: FAILED / BACKEND: SUCCESS", Toast.LENGTH_LONG).show();
+				else if(response.get("NJIT_Login").toString().equals("Error"))
+					Toast.makeText(getApplicationContext(), "CURLING ERROR. CONSULT SERVER", Toast.LENGTH_LONG).show();
 				else
-				{
 					Toast.makeText(getApplicationContext(), "Incorrect Credentials", Toast.LENGTH_LONG).show();
-				}
-				
-				error = response.getString("error");
-				tag = response.getString("tag");
-				name = response.getString("name");
-				type = response.getString("type");
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 						
 //			Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG).show();
-		}
-
-//		###################################################################################################################
-	
-		private void accountConfirmed(String success, String error, String name, String type){
-			
-			if(success.equals("1"))
-			{
-				Toast.makeText(getApplicationContext(), "Loggin in..", Toast.LENGTH_LONG).show();
-				
-				Intent intent = new Intent(activity, Dashboard.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 			
-				intent.putExtra(NAME, name);
-				intent.putExtra(TYPE, type);
-				activity.startActivity(intent);
-				finish();
-				
-			}
-			else
-			{
-				Toast.makeText(getApplicationContext(), "Incorrect Credentials", Toast.LENGTH_LONG).show();	
-			}
 		}
 		
 //    	###################################################################################################################		
@@ -193,8 +186,8 @@ public class MainActivity extends Activity {
 	        Map<String, String> params = new HashMap<String, String>();
 	        params.put("ucid", ucid);
 	        params.put("password", password);
-	        params.put("tag", tag);
 	        params.put("token", token);
+	        params.put("tag", tag);
 	         
 	        //TRY TO POST PARAMETERS TO SERVER AND GET RESPONSE
 	        try {
