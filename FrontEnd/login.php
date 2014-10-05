@@ -44,8 +44,8 @@
 		} else if ($result['Backend_Login'] == "Success") {
 			$_SESSION["usertype"] = "USERNAME";
 			header ('Location: login_success.php');
-        } else {
-            $_SESSION["user"] = "";
+        	} else {
+            		$_SESSION["user"] = "";
 			$_SESSION["usertype"] = "INVALID";
 			header ('Location: index.php');
 		}
