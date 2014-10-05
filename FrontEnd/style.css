@@ -40,6 +40,10 @@ html, body{
     margin: 0 auto -70px;
 }
 
+body {
+    background: #1d1d1d;
+}
+
 #header {
     //background: #f8f8f8;
     //background: #242121;
@@ -59,7 +63,6 @@ html, body{
 }
 
 #header #banner {
-    //border: 1px solid red;
     float: left;
     height: 45px;
     margin-top: 20px;
@@ -91,8 +94,9 @@ html, body{
 #header #banner h1 {
     //color: #FCF8F8;
     color: #ebebeb;
-    font-family: "Source Sans Pro", "Bodoni MT", Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif;
-    font-size: 30px;
+    //font-family: "Source Sans Pro", "Bodoni MT", Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif;
+    font-family: Garamond, "Times New Roman", serif;
+    font-size: 34px;
     //text-transform: uppercase;
     font-style: normal;
     font-weight: 400;
@@ -104,7 +108,42 @@ html, body{
     color: #D5D3D3;
 }
 
-#header #login {
+#welcome {
+	float: left;
+	text-align: right;
+	width: 100%;
+	padding-right: 40px;
+    width: 390px;
+    margin-top: 40px;
+    margin-left: 450px;
+	font-size: 15px;
+	font-family: "Source Sans Pro";
+	font-style: normal;
+	font-weight: 100;
+}
+
+#logout {
+    width: 80px;
+    height: 30px;
+    float: left;
+    margin-top: 38px;
+}
+
+#logout input {
+    width: 100%;
+    height: 25px;
+    background-color: #008CBA;
+    border-color: #007295;
+    color: #FFFFFF;
+}
+
+#logout input:hover {
+    cursor: pointer;
+}
+
+
+/*
+#content #login {
     //border: 1px solid red;
     float: right;
     height: 55px;
@@ -132,7 +171,7 @@ html, body{
 	font-weight: 100;
 }
 
-#header #login form[name="loginForm"] {
+#content #login form[name="loginForm"] {
     //border: 1px solid black;
     //border: 1px solid red;
     height: 40px;
@@ -141,8 +180,8 @@ html, body{
     width: 600px;
 }
 
-#header #login #username, 
-#header #login #password {
+#content #login #username, 
+#content #login #password {
     //border: 1px solid red;
     float: left;
     font-size: 18px;
@@ -153,31 +192,33 @@ html, body{
     color: #ccc;
 }
 
-#header #login p.text {
+#content #login p.text {
     float: left;
     margin-top: 1px;
 }
 
-#header #login #submit {
+#content #login #submit {
     //border: 1px solid red;
     float: left;
     height: 25px;
     margin-top: 7px;
     width: 70px;
 }
+*/
 
 /*
  * To remove the default rounded corners 
  * in Ipad for input buttons
  */
+/*
 input {
     -webkit-appearance: none;
     -webkit-border-radius: 0;
     border-radius: 0;
 }
 
-#header #login input[type="text"],
-#header #login input[type="password"] {
+#content #login input[type="text"],
+#content #login input[type="password"] {
     border: 1px solid #008CBA;
     //float: left;
     height: 26px;
@@ -193,7 +234,7 @@ input {
     box-shadow: 0px 0px 6px #008CBA;
 }
 
-#header #login #submit input[type="submit"] {
+#content #login #submit input[type="submit"] {
     border: 1px solid black;
     height: 27px;
     //width: 70px;
@@ -213,23 +254,25 @@ input {
     outline: none;
 }
 
-#header #login #submit input[type="submit"]:hover {
+#content #login #submit input[type="submit"]:hover {
     cursor: pointer;
     background-color: #007295;
 }
-
+*/
 #main {
-    padding-top: 110px;
-    padding-bottom: 5px;
     background: #1d1d1d;
     color: #ccc;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 17px;
-    letter-spacing: 0em;
-    word-spacing: 0em;
-    line-height: 1.4;
     font-style: normal;
     font-weight: 200;
+    height: 100%;
+    letter-spacing: 0em;
+    line-height: 1.4;
+    //height: 500px;
+    padding-top: 110px;
+    padding-bottom: 5px;
+    word-spacing: 0em;
 }
 
 #main #content {
@@ -238,11 +281,78 @@ input {
     margin-right: auto;
     //border-left: 1px solid black;
     //border-right: 1px solid black;
+    height: 100%;
 }
 
-#main #content p{
-    margin-top: 10px;
-    margin-bottom: 10px;
+#content #login {
+    width: 400px;
+    height: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    //margin-top: 90px;
+}
+
+#login form[name="loginForm"] {
+    width: 300px;
+    height: 250px;
+   // margin-top: 90px;
+    margin-top: 25%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#login h2 {
+    font-family: sans-serif;
+    font-weight: 100;
+    margin-left: 110px;
+}
+
+#login #username, #login #password
+{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+}
+
+
+#login #submit {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 260px;
+    padding-left: 5px;
+}
+#login #username input[type="text"], 
+#login #password input[type="password"] {
+    height: 34px;
+    font-size:12px;
+    padding-left: 5px;
+    width: 240px;
+}
+#login #submit input[type="submit"] {
+    border: 1px solid black;
+    height: 36px;
+    //width: 70px;
+    width: 250px;
+    //background: #C0C0C0;
+    //background: #007295;
+    //color: #F9FCFD;
+    background-color: #008CBA;
+    border-color: #007295;
+    color: #FFFFFF;
+    box-shadow: 0px 0px 3px grey;
+    margin-left: 0px;
+    //font-family: "Source Sans Pro", sans-serif;
+    text-align: center;
+    //font-size: 15px;
+    font-size: 12px;
+    outline: none;
+}
+
+#login #submit input[type="submit"]:hover {
+   cursor: pointer; 
+   background-color: #007295;
 }
 
 #footer {
@@ -256,12 +366,17 @@ input {
     //color: #f7f7f7;
     //color: #FFFFFF;
     color: #ccc;
-    font-family: "Source Sans Pro", sans-serif;
+    font-family: serif;
 }
 
 #footer, #push {
-        height: 70px;
+    height: 70px;
 }
+
+#push {
+    background: #1d1d1d;
+}
+
 #footer #copyright {
     float: left;
     height: 20px;

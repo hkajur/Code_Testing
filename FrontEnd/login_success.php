@@ -1,4 +1,10 @@
 <?php session_start(); ?>
+<?php 
+header("Cache-control: no-store, no-cache, must-revalidate, max-age=0");
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
+        header("Location: index.php");
+?>
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -39,8 +45,12 @@
 		}
 	?>
     
-    </div> <!-- End of Welcome Div -->
 
+    </div> <!-- End of Welcome Div -->
+    <div id="logout">
+    <a href="logout.php"><input type="submit" value="Log out" />
+    </a>
+    </div>
 </div> <!-- End of Header -->
 
 <!-- Start of Main Content -->
