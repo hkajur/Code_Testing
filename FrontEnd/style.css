@@ -113,11 +113,10 @@ body {
 	text-align: right;
 	width: 100%;
 	padding-right: 40px;
-    width: 390px;
-    margin-top: 40px;
-    margin-left: 450px;
+    	width: 390px;
+    	margin-top: 40px;
+    	margin-left: 450px;
 	font-size: 15px;
-	font-family: "Source Sans Pro";
 	font-style: normal;
 	font-weight: 100;
 }
@@ -133,8 +132,11 @@ body {
     width: 100%;
     height: 25px;
     background-color: #008CBA;
-    border-color: #007295;
+    border: 1px solid #008CBA;
     color: #FFFFFF;
+    box-shadow: 0px 0px 3px grey;
+    font-family: sans-serif;
+    outline: none;
 }
 
 #logout input:hover {
@@ -304,7 +306,10 @@ input {
 #login h2 {
     font-family: sans-serif;
     font-weight: 100;
-    margin-left: 110px;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 #login #username, #login #password
@@ -320,8 +325,7 @@ input {
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
-    width: 260px;
-    padding-left: 5px;
+    width: 250px;
 }
 #login #username input[type="text"], 
 #login #password input[type="password"] {
@@ -329,6 +333,9 @@ input {
     font-size:12px;
     padding-left: 5px;
     width: 240px;
+    font-family: sans-serif;
+    font-size: 15px;
+    text-align: center;
 }
 #login #submit input[type="submit"] {
     border: 1px solid black;
@@ -344,9 +351,9 @@ input {
     box-shadow: 0px 0px 3px grey;
     margin-left: 0px;
     //font-family: "Source Sans Pro", sans-serif;
+    font-family: sans-serif;
     text-align: center;
-    //font-size: 15px;
-    font-size: 12px;
+    font-size: 15px;
     outline: none;
 }
 
@@ -359,8 +366,10 @@ input {
    margin-left: auto;
    margin-right: auto;
    margin-top: 10px;
-   padding-left: 5px;
-   width: 240px;
+   width: 250px;
+   font-family: sans-serif;
+   font-size: 15px;
+   text-align: center;
 }
 
 #footer {

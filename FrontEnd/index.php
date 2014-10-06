@@ -64,7 +64,7 @@
 	    	<?php
 			//echo $_SESSION["usertype"];
 			if ($_SESSION["usertype"] == "INVALID") {
-				echo "Incorrect username or password<br>";
+				echo "*Incorrect username or password<br>";
 				session_unset();
 			}
 		?>  
