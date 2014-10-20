@@ -21,19 +21,19 @@ html, body{
     height: 100%;
 }
 
+/*
+ * This is what makes the footer
+ * stick to the bottom of page
+ * no matter what the size of the page is
+ * I originally had it so that there needs
+ * to be atleast 650px in the main content
+ * for the footer to be bottom of the page
+ * I found a better solution that was able 
+ * to get the footer stick to bottom no matter what
+ */
 
-#page {
+#page{
 
-    /*
-     * This is what makes the footer
-     * stick to the bottom of page
-     * no matter what the size of the page is
-     * I originally had it so that there needs
-     * to be atleast 650px in the main content
-     * for the footer to be bottom of the page
-     * I found a better solution that was able 
-     * to get the footer stick to bottom no matter what
-     */
     min-height: 100%;
     height: auto !important;
     height: 100%;
@@ -44,22 +44,20 @@ body {
     background: #1d1d1d;
 }
 
+/* Start of Header Div */
+
+/*
+ * Make the header of div id to 96px
+ * and then fix that position so when you 
+ * scroll the page, the header will not move
+ */
+
 #header {
-    //background: #f8f8f8;
-    //background: #242121;
-    //background: #1E1E1E;
-    //background: #333333;
-    /* Taken from the html5 boilerplate website */
-    //background-color: #2f3135;
-    //background-image: url("bg.49f198b.png");
     background: #303030;
-    //color: #FCF8F8;
-    //color: #ebebeb;
-    //opacity: 0.9; /* Delete this line if it doesn't work out */
     color: #FFFFFF;
     height: 96px;
+    position: fixed; 
     width: 100%; 
-    position: fixed; /* This will make the header of the page to not move when scrolling*/
 }
 
 #header #banner {
@@ -68,7 +66,6 @@ body {
     margin-top: 20px;
     margin-left: 40px;
     padding-top: 8px;
-    //padding-left: 20px;
     width: 215px;
 }
 
@@ -84,23 +81,22 @@ body {
 #header #banner #logo {
     width: 215px;
 }
-/*
- * To remove the underline that comes default with all anchors
+
+/* 
+ * To remove the underline that 
+ * comes default with all anchors 
  */
+
 #header #banner a {
     text-decoration: none;
 }
 
 #header #banner h1 {
-    //color: #FCF8F8;
     color: #ebebeb;
-    //font-family: "Source Sans Pro", "Bodoni MT", Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif;
     font-family: Garamond, "Times New Roman", serif;
     font-size: 34px;
-    //text-transform: uppercase;
     font-style: normal;
     font-weight: 400;
-    //color: #11a7db;
 }
 
 #header #banner h1:hover {
@@ -108,159 +104,49 @@ body {
     color: #D5D3D3;
 }
 
-#welcome {
+#header #welcome {
 	float: left;
-	text-align: right;
-	width: 100%;
-	padding-right: 40px;
-    	width: 390px;
-    	margin-top: 40px;
-    	margin-left: 450px;
 	font-size: 15px;
 	font-style: normal;
 	font-weight: 100;
+    margin-top: 40px;
+    margin-left: 450px;
+	padding-right: 40px;
+	text-align: right;
+    width: 390px;
 }
 
+/* End of Header Div */
+
+
+/* Start of Logout CSS Button */
+
 #logout {
-    width: 80px;
-    height: 30px;
     float: left;
+    height: 30px;
     margin-top: 38px;
+    width: 80px;
 }
 
 #logout input {
-    width: 100%;
-    height: 25px;
     background-color: #008CBA;
     border: 1px solid #008CBA;
-    color: #FFFFFF;
     box-shadow: 0px 0px 3px grey;
+    color: #FFFFFF;
     font-family: sans-serif;
+    height: 25px;
     outline: none;
+    width: 100%;
 }
 
 #logout input:hover {
     cursor: pointer;
 }
 
+/* End of Logout CSS Button */
 
-/*
-#content #login {
-    //border: 1px solid red;
-    float: right;
-    height: 55px;
-    margin-top: 20px;
-    //margin-left: 50%;
-    margin-right: 40px;
-    width: 520px;
-   
-    font-size: 12px;
-    font-family: "Source Sans Pro";
-    font-style: normal;
-    font-weight: 100;
-}
+/* Start of Main */
 
-#welcome {
-	//border: 1px solid red;	
-	float: right;
-	text-align: right;
-	width: 100%;
-	padding-right: 20px;
-
-	font-size: 15px;
-	font-family: "Source Sans Pro";
-	font-style: normal;
-	font-weight: 100;
-}
-
-#content #login form[name="loginForm"] {
-    //border: 1px solid black;
-    //border: 1px solid red;
-    height: 40px;
-    margin-top: 10px;
-    margin-left: 15px;
-    width: 600px;
-}
-
-#content #login #username, 
-#content #login #password {
-    //border: 1px solid red;
-    float: left;
-    font-size: 18px;
-    height: 25px;
-    margin-left: 5px;
-    margin-top: 7px;
-    width: 210px;
-    color: #ccc;
-}
-
-#content #login p.text {
-    float: left;
-    margin-top: 1px;
-}
-
-#content #login #submit {
-    //border: 1px solid red;
-    float: left;
-    height: 25px;
-    margin-top: 7px;
-    width: 70px;
-}
-*/
-
-/*
- * To remove the default rounded corners 
- * in Ipad for input buttons
- */
-/*
-input {
-    -webkit-appearance: none;
-    -webkit-border-radius: 0;
-    border-radius: 0;
-}
-
-#content #login input[type="text"],
-#content #login input[type="password"] {
-    border: 1px solid #008CBA;
-    //float: left;
-    height: 26px;
-    margin-top: 0px;
-    margin-bottom: 5px;
-    margin-left: 5px;
-    width: 150px;
-    font-family: "Source Sans Pro", sans-serif;
-    text-align: center;
-    font-size: 15px;
-    border-radius: 7px;
-    outline: none;
-    box-shadow: 0px 0px 6px #008CBA;
-}
-
-#content #login #submit input[type="submit"] {
-    border: 1px solid black;
-    height: 27px;
-    //width: 70px;
-    width: 100%;
-    //background: #C0C0C0;
-    //background: #007295;
-    //color: #F9FCFD;
-    background-color: #008CBA;
-    border-color: #007295;
-    color: #FFFFFF;
-    box-shadow: 0px 0px 3px grey;
-    margin-left: 0px;
-    font-family: "Source Sans Pro", sans-serif;
-    text-align: center;
-    font-size: 15px;
-    border-radius: 7px;
-    outline: none;
-}
-
-#content #login #submit input[type="submit"]:hover {
-    cursor: pointer;
-    background-color: #007295;
-}
-*/
 #main {
     background: #1d1d1d;
     color: #ccc;
@@ -271,7 +157,6 @@ input {
     height: 100%;
     letter-spacing: 0em;
     line-height: 1.4;
-    //height: 500px;
     padding-top: 110px;
     padding-bottom: 5px;
     word-spacing: 0em;
@@ -281,38 +166,38 @@ input {
     width: 800px;
     margin-left: auto;
     margin-right: auto;
-    //border-left: 1px solid black;
-    //border-right: 1px solid black;
     height: 100%;
 }
 
-#content #login {
-    width: 400px;
+/* Start of Login Form Style */
+
+#login {
     height: 350px;
     margin-left: auto;
     margin-right: auto;
-    //margin-top: 90px;
+    width: 400px;
 }
 
 #login form[name="loginForm"] {
-    width: 300px;
     height: 250px;
-   // margin-top: 90px;
     margin-top: 25%;
     margin-left: auto;
     margin-right: auto;
+    width: 300px;
 }
 
 #login h2 {
     font-family: sans-serif;
     font-weight: 100;
-    width: 250px;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    width: 250px;
 }
 
-#login #username, #login #password
+#login #username, 
+#login #password,
+#login #submit
 {
     margin-top: 20px;
     margin-left: auto;
@@ -320,68 +205,55 @@ input {
     width: 250px;
 }
 
-
-#login #submit {
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 250px;
-}
 #login #username input[type="text"], 
 #login #password input[type="password"] {
+    font-family: sans-serif;
+    font-size: 15px;
     height: 34px;
-    font-size:12px;
     padding-left: 5px;
+    text-align: center;
     width: 240px;
-    font-family: sans-serif;
-    font-size: 15px;
-    text-align: center;
 }
+
 #login #submit input[type="submit"] {
-    border: 1px solid black;
-    height: 36px;
-    //width: 70px;
-    width: 250px;
-    //background: #C0C0C0;
-    //background: #007295;
-    //color: #F9FCFD;
     background-color: #008CBA;
+    border: 1px solid black;
     border-color: #007295;
-    color: #FFFFFF;
     box-shadow: 0px 0px 3px grey;
-    margin-left: 0px;
-    //font-family: "Source Sans Pro", sans-serif;
+    color: #FFFFFF;
+    height: 36px;
     font-family: sans-serif;
-    text-align: center;
     font-size: 15px;
+    margin-left: 0px;
     outline: none;
+    text-align: center;
+    width: 250px;
 }
 
 #login #submit input[type="submit"]:hover {
-   cursor: pointer; 
    background-color: #007295;
+   cursor: pointer; 
 }
 
 #login #error {
    margin-left: auto;
    margin-right: auto;
    margin-top: 10px;
-   width: 250px;
    font-family: sans-serif;
    font-size: 15px;
    text-align: center;
+   width: 250px;
 }
 
+/* End of Login Form Style */
+
+/* End of Main */
+
+/* Start of Footer */
+
 #footer {
-    //background: #939393;
-    //background: #1E1E1E;
-    //background: #333333;
-    //background-color: #2f3135;
-    //background-image: url("bg.49f198b.png");
     background: #303030;
     bottom: 0px;
-    //color: #f7f7f7;
-    //color: #FFFFFF;
     color: #ccc;
     font-family: serif;
 }
@@ -403,10 +275,9 @@ input {
 }
 
 #footer #authors {
-    //border: 1px solid red;
     float: right;
     margin-top: 25px;
-    //padding-left: 10px;
     margin-right: 40px;
-    //width: 400px;
 }
+
+/* End of Footer */
