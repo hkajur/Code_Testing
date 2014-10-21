@@ -19,44 +19,32 @@
         android:onClick="login"
         android:text="@string/Login" />
 
-    <FrameLayout
+    <EditText
+        android:id="@+id/passText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/background"
-        android:clipChildren="true" >
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="84dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:textColorHint="@color/black" />
 
-        <LinearLayout
-            android:layout_width="153dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_marginTop="39dp"
-            android:orientation="vertical" >
+    <EditText
+        android:id="@+id/ucidText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/passText"
+        android:layout_alignLeft="@+id/passText"
+        android:layout_marginBottom="42dp"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/black" >
 
-            <EditText
-                android:id="@+id/ucidText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="47dp"
-                android:ems="10"
-                android:hint="@string/username"
-                android:inputType="textPersonName"
-                android:textColorHint="@color/black" />
-
-            <EditText
-                android:id="@+id/passText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:textColorHint="@color/black" />
-
-        </LinearLayout>
-    </FrameLayout>
+        <requestFocus />
+    </EditText>
 
     <TextView
         android:id="@+id/textView1"
@@ -65,7 +53,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="56dp"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

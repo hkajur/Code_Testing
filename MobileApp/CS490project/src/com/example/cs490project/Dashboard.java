@@ -22,12 +22,11 @@ public class Dashboard extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		Intent intent = getIntent();
-		String njit = intent.getStringExtra(MainActivity.NJITLOGIN);
 		String back = intent.getStringExtra(MainActivity.BACKLOGIN);
 		
 	    TextView textView = new TextView(this);
 	    textView.setTextSize(40);
-	    textView.setText(njit + " \n " + back);
+	    textView.setText(back);
 
 	    // Set the text view as the activity layout
 	    setContentView(textView);

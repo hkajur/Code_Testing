@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="InlinedApi" severity="ignore" />
+    <issue id="NewApi" severity="ignore">
+        <ignore path="src/com/example/cs490project/FragmentTab1.java" />
+        <ignore path="src/com/example/cs490project/FragmentTab2.java" />
+        <ignore path="src/com/example/cs490project/FragmentTab3.java" />
+        <ignore path="src/com/example/cs490project/TabListenerDeux.java" />
+    </issue>
+</lint>

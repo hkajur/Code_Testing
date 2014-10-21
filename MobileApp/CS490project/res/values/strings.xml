@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- string name="app_name">CS490 Project ALPHA</string-->
+    <string name="app_name">CS490 Project BETA</string>
+    <!-- string name="app_name">CS490 Project RELEASE</string-->
+    <!-- string name="app_name">CS490 Project FINAL</string-->
     <string name="action_settings">Settings</string>
     <string name="header">Login Screen</string>
     <string name="username">Username</string>

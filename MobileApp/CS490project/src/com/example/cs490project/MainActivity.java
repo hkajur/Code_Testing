@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
         	new DownloadWebpageTask().execute("http://web.njit.edu/~dm282/cs490/index.php");
         }
         else{
-        	Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();	
+        	//Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();	
         }
 		if(isConnectedToServer("http://web.njit.edu/~dm282/cs490/index.php", 1500))
 		{
@@ -78,7 +78,7 @@ public class MainActivity extends Activity {
 		}
 		else
 		{
-			Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();
 		}
         */
 	}
@@ -152,22 +152,25 @@ public class MainActivity extends Activity {
 					{ "NJIT_Login" : "Error", "Backend_Login" : "Failed" }
 			*/
 			
+			//STUDENT: dm282 / test		
+			//TEACHER: professor1 / !professor1
+			
 			try {
 				response = new JSONObject(result);
-				if(response.get("NJIT_Login").toString().equals("Success") && response.get("Backend_Login").toString().equals("Success"))
+				if(response.get("Backend_Login").toString().equals("Success") && response.get("userType").toString().equals("Student"))
 				{
-					Toast.makeText(getApplicationContext(), "Loggin in..", Toast.LENGTH_LONG).show();
-					Intent intent = new Intent(MainActivity.this,Dashboard.class);
-					intent.putExtra(NJITLOGIN, "NJIT LOGIN IS " + response.get("NJIT_Login").toString());
+					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_LONG).show();
+					Intent intent = new Intent(MainActivity.this,StudentPanel.class);
 					intent.putExtra(BACKLOGIN, "BACKEND LOGIN IS " + response.get("Backend_Login").toString());
 					MainActivity.this.startActivity(intent);
 				}
-				else if(response.get("NJIT_Login").toString().equals("Success") && response.get("Backend_Login").toString().equals("Failed"))
-					Toast.makeText(getApplicationContext(), "NJIT: SUCCESS / BACKEND: FAILED", Toast.LENGTH_LONG).show();
-				else if(response.get("NJIT_Login").toString().equals("Failed") && response.get("Backend_Login").toString().equals("Success"))
-					Toast.makeText(getApplicationContext(), "NJIT: FAILED / BACKEND: SUCCESS", Toast.LENGTH_LONG).show();
-				else if(response.get("NJIT_Login").toString().equals("Error"))
-					Toast.makeText(getApplicationContext(), "CURLING ERROR. CONSULT SERVER", Toast.LENGTH_LONG).show();
+				else if(response.get("Backend_Login").toString().equals("Success") && response.get("userType").toString().equals("Teacher"))
+				{
+					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_LONG).show();
+					Intent intent = new Intent(MainActivity.this,InstructorPanel.class);
+					intent.putExtra(BACKLOGIN, "BACKEND LOGIN IS " + response.get("Backend_Login").toString());
+					MainActivity.this.startActivity(intent);
+				}
 				else
 					Toast.makeText(getApplicationContext(), "Incorrect Credentials", Toast.LENGTH_LONG).show();
 			} catch (JSONException e) {
