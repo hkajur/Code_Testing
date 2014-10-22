@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php session_start(); 
+	if(isset($_SESSION["user"]) && !empty($_SESSION["user"]))
+		header("Location: login_success.php");
+	echo $_SESIION["user"];
+	if(!isset($_SESSION["user"]))
+		$_SESSION["usertype"] = "";
+?>
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -27,36 +33,45 @@
     
     </div> <!-- End of Banner -->
    
-     <!-- Start of Login Div -->
-    <div id="login">
-        
-        <!-- Start of Login Form -->
-        <form name="loginForm" action="login.php" method="post">
-            <!-- Start of Username Div -->
-            <div  id="username">
-		<input type="text" name="username" placeholder="UCID or Username" value=""/>
-            </div> <!-- End of Username Div -->
-            
-            <!-- Start of Password Div -->
-            <div  id="password">
-                <input type="password" name="passwd" placeholder="Password" value=""/>
-            </div> <!-- End of Password Div -->
-            
-            <!-- Start of Submit Div -->
-            <div id="submit">
-                <input type="submit" value="Submit"/>
-            </div> <!-- End of Submit Div -->
-        
-        </form> <!-- End of Login Form -->
-    
-    </div> <!-- End of Login Div -->
-
 </div> <!-- End of Header -->
 
 <!-- Start of Main Content -->
 <div id="main">
 <div id="content">
 
+     <!-- Start of Login Div -->
+    <div id="login">
+        
+        <!-- Start of Login Form -->
+        <form name="loginForm" action="login.php" method="post">
+            <h2> Login </h2>
+            <!-- Start of Username Div -->
+            <div  id="username">
+		        <input type="text" name="username" placeholder="UCID or Username" value="" required/>
+            </div> <!-- End of Username Div -->
+            
+            <!-- Start of Password Div -->
+            <div  id="password">
+                <input type="password" name="passwd" placeholder="Password" value="" required/>
+            </div> <!-- End of Password Div -->
+            
+            <!-- Start of Submit Div -->
+            <div id="submit">
+                <input type="submit" value="Sign in"/>
+            </div> <!-- End of Submit Div -->
+
+	    <div id="error">
+	    	<?php
+			//echo $_SESSION["usertype"];
+			if ($_SESSION["usertype"] == "INVALID") {
+				echo "*Incorrect username or password<br>";
+				session_unset();
+			}
+		?>  
+	    </div>
+        </form> <!-- End of Login Form -->
+    
+    </div> <!-- End of Login Div -->
 </div> 
 </div> <!-- End of Main Content -->
 

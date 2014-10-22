@@ -13,8 +13,10 @@
          */
 
         $con = mysql_connect("sql.njit.edu", "caj9", "qEpO163u6") 
-               or die("{ \"Backend_Login\": \"MySQL_Connection_Err\" }");
-
+                or die(json_encode(array(
+                        "Backend_Login" =>  "MySQL_Connection_Err"
+                      )));
+                        
         // Selects the database that you want to use
         $selectdb = mysql_select_db("caj9", $con);
 
@@ -28,13 +30,21 @@
 
         // Run the query and store the result into result variable
         $result = mysql_query($sql_login);
+  
+        $array = array();
 
         // Check if the query is a valid MySQL query
         // If the query is invalid, it will return invalid JSON
         // This will help with the debugging in future
         
-        if(!$result)
-            die("{ \"Backend_Login\": { \"Invalid query\" }"); 
+        if(!$result){
+            $array["Backend_Login"] = "Invalid query";
+            die(json_encode($array));
+        }
+
+        $row = mysql_fetch_assoc($result);
+
+        $array["userType"] = $row["UserType"];
 
         // Get the num of rows that the result produced
         $num_rows = mysql_num_rows($result);
@@ -42,16 +52,21 @@
         // If the rows are 1 then return Success JSON
         // Otherwise return Failed JSON
         
-        if($num_rows == 1)
-            echo "{ \"Backend_Login\": \"Success\" }";
-        else 
-            echo "{ \"Backend_Login\": \"Failed\" }";
+        if($num_rows == 1){
+            $array["Backend_Login"] = "Success";
+            echo json_encode($array);
+        }
+        else {
+            $array["Backend_Login"] = "Failed";
+            echo json_encode($array);
+        }
         
 
         // Close the connection to MySQL
         mysql_close($con);
 
     } else {
-        die("Error: Didn't post to page");
+            die(json_encode(array("Backend_Login" => "Error")));
+            
     }
 ?>
