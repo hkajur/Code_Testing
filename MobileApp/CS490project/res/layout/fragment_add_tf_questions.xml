@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/TFQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/custom_edit_text"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/QuestPlace"
+        android:inputType="textMultiLine"
+        android:paddingBottom="2dp"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingTop="2dp" />
+
+    <EditText
+        android:id="@+id/TFeditText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/TFeditText3"
+        android:layout_below="@+id/TFQuestion"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:hint="@string/RightPlace" />
+
+    <EditText
+        android:id="@+id/TFeditText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/TFeditText1"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:hint="@string/WrongPlace" />
+
+    <EditText
+        android:id="@+id/TFeditText2"
+        android:layout_width="122dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/TFeditText3"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TFeditText1"
+        android:layout_marginRight="26dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/ReasonPlace" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/TFeditText4"
+        android:layout_width="122dp"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/TFeditText3"
+        android:layout_alignLeft="@+id/TFeditText2"
+        android:layout_alignTop="@+id/TFeditText3"
+        android:layout_weight="1"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/ReasonPlace" />
+
+</RelativeLayout>

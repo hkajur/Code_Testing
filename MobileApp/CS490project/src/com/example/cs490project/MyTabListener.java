@@ -12,8 +12,7 @@ public class MyTabListener implements ActionBar.TabListener {
 	public MyTabListener(Fragment fragment) {
 		this.fragment = fragment;
 	}
-	
-	
+		
 	@Override
 	public void onTabSelected(android.app.ActionBar.Tab tab, FragmentTransaction ft) {
 		ft.replace(R.id.fragment_container, fragment);

@@ -15,7 +15,7 @@
     
     <string name="ReasonPlace">Reason</string>
     <string name="WrongPlace">Wrong answer</string>
-    <string name="RightPlace">Correct answer</string>
+    <string name="RightPlace">Right answer</string>
     <string name="QuestPlace">Enter question</string>
 
     <string name="questionType">Type of question</string>

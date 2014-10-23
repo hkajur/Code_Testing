@@ -8,14 +8,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.cs490project.MainActivity" >
 
+
+    
     <Button
         android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:textColor="#FFFFFF"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/buttonshape"        
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="92dp"
-        android:background="@color/grey"
         android:onClick="login"
         android:text="@string/Login" />
 
@@ -26,9 +29,13 @@
         android:layout_above="@+id/button1"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="84dp"
+        android:background="@drawable/custom_edit_text"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/password"
         android:inputType="textPassword"
+        android:paddingBottom="7dp"
+        android:paddingTop="7dp"
         android:textColorHint="@color/black" />
 
     <EditText
@@ -38,9 +45,14 @@
         android:layout_above="@+id/passText"
         android:layout_alignLeft="@+id/passText"
         android:layout_marginBottom="42dp"
+        android:background="@drawable/custom_edit_text"
+        android:ellipsize="start"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/username"
         android:inputType="textPersonName"
+        android:paddingBottom="7dp"
+        android:paddingTop="7dp"
         android:textColorHint="@color/black" >
 
         <requestFocus />
