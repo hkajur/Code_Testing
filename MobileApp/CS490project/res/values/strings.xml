@@ -12,5 +12,14 @@
     <string name="Login">Login</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string name="ReasonPlace">Reason</string>
+    <string name="WrongPlace">Wrong answer</string>
+    <string name="RightPlace">Correct answer</string>
+    <string name="QuestPlace">Enter question</string>
 
+    <string name="questionType">Type of question</string>
+    <string name="questionType1">Multiple Choice</string>
+    <string name="questionType2">Short Answer</string>
+    <string name="questionType3">True/False</string>
 </resources>

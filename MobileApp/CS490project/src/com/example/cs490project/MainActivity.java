@@ -40,12 +40,15 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends Activity {
-	public final static String NJITLOGIN = "com.example.cs490project.MESSAGE";
-	public final static String BACKLOGIN = "com.example.cs490project.MESSAGE2";
+	public final static String BACKLOGIN = "";
+	public final static String USER_ID = "";
+	public final static String STUDENT_JSON = "";
+	public final static String INSTRUCTOR_JSON = "";
+	public static loginFunctions session = new loginFunctions();
+
 	
 	private EditText  	username=null;
 	private EditText  	password=null;
-	TextView textbox;
 	private Button 		login;
 
 //===============================================================================================================		
@@ -57,8 +60,6 @@ public class MainActivity extends Activity {
 		username = (EditText)findViewById(R.id.ucidText);
 		password = (EditText)findViewById(R.id.passText);
 		login = (Button)findViewById(R.id.button1);
-		textbox = (TextView)findViewById(R.id.textView1);
-		textbox.setText("");
 		
 		//DEBUGGING ONLY
 		//Checks network connectivity		
@@ -112,7 +113,7 @@ public class MainActivity extends Activity {
 		}
 		else
 		{
-			loginFunctions session = new loginFunctions(ucid,pass);
+			session = new loginFunctions(ucid,pass);			
 	        AsyncTask<String, Void, String> response = new DownloadWebpageTask().execute(session.getURL(),session.getUcid(), session.getPassword(), session.getTag(), session.getToken());
 		}
 		
@@ -159,16 +160,20 @@ public class MainActivity extends Activity {
 				response = new JSONObject(result);
 				if(response.get("Backend_Login").toString().equals("Success") && response.get("userType").toString().equals("Student"))
 				{
-					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(MainActivity.this,StudentPanel.class);
 					intent.putExtra(BACKLOGIN, "BACKEND LOGIN IS " + response.get("Backend_Login").toString());
+					intent.putExtra(USER_ID, session.getUcid());
+					intent.putExtra(STUDENT_JSON, "SOMETHING SOMETHING STUDENT");
 					MainActivity.this.startActivity(intent);
 				}
 				else if(response.get("Backend_Login").toString().equals("Success") && response.get("userType").toString().equals("Teacher"))
 				{
-					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(MainActivity.this,InstructorPanel.class);
 					intent.putExtra(BACKLOGIN, "BACKEND LOGIN IS " + response.get("Backend_Login").toString());
+					intent.putExtra(USER_ID, session.getUcid());
+					intent.putExtra(INSTRUCTOR_JSON, "SOMETHING SOMETHING INSTRUCTOR");
 					MainActivity.this.startActivity(intent);
 				}
 				else
