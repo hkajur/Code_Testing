@@ -21,29 +21,5 @@
         android:layout_below="@+id/SpinnerFeedbackType"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/button1"
-		android:textColor="#FFFFFF"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="45dp"
-        android:background="@drawable/buttonshape"
-        android:text="Submit" />
-
-    <Button
-        android:id="@+id/button2"
-        android:textColor="#FFFFFF"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="56dp"
-        android:gravity="center"
-        android:background="@drawable/buttonshape"
-        android:text="Clear" />
 
 </RelativeLayout>

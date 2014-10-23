@@ -9,32 +9,20 @@ package com.example.cs490project;
  * */
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,7 +37,6 @@ public class MainActivity extends Activity {
 	
 	private EditText  	username=null;
 	private EditText  	password=null;
-	private Button 		login;
 
 //===============================================================================================================		
 	
@@ -59,7 +46,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		username = (EditText)findViewById(R.id.ucidText);
 		password = (EditText)findViewById(R.id.passText);
-		login = (Button)findViewById(R.id.button1);
 		
 		//DEBUGGING ONLY
 		//Checks network connectivity		

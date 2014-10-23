@@ -105,4 +105,27 @@
         android:ems="10"
         android:hint="@string/ReasonPlace" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:text="Clear"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/MCeditText7"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/buttonshape"
+        android:text="Submit"
+        android:textColor="#FFFFFF" />
+    
 </RelativeLayout>

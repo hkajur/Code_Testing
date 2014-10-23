@@ -51,23 +51,6 @@ public class InstructorFragmentTab3 extends Fragment {
 		    		fragmentTransaction.replace(R.id.fragmentContainer,empty);
 		    	}
 		    	fragmentTransaction.commit();
-		    	/*
-		    	MultipleChoiceQuestions newFragment = new MultipleChoiceQuestions();
-		    	Bundle args = new Bundle();
-		    	args.putInt(MultipleChoiceQuestions.ARG_POSITION, position);
-		    	newFragment.setArguments(args);
-
-		    	FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-		    	// Replace whatever is in the fragment_container view with this fragment,
-		    	// and add the transaction to the back stack so the user can navigate back
-		    	transaction.replace(R.id.fragment_container, newFragment);
-		    	transaction.addToBackStack(null);
-
-		    	// Commit the transaction
-		    	transaction.commit();
-		    	
-		    	*/
 		    	
 		    }
 		    public void onNothingSelected(AdapterView<?> parent) {

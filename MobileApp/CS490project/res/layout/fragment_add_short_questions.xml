@@ -35,4 +35,34 @@
         android:paddingRight="7dp"
         android:paddingTop="2dp" />
 
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.21" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button2"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/buttonshape"
+            android:text="Submit"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/buttonshape"
+            android:gravity="center"
+            android:text="Clear"
+            android:textColor="#FFFFFF" />
+
+    </RelativeLayout>
+
 </LinearLayout>
