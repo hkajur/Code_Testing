@@ -17,12 +17,13 @@
             
         $ch = curl_init();
 
-        $URL = "http://web.njit.edu/~caj9/Code_Testing/BackEnd/login.php";
+        //$URL = "http://web.njit.edu/~caj9/Code_Testing/BackEnd/login.php";
+        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/login.php";
 
         $postfields = array(
                       'username' => urlencode($username),
                       'password' => urlencode($password)
-              );
+        );
 
         curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -32,9 +33,8 @@
 
         $page = curl_exec($ch); // make request
 
-        if(curl_errno($ch)){
+        if(curl_errno($ch))
             echo 'Curl error: ' . curl_error($ch);
-        }
 
         return $page; 
     }
@@ -44,27 +44,29 @@
         $username = rec_input($_POST["username"]);
         $password = rec_input($_POST["password"]);
 
+        if(strlen($username) == 0 
+        || strlen($password) == 0){
+
+                die(json_encode(array(
+                        'NJIT_Login'    => "Failed",
+                        'Backend_Login' => "Failed",
+                        'userType'      => "null"
+                )));
+
+        }
+
         $array = array();
 
-        $array['NJIT_Login'] = "Failed";
+        $result = backend_login($username, $password);
+        $result = json_decode($result, true);
 
-        $res = backend_login($username, $password);
+        $result["NJIT_Login"] = "Failed"; 
         
-        if(strpos($res, 'Failed') !== false){
-          $array['Backend_Login'] = "Failed";
-        } else if(strpos($res, 'Success') !== false){
-          $array['Backend_Login'] = "Success";
-        } else {
-          $array['Backend_Login'] = "Error";
-        } 
-
-        $obj = json_decode($res);
-
-        $array["userType"] = $obj->{'userType'};
-
-        echo json_encode($array);
+        echo json_encode($result);
 
     } else {
-        die("Didn't post to the page");
+        die(json_encode(array(
+            'Error' => "Not posted"
+        )));
     }
 ?>
