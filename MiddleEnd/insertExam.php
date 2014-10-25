@@ -25,7 +25,7 @@
 
     } else {
         die(json_encode(array(
-            "Backend_Login" => "Failed",
-            "Reason" => "Invalid post request")));
+            "examCreated" => "Failed",
+            "Error" => "Invalid POST request")));
     } 
 ?>

@@ -18,9 +18,10 @@
         
         $questionType = $_POST["question_type"];
     
-         $con = mysql_connect("sql.njit.edu", "caj9", "qEpO163u6") 
-            or die(json_encode(array(
-                "Error" =>  "MySQL_Connection_Err")));
+        $con = mysql_connect("sql.njit.edu", "caj9", "qEpO163u6") 
+               or die(json_encode(array(
+                    "questionCreated" => "Failed",
+                    "Error" =>  "MySQL_Connection_Err")));
                                 
         // Selects the database that you want to use
         $selectdb = mysql_select_db("caj9", $con);
@@ -55,7 +56,9 @@
                 $result = mysql_query($sql_query);
 
                 if(!$result){
-                    die(json_encode(array("Error" => "Invalid First Request")));
+                        die(json_encode(array(
+                                "questionCreated" => "Failed",
+                                "Error" => "Invalid First Request")));
                 }
 
                 $lastQuestionID = mysql_insert_id();
@@ -70,7 +73,9 @@
                     $result = mysql_query($sql_query);
 
                     if(!$result){
-                        die(json_encode(array("Error" => "Invalid Request")));
+                            die(json_encode(array(
+                                    "questionCreated" => "Failed",
+                                    "Error" => "Invalid Request")));
                     }
                     
                     $index++;
@@ -101,7 +106,9 @@
                 $result = mysql_query($sql_query);
 
                 if(!$result){
-                    die(json_encode(array("Error" => "Invalid First Request")));
+                        die(json_encode(array(
+                                "questionCreated" => "Failed",
+                                "Error" => "Invalid First Request")));
                 }
 
                 $lastQuestionID = mysql_insert_id();
@@ -116,7 +123,9 @@
                     $result = mysql_query($sql_query);
 
                     if(!$result){
-                        die(json_encode(array("Error" => "Invalid Request")));
+                            die(json_encode(array(
+                                    "questionCreated" => "Failed",
+                                    "Error" => "Invalid Request")));
                     }
                     
                     $index++;
@@ -137,7 +146,9 @@
                 $result = mysql_query($sql_query);
 
                 if(!$result){
-                    die(json_encode(array("Error" => "Invalid First Request")));
+                        die(json_encode(array(
+                                "questionCreated" => "Failed",
+                                "Error" => "Invalid First Request")));
                 }
 
                 break;
@@ -150,6 +161,8 @@
         mysql_close($con);
 
     } else {
-        die(json_encode(array("Error" => "Invalid POST request")));
+            die(json_encode(array(
+                    "questionCreated" => "Failed",
+                    "Error" => "Invalid POST request")));
     }
 ?>

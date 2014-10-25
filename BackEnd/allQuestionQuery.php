@@ -1,12 +1,15 @@
 <?php
 
     class questionInfo {
+            
         public $questionID;
+        public $questionType;
         public $question;
 
-        public function __construct($id, $ques){
+        public function __construct($id, $ques, $quesType){
             $this->questionID = $id;
             $this->question = $ques;
+            $this->questionType = $quesType;
         }
     }
     class ques{
@@ -24,13 +27,13 @@
         $con = mysql_connect("sql.njit.edu", "caj9", "qEpO163u6") 
                 or die(json_encode(array(
                     "Backend_Login" =>  "Failed",
-                    "Reason" => "Mysql connection error")));
+                    "Error" => "Mysql connection error")));
                         
         // Selects the database that you want to use
         $selectdb = mysql_select_db("caj9", $con);
 
 
-        $sql_query = "SELECT Question, QuestionID FROM QuestionBank";
+        $sql_query = "SELECT Question, QuestionType, QuestionID FROM QuestionBank";
 
         $result = mysql_query($sql_query);
 
@@ -44,7 +47,7 @@
        
         while($row = mysql_fetch_assoc($result)){
                 $ques->questions[$index++] = 
-                    new questionInfo($row["QuestionID"], $row["Question"]);
+                    new questionInfo($row["QuestionID"], $row["Question"], $row["QuestionType"]);
         }
 
         echo json_encode($ques);

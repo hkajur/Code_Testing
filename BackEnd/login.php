@@ -54,7 +54,7 @@
         $con = mysql_connect("sql.njit.edu", "caj9", "qEpO163u6") 
                 or die(json_encode(array(
                     "Backend_Login" =>  "Failed",
-                    "Reason" => "Mysql connection error")));
+                    "Error" => "Mysql connection error")));
                         
         // Selects the database that you want to use
         $selectdb = mysql_select_db("caj9", $con);
@@ -99,7 +99,7 @@
         else {
             die(json_encode(array(
                 "Backend_Login" => "Failed", 
-                "Reason" => "Invalid query")));
+                "Error" => "Invalid query")));
         }
 
         if($user->userType == "Student"){
@@ -119,14 +119,14 @@
             if(!$result){
                 die(json_encode(array(
                     "Backend_Login" => "Failed", 
-                    "Reason" => "Invalid query")));
+                    "Error" => "Invalid query")));
             }
 
             $index = 0;
 
             while($row = mysql_fetch_assoc($result)){
                 $user->exams[$index++] = 
-                new studentInfo($row["ExamId"], $row["ExamName"], "Y");
+                new studentInfo($row["ExamId"], $row["ExamName"], "True");
             }
             
             // Select statement to get all the exams that user has not taken
@@ -142,12 +142,12 @@
             if(!$result){
                 die(json_encode(array(
                     "Backend_Login" => "Failed", 
-                    "Reason" => "Invalid query")));
+                    "Error" => "Invalid query")));
             }
             
             while($row = mysql_fetch_assoc($result)){
                 $user->exams[$index++] = 
-                new studentInfo($row["ExamId"], $row["ExamName"], "N");
+                new studentInfo($row["ExamId"], $row["ExamName"], "False");
             }
 
         } else {
@@ -177,6 +177,6 @@
     } else {
         die(json_encode(array(
             "Backend_Login" => "Failed",
-            "Reason" => "Invalid post request")));
+            "Error" => "Invalid post request")));
     }
 ?>

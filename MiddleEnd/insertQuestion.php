@@ -89,12 +89,16 @@
         $page = curl_exec($ch);
 
         if(curl_errno($ch)){
-            die(json_encode(array("Error" => curl_error($ch))));
+                die(json_encode(array(
+                        "questionCreated" : "Failed",
+                        "Error" => curl_error($ch))));
         }
 
         echo $page;
     
     } else {
-        die(json_encode(array("Error" => "Invalid post")));
+            die(json_encode(array(
+                    "questionCreated" : "Failed",
+                    "Error" => "Invalid post")));
     }
 ?>

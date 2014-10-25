@@ -54,8 +54,8 @@
 
         $con = mysql_connect("sql.njit.edu", "caj9", "qEpO163u6") 
                 or die(json_encode(array(
-                    "Backend_Login" =>  "Failed",
-                    "Reason" => "Mysql connection error")));
+                    "accessExam" =>  "Failed",
+                    "Error" => "Mysql connection error")));
                         
         // Selects the database that you want to use
         $selectdb = mysql_select_db("caj9", $con);
@@ -67,7 +67,9 @@
         $result = mysql_query($sql_examName);
 
         if(!$result){
-            die(json_encode(array("Error" => "Invalid request")));
+                die(json_encode(array(
+                    "accessExam" => "Failed",
+                    "Error" => "Invalid request")));
         }
 
         $row = mysql_fetch_assoc($result);
@@ -93,7 +95,9 @@
         // This will help with the debugging in future
         
         if(!$result){
-                die("Invalid request");
+                die(json_encode(array(
+                    "accessExam" => "Failed",
+                    "Error" => "Invalid request")));
         }
 
         $exam = new examInfo($examID, $examName); 
@@ -137,7 +141,7 @@
     
     } else {
         die(json_encode(array(
-            "Backend_Login" => "Failed",
-            "Reason" => "Invalid post request")));
+            "accessExam" => "Failed",
+            "Error" => "Invalid post request")));
     }
 ?>
