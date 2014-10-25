@@ -1088,9 +1088,10 @@ containing a value of this type.
         public static final int background=0x7f020057;
         public static final int buttonshape=0x7f020058;
         public static final int custom_edit_text=0x7f020059;
-        public static final int ic_launcher=0x7f02005a;
-        public static final int logo=0x7f02005b;
-        public static final int photothumb=0x7f02005c;
+        public static final int exam_background=0x7f02005a;
+        public static final int ic_launcher=0x7f02005b;
+        public static final int logo=0x7f02005c;
+        public static final int photothumb=0x7f02005d;
     }
     public static final class id {
         public static final int MCQuestion=0x7f050045;
@@ -1104,14 +1105,19 @@ containing a value of this type.
         public static final int MCeditText7=0x7f050049;
         public static final int MCeditText8=0x7f05004d;
         public static final int RelativeLayout1=0x7f050042;
+        public static final int SHeditText1=0x7f050051;
+        public static final int SHeditText2=0x7f050054;
+        public static final int SHeditText3=0x7f050052;
+        public static final int SHeditText4=0x7f050055;
+        public static final int SHeditText5=0x7f050053;
+        public static final int SHeditText6=0x7f050056;
         public static final int ShortEditText1=0x7f050050;
-        public static final int ShortEditText2=0x7f050051;
-        public static final int SpinnerFeedbackType=0x7f050057;
-        public static final int TFQuestion=0x7f050052;
-        public static final int TFeditText1=0x7f050053;
-        public static final int TFeditText2=0x7f050055;
-        public static final int TFeditText3=0x7f050054;
-        public static final int TFeditText4=0x7f050056;
+        public static final int SpinnerFeedbackType=0x7f05005e;
+        public static final int TFQuestion=0x7f050057;
+        public static final int TFeditText1=0x7f050058;
+        public static final int TFeditText2=0x7f05005a;
+        public static final int TFeditText3=0x7f050059;
+        public static final int TFeditText4=0x7f05005b;
         public static final int TextView1=0x7f050043;
         public static final int action_bar=0x7f05001c;
         public static final int action_bar_activity_content=0x7f050015;
@@ -1124,7 +1130,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f05005a;
+        public static final int action_settings=0x7f050061;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
@@ -1138,9 +1144,10 @@ containing a value of this type.
         public static final int dropdown=0x7f05000f;
         public static final int edit_query=0x7f050030;
         public static final int end=0x7f050013;
+        public static final int examName=0x7f05005c;
         public static final int expand_activities_button=0x7f050026;
         public static final int expanded_menu=0x7f05002c;
-        public static final int fragmentContainer=0x7f050058;
+        public static final int fragmentContainer=0x7f05005f;
         public static final int fragment_container=0x7f05003c;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
@@ -1149,6 +1156,7 @@ containing a value of this type.
         public static final int image=0x7f050027;
         public static final int imageView1=0x7f050040;
         public static final int listMode=0x7f050001;
+        public static final int listView1=0x7f05005d;
         public static final int list_item=0x7f050029;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
@@ -1175,7 +1183,7 @@ containing a value of this type.
         public static final int split_action_bar=0x7f05001e;
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
-        public static final int tabtextview=0x7f050059;
+        public static final int tabtextview=0x7f050060;
         public static final int textView1=0x7f050041;
         public static final int textView2=0x7f050044;
         public static final int title=0x7f05002b;
@@ -1246,16 +1254,20 @@ containing a value of this type.
         public static final int fragment_add_short_questions=0x7f030020;
         public static final int fragment_add_tf_questions=0x7f030021;
         public static final int fragment_empty=0x7f030022;
-        public static final int fragment_instructor_tab3=0x7f030023;
-        public static final int support_simple_spinner_dropdown_item=0x7f030024;
-        public static final int tab=0x7f030025;
+        public static final int fragment_instructor_tab2=0x7f030023;
+        public static final int fragment_instructor_tab3=0x7f030024;
+        public static final int simple_list_item=0x7f030025;
+        public static final int support_simple_spinner_dropdown_item=0x7f030026;
+        public static final int tab=0x7f030027;
     }
     public static final class menu {
         public static final int dashboard=0x7f0d0000;
         public static final int main=0x7f0d0001;
     }
     public static final class string {
+        public static final int InputPlace=0x7f0a0019;
         public static final int Login=0x7f0a0012;
+        public static final int OutputPlace=0x7f0a001a;
         public static final int QuestPlace=0x7f0a0018;
         public static final int ReasonPlace=0x7f0a0015;
         public static final int RightPlace=0x7f0a0017;
@@ -1310,10 +1322,10 @@ containing a value of this type.
         public static final int header=0x7f0a000f;
         public static final int hello_world=0x7f0a0014;
         public static final int password=0x7f0a0011;
-        public static final int questionType=0x7f0a0019;
-        public static final int questionType1=0x7f0a001a;
-        public static final int questionType2=0x7f0a001b;
-        public static final int questionType3=0x7f0a001c;
+        public static final int questionType=0x7f0a001b;
+        public static final int questionType1=0x7f0a001c;
+        public static final int questionType2=0x7f0a001d;
+        public static final int questionType3=0x7f0a001e;
         public static final int title_activity_dashboard=0x7f0a0013;
         public static final int username=0x7f0a0010;
     }

@@ -3,14 +3,14 @@ package com.example.cs490project;
 import InstructorClasses.InstructorFragmentTab1;
 import InstructorClasses.InstructorFragmentTab2;
 import InstructorClasses.InstructorFragmentTab3;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.Toast;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
 
 public class InstructorPanel extends ActionBarActivity{
 		ActionBar.Tab tab1, tab2, tab3;
@@ -22,10 +22,22 @@ public class InstructorPanel extends ActionBarActivity{
 		 protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_instructor);
-	        	        
-//	        Intent intent = getIntent();
-//			String back = intent.getStringExtra(MainActivity.BACKLOGIN);
 	        
+	        Intent intent = getIntent();
+	        String user_id = intent.getStringExtra("USER_ID");
+			String instructor_JSON = intent.getStringExtra("INSTRUCTOR_JSON");
+			
+			
+			Bundle args = new Bundle();
+			args.putString("USER_ID", user_id);
+            args.putString("INSTRUCTOR_JSON", instructor_JSON);
+            
+            fragmentTabLEFT.setArguments(args);
+            fragmentTabMIDDLE.setArguments(args);
+            fragmentTabRIGHT.setArguments(args);
+        
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            
 	        ActionBar actionBar = getActionBar();
 	        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	        
@@ -41,7 +53,7 @@ public class InstructorPanel extends ActionBarActivity{
 	        actionBar.addTab(tab2);
 	        actionBar.addTab(tab3);
 	    }
-		
+
 		/*
 		@Override
 			protected void onCreate(Bundle savedInstanceState) {

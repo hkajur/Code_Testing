@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import InstructorClasses.MultipleChoiceQuestions.HttpAsyncTask;
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.cs490project.AuthenticatorConnection;
 import com.example.cs490project.R;
+import com.example.cs490project.loginFunctions;
 
 public class TrueFalseQuestions extends Fragment{
 
@@ -26,66 +30,106 @@ public class TrueFalseQuestions extends Fragment{
 	EditText answer2;
 	EditText reason2;
 
+	String user_id;
+	
+	public static loginFunctions session = new loginFunctions();
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.fragment_add_tf_questions, container, false);
 		
+		question = (EditText) view.findViewById(R.id.TFQuestion);
+		answer1 = (EditText) view.findViewById(R.id.TFeditText1); //Correct
+		reason1 = (EditText) view.findViewById(R.id.TFeditText2);	//Correct
+		
+		answer2 = (EditText) view.findViewById(R.id.TFeditText3);
+		reason2 = (EditText) view.findViewById(R.id.TFeditText4);
+		
+		//GET USER CREDENTIALS FROM main_activity
+    	Bundle args = getArguments();
+    	user_id = args.getString("USER_ID");
+		
 		Button submit = (Button) view.findViewById(R.id.button1);
-		   submit.setOnClickListener(new OnClickListener()
-		   {
-			   @Override
-			   public void onClick(View v)
-			   {
-				   String response = null;	         
-			         
-				   //PARAMETERS TO SEND
-				   Map<String, String> params = new HashMap<String, String>();				   
-				   params.put("tag", "TrueFalseChoiceQuestionInsert");
-				   params.put("question_type", "TrueFalse");
-				   params.put("question", question.toString());
-				   params.put("correct", answer1.toString());
-				   params.put("correct_reason", reason1.toString());
-				   params.put("wrongAnswer1", answer2.toString());
-				   params.put("wrongReason1", reason2.toString());
-				   
-				   //TRY TO POST PARAMETERS TO SERVER AND GET RESPONSE
-				   try {
-					   AuthenticatorConnection.sendPostRequest("http://web.njit.edu/~dm282/cs490/index.php", params);
-//					   response = AuthenticatorConnection.readSingleLineRespone();
-					   Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
-				   } catch (IOException ex) {
-					   ex.printStackTrace();
-				   }
-				        //CLOSE CONNECTION AND RETURN THE JSON REPONSE
-				   AuthenticatorConnection.disconnect();
-				   
-			   } 
-		   });
+		submit.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				new HttpAsyncTask().execute(session.getURL(), session.getToken());
+			} 
+		});
 		
 		Button clear = (Button) view.findViewById(R.id.button2);
-		   clear.setOnClickListener(new OnClickListener()
-		   {
-			   @Override
-			   public void onClick(View v)
-			   {
-				   question = (EditText) getView().findViewById(R.id.TFQuestion);
-				   answer1 = (EditText) getView().findViewById(R.id.TFeditText1); //Correct
-				   reason1 = (EditText) getView().findViewById(R.id.TFeditText2);	//Correct
-						
-				   answer2 = (EditText) getView().findViewById(R.id.MCeditText3);
-				   reason2 = (EditText) getView().findViewById(R.id.MCeditText4);
-				   
-				   question.setText("");
-				   answer1.setText("");
-				   reason1.setText("");
-					
-				   answer2.setText("");
-				   reason2.setText("");
-			   } 
-		   });
+		clear.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				question.setText("");
+				answer1.setText("");
+				reason1.setText("");
+				
+				answer2.setText("");
+				reason2.setText("");
+			} 
+		});
 		
 		return view;
 	}
+	public class HttpAsyncTask extends AsyncTask<String, Void, String> {
+	    @Override
+    	protected String doInBackground(String... urls) 
+    	{
+    		try {
+    			return downloadUrl(urls[0],urls[1]);
+    		}
+    		catch (IOException e){
+    			return "Cannot connect. Server is not responding.";
+    		}
+    	}	    // onPostExecute displays the results of the AsyncTask.
+		@Override
+		protected void onPostExecute(String result) 
+		{
+//			JSONObject response;
+			Toast.makeText(getActivity().getBaseContext(), result.toString(), Toast.LENGTH_LONG).show();
+//			try {
+//				response = new JSONObject(result);
+				
+//				if(response.get("Backend_Login").toString().equals("Success")){
+//					Toast.makeText(getActivity().getBaseContext(), "Question added", Toast.LENGTH_SHORT).show();
+//				}
+//			} catch (JSONException e) {
+//				Toast.makeText(getActivity().getBaseContext(), "Server has not responded. Try again.", Toast.LENGTH_SHORT).show();
+//				e.printStackTrace();
+//			}
+		}
+//############################################################################################################################################
+	    private String downloadUrl(String myurl,String token) throws IOException {
+		    String response = null;	         
+	         
+		    //PARAMETERS TO SEND
+			Map<String, String> params = new HashMap<String, String>();				   
+			params.put("user", user_id);
+			params.put("tag", "TrueFalseChoiceQuestionInsert");
+			params.put("question_type", "TrueFalse");
 
+			params.put("question", question.toString());
+
+			params.put("correct", answer1.toString());
+			params.put("correct_reason", reason1.toString());
+
+			params.put("wrongAnswer1", answer2.toString());
+			params.put("wrongReason1", reason2.toString());	        //TRY TO POST PARAMETERS TO SERVER AND GET RESPONSE
+	        try {
+	        	AuthenticatorConnection.sendPostRequest(myurl, params);
+	            response = AuthenticatorConnection.readSingleLineRespone();
+	        } catch (IOException ex) {
+	        	Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
+	            ex.printStackTrace();
+	        }
+	        //CLOSE CONNECTION AND RETURN THE JSON REPONSE
+	        AuthenticatorConnection.disconnect();	        
+			return response;
+		}//END downloadUrl FUNCTION
+	}//END ASYNC CLASS 
 }

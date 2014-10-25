@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,8 +29,7 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends Activity {
-	public final static String BACKLOGIN = "";
-	public final static String USER_ID = "";
+	public final static String BACKLOGIN = "BACKEND LOGIN STATUS: ";
 	public final static String STUDENT_JSON = "";
 	public final static String INSTRUCTOR_JSON = "";
 	public static loginFunctions session = new loginFunctions();
@@ -46,6 +46,9 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		username = (EditText)findViewById(R.id.ucidText);
 		password = (EditText)findViewById(R.id.passText);
+		
+		username.setText("professor1");
+		password.setText("!professor1");
 		
 		//DEBUGGING ONLY
 		//Checks network connectivity		
@@ -148,23 +151,25 @@ public class MainActivity extends Activity {
 				{
 					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(MainActivity.this,StudentPanel.class);
-					intent.putExtra(BACKLOGIN, "BACKEND LOGIN IS " + response.get("Backend_Login").toString());
-					intent.putExtra(USER_ID, session.getUcid());
-					intent.putExtra(STUDENT_JSON, "SOMETHING SOMETHING STUDENT");
+//					intent.putExtra("BACKLOGIN", "BACKEND LOGIN IS " + response.get("Backend_Login").toString());
+					intent.putExtra("USER_ID", session.getUcid());
+					intent.putExtra("STUDENT_JSON", STUDENT_JSON);
 					MainActivity.this.startActivity(intent);
 				}
 				else if(response.get("Backend_Login").toString().equals("Success") && response.get("userType").toString().equals("Teacher"))
 				{
 					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(MainActivity.this,InstructorPanel.class);
-					intent.putExtra(BACKLOGIN, "BACKEND LOGIN IS " + response.get("Backend_Login").toString());
-					intent.putExtra(USER_ID, session.getUcid());
-					intent.putExtra(INSTRUCTOR_JSON, "SOMETHING SOMETHING INSTRUCTOR");
+//					intent.putExtra("BACKLOGIN", BACKLOGIN + response.get("Backend_Login").toString());
+					intent.putExtra("USER_ID", session.getUcid());
+//					intent.putExtra("INSTRUCTOR_JSON", INSTRUCTOR_JSON);
+					intent.putExtra("INSTRUCTOR_JSON", "SOMETHING SOMETHING DARK SIDE");
 					MainActivity.this.startActivity(intent);
 				}
 				else
 					Toast.makeText(getApplicationContext(), "Incorrect Credentials", Toast.LENGTH_LONG).show();
 			} catch (JSONException e) {
+				Toast.makeText(getApplicationContext(), "Server has not responded. Try again.", Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 						
@@ -188,11 +193,12 @@ public class MainActivity extends Activity {
 	        	AuthenticatorConnection.sendPostRequest(myurl, params);
 	            response = AuthenticatorConnection.readSingleLineRespone();
 	        } catch (IOException ex) {
+	        	Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
 	            ex.printStackTrace();
 	        }
 	        //CLOSE CONNECTION AND RETURN THE JSON REPONSE
 	        AuthenticatorConnection.disconnect();	        
 			return response;
 		}
-    }
+    }//END ASYNC CLASS
 }

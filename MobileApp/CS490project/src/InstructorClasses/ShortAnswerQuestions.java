@@ -4,8 +4,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import InstructorClasses.MultipleChoiceQuestions.HttpAsyncTask;
 import android.app.Fragment;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,62 +22,135 @@ import android.widget.Toast;
 
 import com.example.cs490project.AuthenticatorConnection;
 import com.example.cs490project.R;
+import com.example.cs490project.loginFunctions;
 
 public class ShortAnswerQuestions extends Fragment{
 	
 	EditText question;
-	EditText output;	//Correct
+	EditText input1;
+	EditText output1;
+	EditText input2;
+	EditText output2;
+	EditText input3;
+	EditText output3;
 
+	String user_id;
+	
+	public static loginFunctions session = new loginFunctions();
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.fragment_add_short_questions, container, false);
 
+		question = (EditText) view.findViewById(R.id.ShortEditText1);
+		input1   = (EditText) view.findViewById(R.id.SHeditText1);
+		output1  = (EditText) view.findViewById(R.id.SHeditText2);
+		input2	 = (EditText) view.findViewById(R.id.SHeditText3); 
+		output2  = (EditText) view.findViewById(R.id.SHeditText4);
+		input3	 = (EditText) view.findViewById(R.id.SHeditText5); 
+		output3	 = (EditText) view.findViewById(R.id.SHeditText6);
 		
-		Button submit = (Button) view.findViewById(R.id.button1);
-		   submit.setOnClickListener(new OnClickListener()
-		   {
-			   @Override
-			   public void onClick(View v)
-			   {
-				   String response = null;	         
-			         
-				   //PARAMETERS TO SEND
-				   Map<String, String> params = new HashMap<String, String>();				   
-				   params.put("tag", "ShortAnswerQuestionInsert");
-				   params.put("question_type", "ShortAnswer");
-				   params.put("question", question.toString());
-				   params.put("correct", output.toString());
-				   
-				   //TRY TO POST PARAMETERS TO SERVER AND GET RESPONSE
-				   try {
-					   AuthenticatorConnection.sendPostRequest("http://web.njit.edu/~dm282/cs490/index.php", params);
-//					   response = AuthenticatorConnection.readSingleLineRespone();
-					   Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
-				   } catch (IOException ex) {
-					   ex.printStackTrace();
-				   }
-				        //CLOSE CONNECTION AND RETURN THE JSON REPONSE
-				   AuthenticatorConnection.disconnect();
+		
+    	Bundle args = getArguments();
+    	user_id = args.getString("USER_ID");
+    	
+    	//DEBUGGING NETWORK CONNECTION
+/*------==============================================================================================================
+    			ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+    			NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-			   } 
-		   });
-		
-		Button clear = (Button) view.findViewById(R.id.button2);
-		   clear.setOnClickListener(new OnClickListener()
-		   {
-			   @Override
-			   public void onClick(View v)
-			   {
-				   question = (EditText) getView().findViewById(R.id.ShortEditText1);
-				   output = (EditText) getView().findViewById(R.id.ShortEditText2); //Correct
-				   
-				   question.setText("");
-				   output.setText("");
-			   } 
-		   });
-		
+    			if (networkInfo != null && networkInfo.isConnected()) {
+    				Toast.makeText(getActivity().getBaseContext(), "HOUSTON LANDED", Toast.LENGTH_LONG).show();
+    			} else {
+    				Toast.makeText(getActivity().getBaseContext(), "HOUSTON FUCKED UP", Toast.LENGTH_LONG).show();
+    			}
+//------==============================================================================================================*/    	
+    	//SUBMIT BUTTOM SMACKED
+    	Button submit = (Button) view.findViewById(R.id.button1);
+    	submit.setOnClickListener(new OnClickListener()
+    	{
+    		@Override
+    		public void onClick(View v)
+    		{			
+    			new HttpAsyncTask().execute(session.getURL(), session.getToken());			
+    		}
+    	}); //END SUBMIT BUTTON
+//--------------------------------------------------------------------------------------------------------------------			         
+    	//CLEAR BUTTON SMACKED
+    	Button clear = (Button) view.findViewById(R.id.button2);
+		clear.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				question.setText("");
+				input1.setText("");
+				output1.setText("");
+				input2.setText("");
+				output2.setText("");
+				input3.setText("");
+				output3.setText("");
+			} 
+		});
 		return view;
 	}
+	
+	public class HttpAsyncTask extends AsyncTask<String, Void, String> {
+	    @Override
+    	protected String doInBackground(String... urls) 
+    	{
+    		try {
+    			return downloadUrl(urls[0],urls[1]);
+    		}
+    		catch (IOException e){
+    			return "Cannot connect. Server is not responding.";
+    		}
+    	}	    // onPostExecute displays the results of the AsyncTask.
+		@Override
+		protected void onPostExecute(String result) 
+		{
+//			JSONObject response;
+			Toast.makeText(getActivity().getBaseContext(), result.toString(), Toast.LENGTH_LONG).show();
+//			try {
+//				response = new JSONObject(result);
+				
+//				if(response.get("Backend_Login").toString().equals("Success")){
+//					Toast.makeText(getActivity().getBaseContext(), "Question added", Toast.LENGTH_SHORT).show();
+//				}
+//			} catch (JSONException e) {
+//				Toast.makeText(getActivity().getBaseContext(), "Server has not responded. Try again.", Toast.LENGTH_SHORT).show();
+//				e.printStackTrace();
+//			}
+		}
+//############################################################################################################################################
+	    private String downloadUrl(String myurl,String token) throws IOException {
+		    String response = null;	         
+	         
+		    //PARAMETERS TO SEND
+		    Map<String, String> params = new HashMap<String, String>();				   
+		    params.put("user", user_id);
+		    params.put("tag", "ShortAnswerQuestionInsert");
+		    params.put("question_type", "ShortAnswer");
+		    params.put("question", question.toString());
+		    params.put("input1", input1.toString());
+		    params.put("output1",output1.toString());
+		    params.put("input2",input2.toString()); 
+		    params.put("output2",output2.toString());
+		    params.put("input3",input3.toString()); 
+		    params.put("output3",output3.toString());
+
+	        //TRY TO POST PARAMETERS TO SERVER AND GET RESPONSE
+	        try {
+	        	AuthenticatorConnection.sendPostRequest(myurl, params);
+	            response = AuthenticatorConnection.readSingleLineRespone();
+	        } catch (IOException ex) {
+	        	Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
+	            ex.printStackTrace();
+	        }
+	        //CLOSE CONNECTION AND RETURN THE JSON REPONSE
+	        AuthenticatorConnection.disconnect();	        
+			return response;
+		}//END downloadUrl FUNCTION
+	}//END ASYNC CLASS	
 
 }
