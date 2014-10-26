@@ -24,17 +24,17 @@ public class InstructorPanel extends ActionBarActivity{
 	        setContentView(R.layout.activity_instructor);
 	        
 	        Intent intent = getIntent();
-	        String user_id = intent.getStringExtra("USER_ID");
-			String instructor_JSON = intent.getStringExtra("INSTRUCTOR_JSON");
-			
-			
-			Bundle args = new Bundle();
-			args.putString("USER_ID", user_id);
-            args.putString("INSTRUCTOR_JSON", instructor_JSON);
+			Bundle argsFrag1 = new Bundle();
+            argsFrag1.putString("INSTRUCTOR_JSON", intent.getStringExtra("INSTRUCTOR_JSON"));
+                        
+            Bundle argsFrag2 = new Bundle();
+            argsFrag2.putString("USER_NAME", intent.getStringExtra("USER_NAME"));
+            argsFrag2.putString("USER_ID", intent.getStringExtra("USER_ID"));
             
-            fragmentTabLEFT.setArguments(args);
-            fragmentTabMIDDLE.setArguments(args);
-            fragmentTabRIGHT.setArguments(args);
+            
+            fragmentTabLEFT.setArguments(argsFrag1);
+            fragmentTabMIDDLE.setArguments(argsFrag2);
+            fragmentTabRIGHT.setArguments(argsFrag2);
         
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             
@@ -53,23 +53,4 @@ public class InstructorPanel extends ActionBarActivity{
 	        actionBar.addTab(tab2);
 	        actionBar.addTab(tab3);
 	    }
-
-		/*
-		@Override
-			protected void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			setContentView(R.layout.activity_dashboard);
-			Intent intent = getIntent();
-			String back = intent.getStringExtra(MainActivity.BACKLOGIN);
-		
-	    	TextView textView = new TextView(this);
-	    	textView.setTextSize(40);
-	    	textView.setText("Instructor\n" + back);
-	
-	    	// Set the text view as the activity layout
-	    	setContentView(textView);
-		
-	}
-		*/
-
 	}

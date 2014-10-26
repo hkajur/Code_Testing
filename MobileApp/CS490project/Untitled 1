@@ -1,0 +1,43 @@
+		/* THIS WORKS
+		Bundle args = getArguments();
+    	final String user_id = args.getString("USER_ID");
+    	final String instructor_JSON = args.getString("INSTRUCTOR_JSON");
+		
+    	
+
+        LinearLayout l = (LinearLayout) view;
+        LayoutParams params = new LayoutParams(
+        		LayoutParams.MATCH_PARENT,
+        		LayoutParams.WRAP_CONTENT                      
+        );
+        params.setMargins(0, 5, 0, 5);
+        Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"fonts/gillsansmt.ttf"); 
+        
+        
+        TextView tv;
+        
+        for(int i=0 ; i<2 ; i++){
+        	tv = new TextView(container.getContext());
+            tv.setBackgroundResource(R.drawable.exam_background);
+            tv.setPadding(15, 10, 10, 15);
+            tv.setTextSize(15);
+            tv.setText(String.valueOf(i));
+            tv.setTypeface(type);
+            tv.setLayoutParams(params);
+            tv.setOnTouchListener(new ShowExamGrade());
+            l.addView(tv);        	
+        }
+        
+        Button submit = new Button(container.getContext());
+        params.setMargins(0, 25, 0, 0);
+        submit.setBackgroundResource(R.drawable.buttonshape);
+        submit.setText("Submit");
+        submit.setLayoutParams(params);
+//        submit.setOnClickListener((OnClickListener) l);
+        l.addView(submit);
+        
+        /*
+        tv = new TextView(container.getContext());
+        tv.setText("Testing2...");
+        l.addView(tv);
+    	*/

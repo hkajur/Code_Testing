@@ -14,6 +14,8 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
+import NetworkClasses.AuthenticatorConnection;
+import NetworkClasses.loginFunctions;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -47,8 +49,8 @@ public class MainActivity extends Activity {
 		username = (EditText)findViewById(R.id.ucidText);
 		password = (EditText)findViewById(R.id.passText);
 		
-		username.setText("professor1");
-		password.setText("!professor1");
+		username.setText("student2");
+		password.setText("!student2");
 		
 		//DEBUGGING ONLY
 		//Checks network connectivity		
@@ -135,11 +137,15 @@ public class MainActivity extends Activity {
 			JSONObject response;
 			
 			/*
-			  	{ "NJIT_Login" : "Success", "Backend_Login" : "Failed" }
-				{ "NJIT_Login" : "Failed", "Backend_Login" : "Success" }
-				{ "NJIT_Login" : "Failed", "Backend_Login" : "Failed" }
-				Returns this JSON if there is curl error:
-					{ "NJIT_Login" : "Error", "Backend_Login" : "Failed" }
+			"userType" :  "Teacher", 
+			"userName" : "joe",
+			"userID" : "11",
+			"Backend_Login" : "Success",
+			"NJIT_Login" : "Failed",
+			"exams" : [
+					]
+		}
+
 			*/
 			
 			//STUDENT: dm282 / test		
@@ -151,19 +157,18 @@ public class MainActivity extends Activity {
 				{
 					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(MainActivity.this,StudentPanel.class);
-//					intent.putExtra("BACKLOGIN", "BACKEND LOGIN IS " + response.get("Backend_Login").toString());
-					intent.putExtra("USER_ID", session.getUcid());
-					intent.putExtra("STUDENT_JSON", STUDENT_JSON);
+					intent.putExtra("USER_NAME", response.get("userName").toString());
+					intent.putExtra("USER_ID", response.get("userID").toString());
+					intent.putExtra("STUDENT_JSON", response.get("exams").toString());
 					MainActivity.this.startActivity(intent);
 				}
 				else if(response.get("Backend_Login").toString().equals("Success") && response.get("userType").toString().equals("Teacher"))
 				{
 					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(MainActivity.this,InstructorPanel.class);
-//					intent.putExtra("BACKLOGIN", BACKLOGIN + response.get("Backend_Login").toString());
-					intent.putExtra("USER_ID", session.getUcid());
-//					intent.putExtra("INSTRUCTOR_JSON", INSTRUCTOR_JSON);
-					intent.putExtra("INSTRUCTOR_JSON", "SOMETHING SOMETHING DARK SIDE");
+					intent.putExtra("USER_NAME", response.get("userName").toString());
+					intent.putExtra("USER_ID", response.get("userID").toString());
+					intent.putExtra("INSTRUCTOR_JSON", response.get("exams").toString());
 					MainActivity.this.startActivity(intent);
 				}
 				else

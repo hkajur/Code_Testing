@@ -21,9 +21,22 @@ public class StudentPanel extends ActionBarActivity{
 	 protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
-        
+        		
         Intent intent = getIntent();
-		String back = intent.getStringExtra(MainActivity.BACKLOGIN);
+
+		Bundle argsFrag1 = new Bundle();
+        argsFrag1.putString("STUDENT_JSON", intent.getStringExtra("STUDENT_JSON"));
+                    
+        Bundle argsFrag2 = new Bundle();
+        argsFrag2.putString("STUDENT_JSON", intent.getStringExtra("STUDENT_JSON"));
+
+        Bundle argsFrag3 = new Bundle();
+        argsFrag3.putString("USER_NAME", intent.getStringExtra("USER_NAME"));
+        argsFrag3.putString("USER_ID", intent.getStringExtra("USER_ID"));
+
+        fragmentTabLEFT.setArguments(argsFrag1);
+        fragmentTabMIDDLE.setArguments(argsFrag2);
+        fragmentTabRIGHT.setArguments(argsFrag3);
         
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

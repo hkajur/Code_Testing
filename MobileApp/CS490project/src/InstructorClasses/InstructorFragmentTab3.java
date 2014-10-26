@@ -9,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 public class InstructorFragmentTab3 extends Fragment {
 	
@@ -23,8 +21,10 @@ public class InstructorFragmentTab3 extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_instructor_tab3, container, false);
 
     	Bundle args = getArguments();
-    	final String user_id = args.getString("USER_ID");
-    	final String instructor_JSON = args.getString("INSTRUCTOR_JSON");
+    	
+        final String user_id = args.getString("USER_ID");
+    	final String user_name = args.getString("USER_NAME");
+    	
 		choice = (Spinner) view.findViewById(R.id.SpinnerFeedbackType);
 		
 		choice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -37,12 +37,11 @@ public class InstructorFragmentTab3 extends Fragment {
 		    	MultipleChoiceQuestions MCfragment = new MultipleChoiceQuestions();
 		    	TrueFalseQuestions TFfragment = new TrueFalseQuestions();
 		    	ShortAnswerQuestions SHfragment = new ShortAnswerQuestions();
-		    	EmptyForm empty = new EmptyForm(); 
-
-		    	
+		    	EmptyForm empty = new EmptyForm(); 		    	
 		    	
 				Bundle args = new Bundle();
-				args.putString("USER_ID", user_id);
+				args.putString("USER_ID", user_id);				
+				
 	            
 	            MCfragment.setArguments(args);
 	            TFfragment.setArguments(args);

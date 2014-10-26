@@ -20,8 +20,9 @@ public class MyTabListener implements ActionBar.TabListener {
 
 	@Override
 	public void onTabUnselected(android.app.ActionBar.Tab tab,FragmentTransaction ft) {
-		ft.remove(fragment);		
+		ft.remove(fragment);
 	}
+	
 
 	@Override
 	public void onTabReselected(android.app.ActionBar.Tab tab,FragmentTransaction ft) {

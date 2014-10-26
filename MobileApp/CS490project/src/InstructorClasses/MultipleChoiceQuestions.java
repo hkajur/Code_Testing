@@ -7,6 +7,8 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import NetworkClasses.AuthenticatorConnection;
+import NetworkClasses.loginFunctions;
 import android.app.Fragment;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -21,9 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.example.cs490project.AuthenticatorConnection;
 import com.example.cs490project.R;
-import com.example.cs490project.loginFunctions;
 
 
 public class MultipleChoiceQuestions extends Fragment{
@@ -125,18 +125,21 @@ public class MultipleChoiceQuestions extends Fragment{
 		@Override
 		protected void onPostExecute(String result) 
 		{
-//			JSONObject response;
+			JSONObject response;
 			Toast.makeText(getActivity().getBaseContext(), result.toString(), Toast.LENGTH_LONG).show();
-//			try {
-//				response = new JSONObject(result);
+			try {
+				response = new JSONObject(result);
 				
-//				if(response.get("Backend_Login").toString().equals("Success")){
-//					Toast.makeText(getActivity().getBaseContext(), "Question added", Toast.LENGTH_SHORT).show();
-//				}
-//			} catch (JSONException e) {
-//				Toast.makeText(getActivity().getBaseContext(), "Server has not responded. Try again.", Toast.LENGTH_SHORT).show();
-//				e.printStackTrace();
-//			}
+				if(response.get("questionCreated").toString().equals("Success")){
+					Toast.makeText(getActivity().getBaseContext(), "Question added", Toast.LENGTH_SHORT).show();
+				}
+				else{
+					Toast.makeText(getActivity().getBaseContext(), response.get("Error").toString(), Toast.LENGTH_SHORT).show();
+				}
+			} catch (JSONException e) {
+				Toast.makeText(getActivity().getBaseContext(), "Server has not responded. Try again.", Toast.LENGTH_SHORT).show();
+				e.printStackTrace();
+			}
 		}
 //############################################################################################################################################
 	    private String downloadUrl(String myurl,String token) throws IOException {
@@ -145,6 +148,7 @@ public class MultipleChoiceQuestions extends Fragment{
 		    //PARAMETERS TO SEND
 			Map<String, String> params = new HashMap<String, String>();				   
 			params.put("user", user_id);
+			params.put("token", token);
 			params.put("tag", "MultipleChoiceQuestionInsert");
 			params.put("question_type", "MultipleChoice");
 

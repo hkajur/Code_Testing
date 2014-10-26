@@ -15,9 +15,14 @@ public class StudentFragmentTab3 extends Fragment {
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.tab, container, false);
-		TextView textview = (TextView) view.findViewById(R.id.tabtextview);
-		textview.setText("Placeholder3");
+		View view = inflater.inflate(R.layout.fragment_student_tab3, container, false);
+		
+		Bundle args = getArguments();
+		
+		TextView name = (TextView) view.findViewById(R.id.textView1);
+		
+		name.setText(args.get("USER_NAME").toString());
+		
 		return view;
 	}
 }
