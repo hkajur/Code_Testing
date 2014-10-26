@@ -157,7 +157,9 @@
             $result = mysql_query($sql_query);
 
             if(!$result){
-                die(json_encode(array("Error" => "Invalid result")));
+                    die(json_encode(array(
+                            "Backend_Login" => "Failed",
+                            "Error" => "Invalid result")));
             }     
 
             $index = 0;

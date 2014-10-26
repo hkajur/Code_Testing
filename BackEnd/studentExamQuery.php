@@ -102,6 +102,10 @@
 
         $exam = new examInfo($examID, $examName); 
 
+        if(mysql_num_rows($result) == 0){
+            $exam->examID = null;    
+        }
+
         $index = 0;
 
         while($row = mysql_fetch_assoc($result)){
