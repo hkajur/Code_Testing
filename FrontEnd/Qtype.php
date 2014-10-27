@@ -2,25 +2,36 @@
 	session_start();
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
             
-		$username = test_input($_POST["username"]);
-		$password = test_input($_POST["passwd"]);
+		//$num = count($_POST);
+		//echo $num;
+		
+		$type = $_POST["type"];
+		//echo $type;
+		
+		if ($type == 'MC'){
+			header ('Location: MCcreate.php');
+		} else if ($type == 'TF'){
+			header ('Location: TFcreate.php');
+		} else if ($type == 'FB'){
+			header ('Location: SAcreate.php');
+		}
+
+
+
+
+		//$arr = array('userID' => $userID, 'examID' => $examID, 'questionAnswer' => array('questionID' => 1, 'userAnswer'=> 3)); 	
+		//$json = json_encode($arr);
+
+		//echo $_POST;
+		//echo $ans;
+		
+		//$username = test_input($_POST["username"]);
+		//$password = test_input($_POST["passwd"]);
 
 		//$field = "username=" . urlencode($username) . "&password=" . urlencode($password);
-		$field = 'username='.$username.'&password='.$password;
-		$ch = curl_init();
-		
-		$url = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/login.php";
-
-		curl_setopt_array($ch, array(
-			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_URL => $url,
-			CURLOPT_USERAGENT => 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101206 Ubuntu/10.10 (maverick) Firefox/3.6.13',
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_POST => 1,
-			CURLOPT_POSTFIELDS => $field
-		));
 		//CURLOPT_HEADER => 1, //for server heading information purposes
 
+		/*
 		$resp = curl_exec($ch);
 		$result = json_decode($resp, true);
 
@@ -52,6 +63,7 @@
 		
 
 		//test for database username
+		/*
 		$_SESSION["exams"] = $result;
 		
 
@@ -68,7 +80,7 @@
 			$_SESSION["usertype"] = "INVALID";
 			header ('Location: index.php');
 		}
-		
+		*/
 
 	} else {
 		die("ERROR: Page must be posted");

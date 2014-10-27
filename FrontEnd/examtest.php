@@ -41,7 +41,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 			echo ", you are now logged in with your UCID";
 		} else if ($_SESSION["usertype"] == "USERNAME") {
 			echo "Welcome " . $_SESSION["user"];
-			echo " (logged in)";
+			echo ", you are now logged in with your Username";
 		}
 	?>
     
@@ -56,7 +56,17 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <!-- Start of Main Content -->
 <div id="main">
 <div id="content">
-
+<h3>Exam 1</h3><br>
+<div id="question1">
+	<p>1) How many bits in a Byte?</p>
+	
+	<form action="">
+	A. <input type="radio" value="2bits"> 2 bits<br>
+	B. <input type="radio" value="4bits"> 4 bits<br>
+	C. <input type="radio" value="6bits"> 6 bits<br>
+	D. <input type="radio" value="8bits"> 8 bits<br>
+	</form>
+</div>
 </div> 
 </div> <!-- End of Main Content -->
 

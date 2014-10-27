@@ -2,8 +2,30 @@
 	session_start();
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
             
-		$username = test_input($_POST["username"]);
-		$password = test_input($_POST["passwd"]);
+		//$num = count($_POST);
+		//echo $num;
+		$examID = $_SESSION["examID"];
+		$userID = 5;
+		//$arr = array('userID' => $userID, 'examID' => $examID, 'questionAnswer' => array('questionID' => 1, 'userAnswer'=> 3)); 	
+		//$json = json_encode($arr);
+
+		//echo $_POST;
+		$json = json_encode($_POST);
+		foreach ($_POST as $p) {
+			echo $p;
+		}
+		$data = array(
+			'userID' => "5",
+			'examID' => $examID,
+			'questionAnswer' => $_POST);
+		$jsonn = json_encode($data);
+		echo $jsonn;
+
+		//$ans = $_POST['answer1'];
+		//echo $ans;
+		
+		//$username = test_input($_POST["username"]);
+		//$password = test_input($_POST["passwd"]);
 
 		//$field = "username=" . urlencode($username) . "&password=" . urlencode($password);
 		$field = 'username='.$username.'&password='.$password;
@@ -21,6 +43,7 @@
 		));
 		//CURLOPT_HEADER => 1, //for server heading information purposes
 
+		/*
 		$resp = curl_exec($ch);
 		$result = json_decode($resp, true);
 
@@ -52,6 +75,7 @@
 		
 
 		//test for database username
+		/*
 		$_SESSION["exams"] = $result;
 		
 
@@ -68,7 +92,7 @@
 			$_SESSION["usertype"] = "INVALID";
 			header ('Location: index.php');
 		}
-		
+		*/
 
 	} else {
 		die("ERROR: Page must be posted");
