@@ -54,8 +54,9 @@
 		//test for database username
 		$_SESSION["exams"] = $result;
 		
-
 		$_SESSION["user"] = $username;
+		$_SESSION["userpid"] = $result["userID"];
+		
 		if ($result['Backend_Login'] == "Success") {
 			$_SESSION["usertype"] = "USERNAME";
 			if ($_SESSION["user"] == "student5") {

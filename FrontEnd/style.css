@@ -136,6 +136,14 @@ ul {
     height: 100%;
 }
 
+#wrong p {
+	color: red;
+}
+
+#right p {
+	color: green;
+}
+
 a:link {
 	color: #008CBA;
 }

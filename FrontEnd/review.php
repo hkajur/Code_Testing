@@ -61,19 +61,19 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
 <div id="sPanel">
 	<h1>Graded Exams</h1><br>
-	<p>Select an Exam to Review</p><br><br>
 	
 	<?php
 
 	
-		
+		$examID = $_GET['id'];
 		$userID = $_SESSION["userpid"];
-		 $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentGradedExams.php"; 
+		 $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentCheckGradedExam.php"; 
 		 $ch = curl_init($URL);
 
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
-                            array("userID" => $userID)));
+                            array("userID" => $userID,
+			    		"examID" => $examID)));
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -82,15 +82,30 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
         if(curl_errno($ch)){
             die(json_encode(array("Error" => curl_error($ch))));
         }
-
 	$result = json_decode($page, true);
 	
 		//echo $listExam[exams][0][examName];
 		//$num = 1;
-		foreach($result[exams] as $p) {
-			
-			echo ' ' . '- ' . "<a href='review.php?id=$p[examID]'>$p[examName]</a> Score: $p[grade]" . "<br><br>";
 
+		foreach($result[exam] as $p) {
+			
+
+			echo "<p>Question: $p[question]</p>";
+			echo "<p>Your Answer: $p[studentAnswer]</p>";
+			echo "<p>Correct Answer: $p[correctAnswer]</p>";
+
+			//echo "<div id=\"wrong\">";
+			if($p["userCorrect"] == "True"){
+				echo "<div id=\"right\"><p>You are correct</p></div>";
+			} 
+			else {
+				echo "<div id=\"wrong\"><p>You are incorrect</p></div>";
+			}
+			//echo "</div>";
+
+			if(!empty($p["comment"]) && !is_null($p["comment"])){
+			echo "<p>Feedback: $p[comment]</p>";
+			}
 
 		}
 	?>

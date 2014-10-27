@@ -98,6 +98,12 @@ $id = $_GET['id'];
 		foreach($studentResult[questions] as $p) {
 			echo $p[question]."<br>";
 			if ($p[question_type] == "MC") {
+				/*echo "<input type=\"radio\" name=\"answer$p[questionID]\" value=\"$p[questionID]&$p[choices][0][choice]\"> " . ' ' . $p[choices][0][choice] . "<br>";
+				echo "<input type=\"radio\" name=\"answer$p[questionID]\" value=\"$p[questionID]&$p[choices][1][choice]\"> " . ' ' . $p[choices][1][choice] . "<br>";
+				echo "<input type=\"radio\" name=\"answer$p[questionID]\" value=\"$p[questionID]&$p[choices][2][choice]\"> " . ' ' . $p[choices][2][choice] .
+				"<br>"; 
+				echo "<input type=\"radio\" name=\"answer$p[questionID]\" value=\"$p[questionID]&$p[choices][3][choice]\"> " . ' ' .
+				$p[choices][3][choice] . "<br>";*/
 				echo "<input type='radio' name='answer$p[questionID]' value='1'>".' '.$p[choices][0][choice]."<br>";
 				echo "<input type='radio' name='answer$p[questionID]' value='2'>".' '.$p[choices][1][choice]."<br>";
 				echo "<input type='radio' name='answer$p[questionID]' value='3'>".' '.$p[choices][2][choice]."<br>";

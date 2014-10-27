@@ -6,93 +6,75 @@
 		//echo $num;
 		$examID = $_SESSION["examID"];
 		$userID = 5;
-		//$arr = array('userID' => $userID, 'examID' => $examID, 'questionAnswer' => array('questionID' => 1, 'userAnswer'=> 3)); 	
-		//$json = json_encode($arr);
+		$answer = $_POST["answer"];
 
-		//echo $_POST;
-		$json = json_encode($_POST);
-		foreach ($_POST as $p) {
-			echo $p;
+		$finalArray = array("examID" => $examID,
+				"userID" => $userID,
+				"questionAnswer" => array());
+			
+		$index = 0;
+		foreach($_POST as $key => $val){
+			$questionID = str_replace("answer", "", $key);
+			$choiceID = $val;
+
+
+        		$postfields = array("questionID" => $questionID,
+        		                "choiceID" => $choiceID);
+
+        		$ch = curl_init();
+
+        		$URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/getChoiceQuestion.php";
+
+        		curl_setopt($ch, CURLOPT_URL, $URL);
+        		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        		curl_setopt($ch, CURLOPT_POST, count($postfields));
+        		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+
+        		$page = curl_exec($ch);
+
+        		if(curl_errno($ch)){
+        		    die(json_encode(array("Error" => curl_error($ch))));
+        		}
+
+			if(empty($page))
+				$userAnswer = $val;
+			else 
+				$userAnswer = $page;
+
+			$assocArray = array("questionID" => $questionID,
+					"userAnswer" => $userAnswer);
+
+			$finalArray["questionAnswer"][$index] = $assocArray;
+			$index++;
 		}
-		$data = array(
-			'userID' => "5",
-			'examID' => $examID,
-			'questionAnswer' => $_POST);
-		$jsonn = json_encode($data);
-		echo $jsonn;
 
-		//$ans = $_POST['answer1'];
-		//echo $ans;
+		$json = json_encode($finalArray);
 		
-		//$username = test_input($_POST["username"]);
-		//$password = test_input($_POST["passwd"]);
+        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentSubmit.php";
 
-		//$field = "username=" . urlencode($username) . "&password=" . urlencode($password);
-		$field = 'username='.$username.'&password='.$password;
-		$ch = curl_init();
-		
-		$url = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/login.php";
+        $ch = curl_init($URL);
 
-		curl_setopt_array($ch, array(
-			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_URL => $url,
-			CURLOPT_USERAGENT => 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101206 Ubuntu/10.10 (maverick) Firefox/3.6.13',
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_POST => 1,
-			CURLOPT_POSTFIELDS => $field
-		));
-		//CURLOPT_HEADER => 1, //for server heading information purposes
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Content-Length: ' . strlen($json)));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-		/*
-		$resp = curl_exec($ch);
-		$result = json_decode($resp, true);
+        $page = curl_exec($ch);
 
-		if(curl_errno($ch)){
-			echo "Request Error" . curl_error($ch);
-			exit;
-		}
-		
-		curl_close($ch);
+        if(curl_errno($ch)){
+            die(json_encode(array("Error" => curl_error($ch))));
+        }
+	
+	$json = json_decode($page, true);
 
-		//for testing curl and json results
-		//echo $resp;
-		//echo $result['NJIT_Login'];
-		//echo $result['Backend_Login'];
-		//echo $result['userID'];
-		//echo $result['userType'];
-		//echo $result['username'];
-		//echo $result['exams'];
-		/*
-		foreach($result[exams] as $p) {
-			echo 'examID: ' . $p[examID] . '
-			name: ' . $p[examName] . '
-			taken: ' . $p[examTaken];
-		}*/
-		//$_SESSION["user"] = $username;
-                //if($result['NJIT_Login'] == "Success") {
-		//	$_SESSION["usertype"] = "UCID";
-		//	header ('Location: login_success.php');
-		
+	if($json["examSubmit"] == "Success")
+		header("Location: student.php");
+	else
+		header("Location: exam.php");
 
-		//test for database username
-		/*
-		$_SESSION["exams"] = $result;
-		
-
-		$_SESSION["user"] = $username;
-		if ($result['Backend_Login'] == "Success") {
-			$_SESSION["usertype"] = "USERNAME";
-			if ($_SESSION["user"] == "student5") {
-				header ('Location: student.php');
-			} else if ($_SESSION["user"] == "professor1") {
-				header ('Location: instructor.php');
-			}
-        	} else {
-            		$_SESSION["user"] = "";
-			$_SESSION["usertype"] = "INVALID";
-			header ('Location: index.php');
-		}
-		*/
+	echo $page;
 
 	} else {
 		die("ERROR: Page must be posted");

@@ -69,7 +69,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 		//$num = 1;
 		foreach($listExam[exams] as $p) {
 			
-			echo $p[examID] . ' ' . ': ' . "<a href='exam.php?id=$p[examID]'>$p[examName]</a>" . "<br><br>";
+			echo ' ' . '- ' . "<a href='exam.php?id=$p[examID]'>$p[examName]</a>" . "<br><br>";
 
 
 		}

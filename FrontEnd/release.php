@@ -21,77 +21,65 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
 <!-- Start of Header -->
 <div id="header">
-    
+
         <!-- Start of Logo -->
         <div id="logos">
-        	<a href="student.php"><p>Code Testing</p></a>
+                <a href="instructor.php"><p>Code Testing</p></a>
         </div><!-- End of Logo -->
-	
-	<div id="nav">
-		<ul id="navitems">
-			<li><a href="takeEx.php">Take Exam</a></li>
-			<li><a href="graded.php">Graded Exam</a></li>
-		</ul>
-	
-	</div>
-	        <div id="logout">
+
+        <div id="nav">
+                <ul id="navitems">
+                        <li><a href="createQ.php">Create Questions</a></li>
+                        <li><a href="createExam.php">Create Exam</a></li>
+                        <li><a href="release.php">Release Grades</a></li>
+                </ul>
+
+        </div>
+                <div id="logout">
                 <a href="logout.php"><input type="submit" value="Log out" /></a>
         </div>
-	
-     	<!-- Start of Welcome Div -->
-    	<div id="welcome">
 
-	<?php 
-		if ($_SESSION["usertype"] == "UCID") {
-			echo "Welcome " . $_SESSION["user"];
-			echo ", you are now logged in with your UCID";
-		} else if ($_SESSION["usertype"] == "USERNAME") {
-			echo "Welcome " . $_SESSION["user"];
-			echo " (logged in)";
-		}
-	?>
+        <!-- Start of Welcome Div -->
+        <div id="welcome">
 
-	</div> <!-- End of Welcome Div -->
+        <?php
+                if ($_SESSION["usertype"] == "UCID") {
+                        echo "Welcome " . $_SESSION["user"];
+                        echo ", you are now logged in with your UCID";
+                } else if ($_SESSION["usertype"] == "USERNAME") {
+                        echo "Welcome " . $_SESSION["user"];
+                        echo " (logged in)";
+                }
+        ?>
+
+        </div> <!-- End of Welcome Div -->
 
 </div> <!-- End of Header -->
+
 
 <!-- Start of Main Content -->
 <div id="main">
 <div id="content">
 
 <div id="sPanel">
-	<h1>Graded Exams</h1><br>
-	<p>Select an Exam to Review</p><br><br>
+	<h1>Exams to Release</h1><br>
+	<p>Please select an exam to release</p><br>
 	
 	<?php
-
-	
-		
-		$userID = $_SESSION["userpid"];
-		 $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentGradedExams.php"; 
-		 $ch = curl_init($URL);
-
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
-                            array("userID" => $userID)));
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $page = curl_exec($ch);
-
-        if(curl_errno($ch)){
-            die(json_encode(array("Error" => curl_error($ch))));
-        }
-
-	$result = json_decode($page, true);
-	
+		$listExam = $_SESSION["exams"];
 		//echo $listExam[exams][0][examName];
 		//$num = 1;
-		foreach($result[exams] as $p) {
-			
-			echo ' ' . '- ' . "<a href='review.php?id=$p[examID]'>$p[examName]</a> Score: $p[grade]" . "<br><br>";
+		foreach($listExam[exams] as $p) {
+	
+			if($p[examReleased] == "False"){
+				echo ' ' . '- ' . "<a href='releaseExam.php?id=$p[examID]'>$p[examName]</a> ";
+				echo $p[examReleased];
+			} else {
+				echo ' ' . '- ' . "<a>$p[examName] </a>";
+				echo $p[examReleased];
+			}
 
-
+			echo "<br><br>";
 		}
 	?>
 </div>
