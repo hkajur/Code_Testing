@@ -1,14 +1,16 @@
 <?php
     
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if($_SERVER["REQUEST_METHOD"] == "POST" || $_SERVER["REQUEST_METHOD"] == "GET"){
 
-        $userID = $_POST["userID"];
+        $questionID = $_POST["questionID"];
+        $choiceID = $_POST["choiceID"];
 
-        $postfields = array("userID" => $userID);
+        $postfields = array("questionID" => $questionID,
+                        "choiceID" => $choiceID);
 
         $ch = curl_init();
 
-        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/allQuestionQuery.php";
+        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/getChoiceQuestion.php";
 
         curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -22,6 +24,8 @@
             die(json_encode(array("Error" => curl_error($ch))));
         }
 
+        if($page == "Nothing")
+            die("");
         echo $page;
     
     } else {

@@ -2,6 +2,7 @@
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
+        $userID = 11;
         $json = file_get_contents('php://input'); 
         $obj = json_decode($json, true);
 
@@ -42,7 +43,18 @@
                         "Error" => "Invalid result")));
             }
         }
-        
+
+        $query = "INSERT INTO TeacherExam (UserID, ExamID, ExamReleased) " .
+                "VALUES ('" . $userID . "', '" . $examID . "', 'False')";
+
+        $result = mysql_query($query);
+            if(!$result){
+                    die(json_encode(array(
+                        "examCreated" => "Failed",
+                        "Error" => "Invalid result")));
+            }
+
+
         echo json_encode(array("examCreated" => "Success"));
 
         mysql_close($con);
