@@ -98,6 +98,12 @@ public class ShortAnswerQuestions extends Fragment{
 		return view;
 	}
 	
+	@Override
+	public void onStop() {
+	    super.onStop();
+	} 
+
+	
 	public class HttpAsyncTask extends AsyncTask<String, Void, String> {
 	    @Override
     	protected String doInBackground(String... urls) 

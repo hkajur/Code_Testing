@@ -1,39 +1,35 @@
 package InstructorClasses;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.example.cs490project.R;
 
-import com.example.cs490project.R.id;
-import com.example.cs490project.R.layout;
-
-import NetworkClasses.AuthenticatorConnection;
-import NetworkClasses.PostAsync;
+import com.example.cs490project.QuestionObject;
 import NetworkClasses.loginFunctions;
 import android.app.Fragment;
-import android.content.Context;
-import android.graphics.Typeface;
-import android.os.AsyncTask;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 	
@@ -42,54 +38,66 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 	Button submit;
 	ArrayAdapter<String> adapter;
 	
-	String user_id;
+	String questions_for_JSON;
+	private static ArrayList<QuestionObject> questions = new ArrayList<QuestionObject>();
 	
 	public static loginFunctions session = new loginFunctions();
 
+	final ArrayList<String> list = new ArrayList<String>();
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
 	{
-		Toast.makeText(getActivity().getBaseContext(), "SWIPE QUESTION LEFT TO SELECT", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getActivity().getBaseContext(), "SWIPE QUESTION LEFT TO SELECT", Toast.LENGTH_SHORT).show();
 		
 		View view = inflater.inflate(R.layout.fragment_instructor_tab2, container, false);
 
 		
     	Bundle args = getArguments();
-    	user_id = args.getString("USER_ID");
+    	questions_for_JSON = args.getString("QUESTIONS");
 
 		//myurl,user_id, tag
-		AsyncTask<String, Void, String> response = new PostAsync().execute(session.getURL(),user_id,"getExamQuestions");
 		try {
-			String iight = response.get();
+			JSONObject tempJSON = new JSONObject(questions_for_JSON);
+			questions_for_JSON = tempJSON.get("questions").toString();
+			JSONArray result = new JSONArray(questions_for_JSON);
+			for(int i = 0; i < result.length(); i++)
+			{
+				QuestionObject temp_question = new QuestionObject();
+				temp_question.setId(result.getJSONObject(i).getString("questionID"));
+				temp_question.setQuestion(result.getJSONObject(i).getString("question"));
+				temp_question.setType(result.getJSONObject(i).getString("questionType"));
+				
+				questions.add(temp_question);
+			}
+
 		}
-		catch (InterruptedException e) 
-		{
-			Toast.makeText(getActivity().getBaseContext(), "Interruption Occured. Try again.", Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-		}
-		catch (ExecutionException e) 
-		{
-			Toast.makeText(getActivity().getBaseContext(), "Execution interrupted.Try again.", Toast.LENGTH_SHORT).show();
+		catch (JSONException e) {
+			Toast.makeText(getActivity(), "Error parsing JSON", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
     	
 		layout = (LinearLayout) view;		
 		submit = (Button) view.findViewById(R.id.button1);		
 		listview = (ListView) view.findViewById(R.id.listView1);
-	    String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-		        "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-		        "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-		        "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-		        "Android", "iPhone", "WindowsMobile" };
 
-	    final ArrayList<String> list = new ArrayList<String>();
-	    for (int i = 0; i < values.length; ++i) {
-	      list.add(values[i]);
+	    
+	    for (int i = 0; i < questions.size(); ++i) {
+	      list.add(questions.get(i).getQuestion());
 	    }
 	    adapter = new ArrayAdapter(getActivity().getBaseContext(),R.layout.simple_list_item, list);
 
 	    listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	    listview.setAdapter(adapter);
 
+    	listview.setOnItemClickListener(new OnItemClickListener() {
+    		public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
+    	    {       	    	
+    	    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+    	    	startActivity(browserIntent);
+    	    }
+    	});
+
+	    
 	    
 		submit.setOnClickListener(this);
 		
@@ -97,6 +105,29 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 		
 		return view;
 	}
+	
+	@Override
+	public void onStop() {
+	    super.onStop();
+	} 
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+	}
+	
+	@Override
+	public void onDestroyView(){
+		super.onDestroyView();
+	}
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*
 	public void onClick(View v) {
 		Toast.makeText(getActivity().getBaseContext(), "BOOP", Toast.LENGTH_SHORT).show();
 		SparseBooleanArray checked = listview.getCheckedItemPositions();
@@ -125,6 +156,6 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 
 		// start the ResultActivity
 		startActivity(intent);
-		*/
-	}	
+	}			*/
 }
+

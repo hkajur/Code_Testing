@@ -60,20 +60,32 @@ public class InstructorFragmentTab3 extends Fragment {
 		    		fragmentTransaction.replace(R.id.fragmentContainer, SHfragment);
 		    	}
 		    	else{
-		    		fragmentTransaction.replace(R.id.fragmentContainer,empty);
+		    		fragmentTransaction.replace(R.id.fragmentContainer,null);
 		    	}
 		    	fragmentTransaction.commit();
 		    	
 		    }
 		    public void onNothingSelected(AdapterView<?> parent) {
-		    	fragmentManager = getFragmentManager();
-		    	fragmentTransaction = fragmentManager.beginTransaction();
-		    	fragmentTransaction.remove(getParentFragment());
+		    	fragmentTransaction.replace(R.id.fragmentContainer,null);
 		    	fragmentTransaction.commit();
 		    }
 		});
 		return view;
 	}	
+	@Override
+	public void onStop() {
+	    super.onStop();
+	} 
+
+	@Override
+	public void onPause(){
+		super.onPause();
+	}
+	
+	@Override
+	public void onDestroyView(){
+		super.onDestroyView();
+	}
 	
 }
 

@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class CurrentExamAdapter extends BaseAdapter{
+public class CurrentQuestionAdapter extends BaseAdapter{
 
-	private ArrayList<ExamObject> data;
+	private ArrayList<QuestionObject> data;
     Context c;
     
-    public CurrentExamAdapter (ArrayList<ExamObject> datain, Context cin){
+    public CurrentQuestionAdapter (ArrayList<QuestionObject> datain, Context cin){
         data = datain;
         c = cin;
     }
@@ -30,25 +30,31 @@ public class CurrentExamAdapter extends BaseAdapter{
     public long getItemId(int position) {
         return position;
     }
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
    
+    /*
     public View getView(int position, View convertView, ViewGroup parent) {
     	View v = convertView;
     	if (v == null)
     	{
     		LayoutInflater vi = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.list_current_exams, null);
+            v = vi.inflate(R.layout.simple_list_item, null);
          }
  
-    	TextView examName = (TextView)v.findViewById(R.id.EXAMNAME);
-    	TextView examStatus = (TextView)v.findViewById(R.id.status);
+    	TextView questionName = (TextView)v.findViewById(R.id.QuestionsPlace);
  
     	if(data.get(position) != null){
-    		ExamObject msg = data.get(position);
-    		examName.setText(msg.EXAM_NAME);
-        	examStatus.setText(msg.EXAM_STATUS);
+    		QuestionObject msg = data.get(position);
+    		questionName.setText(msg.);
     	}
     	                             
     	
         return v;
     }
+*/	
 }
