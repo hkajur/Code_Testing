@@ -18,7 +18,7 @@
         $ch = curl_init();
 
         //$URL = "http://web.njit.edu/~caj9/Code_Testing/BackEnd/login.php";
-        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/login.php";
+        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/login.php";
 
         $postfields = array(
                       'username' => urlencode($username),

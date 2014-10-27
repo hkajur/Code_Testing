@@ -59,6 +59,7 @@
                         'wrongAnswer1' => $wrongAnswer1,
                         'wrongReason1' => $wrongReason1);
                 break;
+
             case "ShortAnswer":
                 
                 $question = rec_input($_POST["question"]);
@@ -71,6 +72,27 @@
 
                 break;
 
+            case "Programming":
+                echo "Inside progaramming question";
+                $question = rec_input($_POST["question"]);
+                $input1 = rec_input($_POST["input1"]);
+                $input2 = rec_input($_POST["input2"]);
+                $input3 = rec_input($_POST["input3"]);
+                $output1 = rec_input($_POST["output1"]);
+                $output2 = rec_input($_POST["output2"]);
+                $output3 = rec_input($_POST["output3"]);
+
+                $postfields = array(
+                        'question_type' => $question_type,
+                        'question' => $question,
+                        'input1' => $input1,
+                        'input2' => $input2,
+                        'input3' => $input3,
+                        'output1' => $output1,
+                        'output2' => $output2,
+                        'output3' => $output3);
+            
+                break;
             default:
                 break;
 
@@ -78,7 +100,7 @@
 
         $ch = curl_init();
 
-        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/insertQuestionQuery.php";
+        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/insertQuestionQuery.php";
 
         curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -90,7 +112,7 @@
 
         if(curl_errno($ch)){
                 die(json_encode(array(
-                        "questionCreated" : "Failed",
+                        "questionCreated" => "Failed",
                         "Error" => curl_error($ch))));
         }
 
@@ -98,7 +120,7 @@
     
     } else {
             die(json_encode(array(
-                    "questionCreated" : "Failed",
+                    "questionCreated" => "Failed",
                     "Error" => "Invalid post")));
     }
 ?>
