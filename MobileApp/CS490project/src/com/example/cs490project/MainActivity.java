@@ -50,9 +50,9 @@ public class MainActivity extends Activity {
 		password = (EditText)findViewById(R.id.passText);
 		
 //		username.setText("student2");
-		username.setText("professor1");
+//		username.setText("professor1");
 //		password.setText("!student2");
-		password.setText("!professor1");
+//		password.setText("!professor1");
 		
 		//DEBUGGING ONLY
 		//Checks network connectivity		

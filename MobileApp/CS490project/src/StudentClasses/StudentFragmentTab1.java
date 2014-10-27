@@ -109,7 +109,7 @@ public class StudentFragmentTab1 extends Fragment {
 				startActivity(intent);
 */
     	    	
-    	    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+    	    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://web.njit.edu/~aj283/Code_Testing/FrontEnd/exam.php?id=1"));
     	    	startActivity(browserIntent);
     	    }
     	});

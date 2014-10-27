@@ -24,12 +24,4 @@
         android:layout_weight="0.94" >
     </ListView>
 
-    <Button
-        android:id="@+id/button1"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Submit" />
-
 </LinearLayout>
