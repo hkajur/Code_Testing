@@ -66,6 +66,15 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
         callingCurl($url,$field);
 
     }
+    else if($tag == 'conductExams' && $token == "0xACA021")
+    {
+        $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentExams.php';
+        $field = 'userID='.cleanData($_REQUEST['userID']).
+                    '&examID='.cleanData($_REQUEST['examID']);
+        callingCurl($url,$field);
+
+    }
+
     else 
     {
         echo "Invalid Request";

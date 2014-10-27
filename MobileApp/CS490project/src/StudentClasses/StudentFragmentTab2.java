@@ -3,10 +3,10 @@ package StudentClasses;
 import com.example.cs490project.R;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,13 +16,13 @@ import NetworkClasses.loginFunctions;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class StudentFragmentTab2 extends Fragment {
@@ -33,9 +33,9 @@ public class StudentFragmentTab2 extends Fragment {
 	String Student_JSON;
 	JSONArray examArray;
 	ExamObject exams;
-	ArrayList<ExamObject> list = new ArrayList<ExamObject>();	
-	AdapterView.AdapterContextMenuInfo info;	
+	private static ArrayList<ExamObject> list = new ArrayList<ExamObject>();	
 	public static loginFunctions session = new loginFunctions();
+	AdapterView.AdapterContextMenuInfo info;	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
 	{
@@ -43,9 +43,8 @@ public class StudentFragmentTab2 extends Fragment {
 
     	Bundle args = getArguments();
     	Student_JSON = args.getString("STUDENT_JSON");
+    	
 
-    	TextView text = (TextView) view.findViewById(R.id.textView1);
-    	text.setText(Student_JSON);
     	
     	try 
     	{
@@ -63,18 +62,9 @@ public class StudentFragmentTab2 extends Fragment {
 			layout = (LinearLayout) view;				
 			listview = (ListView) view.findViewById(R.id.listView1);
 			
-			if(list.size() != 0){
-				listview.setAdapter(new CurrentExamAdapter(list, getActivity().getBaseContext()));
-			}
-			else{
-				TextView tv = new TextView(container.getContext());
-	            tv.setBackgroundResource(R.drawable.exam_background);
-	            tv.setPadding(15, 10, 10, 15);
-	            tv.setTextSize(15);
-	            tv.setText("No Past Exams");
-	            tv.setGravity(Gravity.CENTER);
-	            layout.addView(tv);        	
-			}
+			listview.setAdapter(new CurrentExamAdapter(list, getActivity().getBaseContext()));
+			
+
 		    
 		    registerForContextMenu(listview);		    
 		    listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -85,7 +75,36 @@ public class StudentFragmentTab2 extends Fragment {
 			e.printStackTrace();
 		}
     	
+		if(list.size()!=0){
+			listview.setAdapter(new CurrentExamAdapter(list, getActivity().getBaseContext()));
+		}
+		else{
+			TextView tv = new TextView(container.getContext());
+            tv.setBackgroundResource(R.drawable.exam_background);
+            tv.setPadding(15, 10, 10, 15);
+            tv.setTextSize(15);
+            tv.setText("No Past Exams");
+            tv.setGravity(Gravity.CENTER);
+            layout.addView(tv);        	
+		}
+    	
+    	
 		return view;		
+	}
+	
+	@Override
+	public void onStop() {
+	    super.onStop();
+	} 
+
+	@Override
+	public void onPause(){
+		super.onPause();
+	}
+	
+	@Override
+	public void onDestroyView(){
+		super.onDestroyView();
 	}
 	
 	@Override

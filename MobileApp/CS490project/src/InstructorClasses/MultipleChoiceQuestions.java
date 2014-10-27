@@ -111,6 +111,12 @@ public class MultipleChoiceQuestions extends Fragment{
 		return view;
 	}//END onCreateView FUNCTION
 
+	@Override
+	public void onStop() {
+	    super.onStop();
+	} 
+
+	
 	public class HttpAsyncTask extends AsyncTask<String, Void, String> {
 	    @Override
     	protected String doInBackground(String... urls) 
