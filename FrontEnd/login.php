@@ -54,14 +54,14 @@
 		//test for database username
 		$_SESSION["exams"] = $result;
 		
+		$_SESSION["usertype"] = $result["userType"];
 		$_SESSION["user"] = $username;
 		$_SESSION["userpid"] = $result["userID"];
 		
 		if ($result['Backend_Login'] == "Success") {
-			$_SESSION["usertype"] = "USERNAME";
-			if ($_SESSION["user"] == "student5") {
+			if ($_SESSION["usertype"] == "Student") {
 				header ('Location: student.php');
-			} else if ($_SESSION["user"] == "professor1") {
+			} else if ($_SESSION["usertype"] == "Teacher") {
 				header ('Location: instructor.php');
 			}
         	} else {

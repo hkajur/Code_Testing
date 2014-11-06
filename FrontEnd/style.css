@@ -49,7 +49,7 @@ body {
 	color: #ebebeb;
 	font-family: Garamond, "Times New Roman", serif;
 	font-size: 34px;
-	font-weight: 600;
+	font-weight: 500;
 }
 
 #nav {
@@ -189,13 +189,16 @@ a:visited {
     padding-bottom: 20px;
     padding-top: 20px;
     width: 300px;
-    border: 2px solid white;
-    border-radius: 30px;
+    //background-color: #303030;
+    //border: 1px solid white;
+    //border-radius: 30px;
 }
 
 #login h2 {
+    color: #ebebeb;
     font-family: sans-serif;
-    font-weight: 100;
+    font-family: Garamond, "Times New Roman", serif;
+    font-weight: 300;
     margin-left: auto;
     margin-right: auto;
     text-align: center;

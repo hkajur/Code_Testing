@@ -1,6 +1,6 @@
 <?php session_start(); 
 	if(isset($_SESSION["user"]) && !empty($_SESSION["user"]))
-		header("Location: login_success.php");
+		header("Location: logout.php");
 	//echo $_SESIION["user"];
 	if(!isset($_SESSION["user"]))
 		$_SESSION["usertype"] = "";

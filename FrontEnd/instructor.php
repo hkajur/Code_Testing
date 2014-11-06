@@ -43,13 +43,8 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
         <div id="welcome">
 
         <?php
-                if ($_SESSION["usertype"] == "UCID") {
-                        echo "Welcome " . $_SESSION["user"];
-                        echo ", you are now logged in with your UCID";
-                } else if ($_SESSION["usertype"] == "USERNAME") {
                         echo "Welcome " . $_SESSION["user"];
                         echo " (logged in)";
-                }
         ?>
 
         </div> <!-- End of Welcome Div -->
