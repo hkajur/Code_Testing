@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.cs490project.MainActivity" >
+
+
+    
+    <Button
+        android:id="@+id/button1"
+        android:textColor="#FFFFFF"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonshape"        
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="92dp"
+        android:onClick="login"
+        android:text="@string/Login" />
+
+    <EditText
+        android:id="@+id/passText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="84dp"
+        android:background="@drawable/custom_edit_text"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingBottom="7dp"
+        android:paddingTop="7dp"
+        android:textColorHint="@color/black" />
+
+    <EditText
+        android:id="@+id/ucidText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/passText"
+        android:layout_alignLeft="@+id/passText"
+        android:layout_marginBottom="42dp"
+        android:background="@drawable/custom_edit_text"
+        android:ellipsize="start"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        android:paddingBottom="7dp"
+        android:paddingTop="7dp"
+        android:textColorHint="@color/black" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/MCQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/custom_edit_text"
+        android:ems="10"
+        android:hint="@string/QuestPlace"
+        android:inputType="textMultiLine"
+        android:paddingBottom="2dp"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingTop="2dp" />
+
+    <EditText
+        android:id="@+id/MCeditText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/MCeditText3"
+        android:layout_below="@+id/MCQuestion"
+        android:hint="@string/RightPlace" />
+
+    <EditText
+        android:id="@+id/MCeditText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MCeditText1"
+        android:layout_weight="1"
+        android:hint="@string/WrongPlace" />
+
+    <EditText
+        android:id="@+id/MCeditText5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MCeditText3"
+        android:layout_weight="1"
+        android:hint="@string/WrongPlace" />
+
+    <EditText
+        android:id="@+id/MCeditText7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/MCeditText5"
+        android:layout_weight="1"
+        android:hint="@string/WrongPlace" />
+
+    <EditText
+        android:id="@+id/MCeditText2"
+        android:layout_width="122dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/MCeditText3"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/MCeditText1"
+        android:layout_marginRight="26dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/ReasonPlace" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/MCeditText4"
+        android:layout_width="122dp"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/MCeditText3"
+        android:layout_alignLeft="@+id/MCeditText2"
+        android:layout_alignTop="@+id/MCeditText3"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/ReasonPlace" />
+
+    <EditText
+        android:id="@+id/MCeditText6"
+        android:layout_width="122dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/MCeditText7"
+        android:layout_alignLeft="@+id/MCeditText2"
+        android:layout_alignTop="@+id/MCeditText5"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/ReasonPlace" />
+
+    <EditText
+        android:id="@+id/MCeditText8"
+        android:layout_width="122dp"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/MCeditText7"
+        android:layout_alignLeft="@+id/MCeditText2"
+        android:layout_alignTop="@+id/MCeditText7"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/ReasonPlace" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:text="Clear"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/MCeditText7"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/buttonshape"
+        android:text="Submit"
+        android:textColor="#FFFFFF" />
+    
+</RelativeLayout>
