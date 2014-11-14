@@ -22,19 +22,25 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <!-- Start of Header -->
 <div id="header">
     
-    <!-- Start of Banner -->
-    <div id="banner">
-        
         <!-- Start of Logo -->
-        <div id="logo">
-        <a href="./index.php"><h1>Code Testing</h1></a>
+        <div id="logos">
+        	<a href="student.php"><p>Code Testing</p></a>
         </div><!-- End of Logo -->
-    
-    </div> <!-- End of Banner -->
-   
-     <!-- Start of Welcome Div -->
-    <div id="welcome">
-        
+	
+	<div id="nav">
+		<ul id="navitems">
+			<li><a href="takeEx.php">Take Exam</a></li>
+			<li><a href="graded.php">Graded Exam</a></li>
+		</ul>
+	
+	</div>
+	        <div id="logout">
+                <a href="logout.php"><input type="submit" value="Log out" /></a>
+        </div>
+	
+     	<!-- Start of Welcome Div -->
+    	<div id="welcome">
+
 	<?php 
 		if ($_SESSION["usertype"] == "UCID") {
 			echo "Welcome " . $_SESSION["user"];
@@ -44,18 +50,51 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 			echo " (logged in)";
 		}
 	?>
-    
 
-    </div> <!-- End of Welcome Div -->
-    <div id="logout">
-    <a href="logout.php"><input type="submit" value="Log out" />
-    </a>
-    </div>
+	</div> <!-- End of Welcome Div -->
+
 </div> <!-- End of Header -->
 
 <!-- Start of Main Content -->
 <div id="main">
 <div id="content">
+
+<div id="sPanel">
+	<h1>Graded Exams</h1><br>
+	<p>Select an Exam to Review</p><br><br>
+	
+	<?php
+
+	
+		
+		$userID = $_SESSION["userpid"];
+		 $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentGradedExams.php"; 
+		 $ch = curl_init($URL);
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
+                            array("userID" => $userID)));
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $page = curl_exec($ch);
+
+        if(curl_errno($ch)){
+            die(json_encode(array("Error" => curl_error($ch))));
+        }
+
+	$result = json_decode($page, true);
+	
+		//echo $listExam[exams][0][examName];
+		//$num = 1;
+		foreach($result[exams] as $p) {
+			
+			echo ' ' . '- ' . "<a href='review.php?id=$p[examID]'>$p[examName]</a> Score: $p[grade]" . "<br><br>";
+
+
+		}
+	?>
+</div>
 
 </div> 
 </div> <!-- End of Main Content -->

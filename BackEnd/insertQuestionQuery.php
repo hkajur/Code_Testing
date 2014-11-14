@@ -152,6 +152,71 @@
                 }
 
                 break;
+
+        case "Programming":
+                $questionType = "PM";
+
+                $question = $_POST["question"];
+                
+                $input1 = $_POST["input1"];
+                $input2 = $_POST["input2"];
+                $input3 = $_POST["input3"];
+                
+                $output1 = $_POST["output1"];
+                $output2 = $_POST["output2"];
+                $output3 = $_POST["output3"];
+
+                if(empty($input1) || empty($output1)){
+                    die(json_encode(array(
+                            "questionCreated" => "Failed",
+                            "Error" => "Input 1 can't be empty")));
+                }
+                
+                $sql_query = "INSERT INTO QuestionBank (Question, QuestionType, Answer) " .
+                             "VALUES ('" . $question . "', '" . $questionType . "', '" . $correct . "')";
+
+                $result = mysql_query($sql_query);
+                
+                if(!$result){
+                        die(json_encode(array(
+                                "questionCreated" => "Failed",
+                                "Error" => "Invalid Question Entry")));
+                }
+                
+                $lastQuestionID = mysql_insert_id();
+
+                $sql_query = "INSERT INTO programQuestions (QuestionID, Input, Output) VALUES ('" . $lastQuestionID . "', '" . $input1 . "', '" . $output1 . "')";
+
+                $result = mysql_query($sql_query);
+                if(!$result){
+                        die(json_encode(array(
+                                "questionCreated" => "Failed",
+                                "Error" => "Invalid First Request")));
+                }
+
+                if(!empty($input2) && !empty($output2)){
+                    $sql_query = "INSERT INTO programQuestions (QuestionID, Input, Output) VALUES ('" . $lastQuestionID . "', '" . $input2 . "', '" . $output2 . "')";
+                    
+                    $result = mysql_query($sql_query);
+                    if(!$result){
+                            die(json_encode(array(
+                                    "questionCreated" => "Failed",
+                                    "Error" => "Invalid First Request")));
+                    }
+        
+                    if(!empty($input3) && !empty($output3)){
+                        $sql_query = "INSERT INTO programQuestions (QuestionID, Input, Output) VALUES ('" . $lastQuestionID . "', '" . $input3 . "', '" . $output3 . "')";
+                        $result = mysql_query($sql_query);
+                        if(!$result){
+                                die(json_encode(array(
+                                        "questionCreated" => "Failed",
+                                        "Error" => "Invalid First Request")));
+                        }
+                    }
+
+                }
+
+                break;
             default:
                 break;
         }

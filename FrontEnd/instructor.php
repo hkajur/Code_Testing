@@ -21,41 +21,48 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
 <!-- Start of Header -->
 <div id="header">
-    
-    <!-- Start of Banner -->
-    <div id="banner">
-        
-        <!-- Start of Logo -->
-        <div id="logo">
-        <a href="./index.php"><h1>Code Testing</h1></a>
-        </div><!-- End of Logo -->
-    
-    </div> <!-- End of Banner -->
-   
-     <!-- Start of Welcome Div -->
-    <div id="welcome">
-        
-	<?php 
-		if ($_SESSION["usertype"] == "UCID") {
-			echo "Welcome " . $_SESSION["user"];
-			echo ", you are now logged in with your UCID";
-		} else if ($_SESSION["usertype"] == "USERNAME") {
-			echo "Welcome " . $_SESSION["user"];
-			echo " (logged in)";
-		}
-	?>
-    
 
-    </div> <!-- End of Welcome Div -->
-    <div id="logout">
-    <a href="logout.php"><input type="submit" value="Log out" />
-    </a>
-    </div>
+        <!-- Start of Logo -->
+        <div id="logos">
+                <a href="instructor.php"><p>Code Testing</p></a>
+        </div><!-- End of Logo -->
+
+        <div id="nav">
+                <ul id="navitems">
+                        <li><a href="createQ.php">Create Questions</a></li>
+                        <li><a href="createExam.php">Create Exam</a></li>
+			<li><a href="release.php">Release Grades</a></li>
+                </ul>
+
+        </div>
+                <div id="logout">
+                <a href="logout.php"><input type="submit" value="Log out" /></a>
+        </div>
+
+        <!-- Start of Welcome Div -->
+        <div id="welcome">
+
+        <?php
+                        echo "Welcome " . $_SESSION["user"];
+                        echo " (logged in)";
+        ?>
+
+        </div> <!-- End of Welcome Div -->
+
 </div> <!-- End of Header -->
+
 
 <!-- Start of Main Content -->
 <div id="main">
 <div id="content">
+
+<div id="iPanel">
+        <h1>Instructor Panel</h1><br>
+        <p>Welcome instructor to Code Testing!<br><br>
+        You may make up questions and tests to be added for your students.<br>
+        You are also able to grade your student's tests and release their grade back to them.<br><br>
+        To get started, select an option above.</p>
+</div>
 
 </div> 
 </div> <!-- End of Main Content -->

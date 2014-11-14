@@ -1,7 +1,7 @@
 <?php session_start(); 
 	if(isset($_SESSION["user"]) && !empty($_SESSION["user"]))
-		header("Location: login_success.php");
-	echo $_SESIION["user"];
+		header("Location: logout.php");
+	//echo $_SESIION["user"];
 	if(!isset($_SESSION["user"]))
 		$_SESSION["usertype"] = "";
 ?>
@@ -23,15 +23,11 @@
 <!-- Start of Header -->
 <div id="header">
     
-    <!-- Start of Banner -->
-    <div id="banner">
-        
         <!-- Start of Logo -->
-        <div id="logo">
-        <a href="./index.php"><h1>Code Testing</h1></a>
+        <div id="logos">
+        <a href="./index.php"><p>Code Testing</p></a>
         </div><!-- End of Logo -->
     
-    </div> <!-- End of Banner -->
    
 </div> <!-- End of Header -->
 
@@ -44,10 +40,10 @@
         
         <!-- Start of Login Form -->
         <form name="loginForm" action="login.php" method="post">
-            <h2> Login </h2>
+            <h2> Welcome </h2>
             <!-- Start of Username Div -->
             <div  id="username">
-		        <input type="text" name="username" placeholder="UCID or Username" value="" required/>
+		        <input type="text" name="username" placeholder="Username" value="" required/>
             </div> <!-- End of Username Div -->
             
             <!-- Start of Password Div -->
