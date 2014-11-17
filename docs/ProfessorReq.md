@@ -54,7 +54,7 @@ On failure
 
 ```JSON
 {
-   "questionCreated" : "Failed"
+   "questionCreated" : "Failed",
    "Error" : "mysql error"
 }
 ```
@@ -84,7 +84,7 @@ Output Message:
                },
                {
                   "questionID" : "16",
-                  "questionType" : "FB"
+                  "questionType" : "FB",
                   "question" : "Another term for _______________ is data hiding."
                }
       
