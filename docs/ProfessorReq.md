@@ -79,7 +79,7 @@ Output Message:
             [
                {
                   "questionID" : "1",
-                  "questionType" "MC",
+                  "questionType" : "MC",
                   "question" : "What is an assignment statement?"
                },
                {
@@ -123,7 +123,7 @@ On Failure
 
 ```JSON
 {
-      "examCreated" : "Failed"
+      "examCreated" : "Failed",
       "Error" : "Because of some reason"
 }
 ```
