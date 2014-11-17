@@ -273,7 +273,7 @@ Output:
 
 If no exams are graded
 
-```
+```JSON
 {
 	"exam" : []
 }
