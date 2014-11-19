@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ExamQuestionClasses.ExamObject;
-import ExamQuestionClasses.ExamSqlData;
 import NetworkClasses.Streamer;
 import NetworkClasses.Login;
+import SqlClasses.ExamSql;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 	public final static String BACKLOGIN = "BACKEND LOGIN STATUS: ";
 	public final static String STUDENT_JSON = "";
 	public final static String INSTRUCTOR_JSON = "";
-	private ExamSqlData InstructorsExamsSql;
+	private ExamSql InstructorsExamsSql;
 	public static Login session = new Login();
 
 	
@@ -50,8 +50,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		InstructorsExamsSql = new ExamSqlData(this);
-		InstructorsExamsSql.open();
+		InstructorsExamsSql = new ExamSql(this);
+
 		
 		username = (EditText)findViewById(R.id.ucidText);
 		password = (EditText)findViewById(R.id.passText);
@@ -178,6 +178,7 @@ public class MainActivity extends Activity {
 				*/
 				else if(response.get("Backend_Login").toString().equals("Success") && response.get("userType").toString().equals("Teacher"))
 				{
+					InstructorsExamsSql.open();
 					ExamObject exams;
 					JSONArray InstructorsExamArr = new JSONArray(response.get("exams").toString());
 

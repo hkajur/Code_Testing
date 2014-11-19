@@ -15,6 +15,7 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
         
         //Choose tag
         switch($tag){
+            //-----------------------GENERIC
             case 'login':
                 $email = cleanData($_REQUEST['ucid']);
                 $password = cleanData($_REQUEST['password']);        
@@ -22,10 +23,21 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
                 $url = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/login.php";
                 callingCurl($url,$field);
                 break;
-            
+
+            //-----------------------INSTRUCTOR POSTS
             case 'DeleteExam':
                 break;
             
+            case 'ReleaseExam':
+                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertExam.php';
+                $field = 'userID='.cleanData($_REQUEST['userID']).
+                        '&examID='.cleanData($_REQUEST['examID']);
+                callingCurl($url,$field);
+                break;
+            
+            case 'ExamStats':
+                break;
+                        
             case 'TrueFalseChoiceQuestionInsert':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertQuestion.php';
                 $field = 'question_type='.cleanData($_REQUEST['question_type']).
@@ -35,7 +47,8 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
                     '&wrongAnswer1='.cleanData($_REQUEST['wrongAnswer1']).
                     '&wrongReason1'.cleanData($_REQUEST['wrongReason1']);
                 callingCurl($url,$field);
-                break;            
+                break;        
+            
             case 'MultipleChoiceQuestionInsert':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertQuestion.php';
                 $field = 'question_type='.cleanData($_REQUEST['question_type']).
@@ -54,8 +67,14 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
             case 'ShortAnswerQuestionInsert':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertQuestion.php';
                 $field = 'question_type='.cleanData($_REQUEST['question_type']).
-                    '&question='.cleanData($_REQUEST['question']).
-                    '&correct='.cleanData($_REQUEST['correct']);
+                    '&question='.cleanData($_REQUEST['question']);
+                callingCurl($url,$field);        
+                break;
+
+            case 'ProgramQuestionInsert':
+                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertQuestion.php';
+                $field = 'question_type='.cleanData($_REQUEST['question_type']).
+                    '&question='.cleanData($_REQUEST['question']);
                 callingCurl($url,$field);        
                 break;
             
@@ -64,13 +83,45 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
                 $field = 'userID='.cleanData($_REQUEST['userID']);
                 callingCurl($url,$field);
                 break;
+
+            //CAREFUL -- ARRAY INPUT HERE
+            case 'createExam':
+                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertExam.php';
+                $field = 'questionIDS='.cleanData($_REQUEST['questionIDS']).
+                        '&examName='.cleanData($_REQUEST['examName']);
+                callingCurl($url,$field);
+                break;
             
+            //-----------------------STUDENT POSTS
             case 'conductExams':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentExams.php';
                 $field = 'userID='.cleanData($_REQUEST['userID']).
                         '&examID='.cleanData($_REQUEST['examID']);
                 callingCurl($url,$field);
                 break;
+
+            //CAREFUL -- ARRAY INPUT HERE
+            case 'submitExam':
+                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentSubmit.php';
+                $field = 'userID='.cleanData($_REQUEST['userID']).
+                        '&examID='.cleanData($_REQUEST['examID']).
+                        '&questionAnswer='.cleanData($_REQUEST['questionAnswer']);
+                callingCurl($url,$field);
+                break;
+
+            case 'gradedExams':
+                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentGradedExams.php';
+                $field = 'userID='.cleanData($_REQUEST['userID']);
+                callingCurl($url,$field);
+                break;
+
+            case 'gradedFeedback':
+                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentCheckGradedExam.php';
+                $field = 'userID='.cleanData($_REQUEST['userID']).
+                        '&examID='.cleanData($_REQUEST['examID']);
+                callingCurl($url,$field);
+                break;
+
             default:
                 echo "Invalid Tag";
         }        
