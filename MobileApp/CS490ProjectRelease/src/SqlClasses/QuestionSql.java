@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,15 +48,27 @@ public class QuestionSql {
 		dbHelper.close();
 	}
 //--------------------------------------------------------------------------------------------------------------
-	//TODO --SUBMIT FUNCTIONALITY
-	public void submitQuestions(ArrayList<String> questionsForSubmit, String exam_name) throws JSONException{
-		JSONObject temp = new JSONObject();
-		temp.put("examName", exam_name);
-		temp.put("questionIDs", questionsForSubmit);
+	public boolean submitQuestions(ArrayList<String> questionsForSubmit, String exam_name) throws JSONException, InterruptedException, ExecutionException{
+		String temp = questionsForSubmit.toString();
 		
+		AsyncTask<String, Void, String> response_thread = new NetworkThread().execute(temp, exam_name, "createExam");
 		
 		Log.i("QuestionSql", "Exam " + exam_name + " submitted");
-		Log.i("QuestionSql", "Exam: " + temp.toString());
+		Log.i("QuestionSql", "Exam_name: " + exam_name + " / Questions: " + temp);
+		
+		Log.i("QuestionSql", "Returned: " + response_thread.get());
+		
+		JSONObject returned = new JSONObject(response_thread.get());
+		if(returned.getString("examCreated").equals("Success")){
+			Log.i("QuestionSql", "Response: " + exam_name + " == SUCCESS");
+			return true;
+		}
+		else{
+			Log.w("QuestionSql", "Response: " + exam_name + " == FAILED");
+			Log.w("QuestionSql", "Error: " + returned.getString("Error"));
+			return false;
+		}
+		
 		//network thread here to send over exam
 		//if post successful instructorexam.addexam here with unreleased		
 	}
@@ -177,30 +190,25 @@ public class QuestionSql {
 	
 //################################################################################################	
 	
-	private class NetworkThread extends AsyncTask<JSONObject, Void, String> {	
+	private class NetworkThread extends AsyncTask<String, Void, String> {	
 		@Override
-		protected String doInBackground(JSONObject... urls) 
+		protected String doInBackground(String... urls) 
 		{
 			String response = ""; 
 			
-			/*
 			Map<String, String> params = new HashMap<String, String>();				   
 			params.put("token", session.getToken());				
-			params.put("questionIDs", urls[0].getString(questionId));	
-			params.put("exa", urls[0].getString(questionId));	
-			params.put("tag", urls[1]);
-			
-			
-			urls[0] is the JSON object
-			*/
+			params.put("questionId", urls[0]);
+			params.put("examName", urls[1]);
+			params.put("tag", urls[2]);
 			
 			
 			//Send request to server to delete exam with following id
 			try {
-				Streamer.sendPostRequest(session.getURL(), urls[0]);
+				Streamer.sendPostRequest(session.getURL(), params);
 				response = Streamer.readSingleLineRespone();
 			} catch (IOException ex) {
-				Log.w("ExamSqlData", "Could not connect to server");
+				Log.w("QuestionsSqlData", "Could not connect to server");
 				ex.printStackTrace();
 			}
 			Streamer.disconnect();	        

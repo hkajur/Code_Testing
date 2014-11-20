@@ -2,6 +2,7 @@ package InstructorClasses;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -120,14 +121,21 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
                 case R.id.submit:
                 	questionsForSubmit = new ArrayList<String>();
                     SparseBooleanArray selected = listviewadapter.getSelectedIds();
-                    // Captures all selected ids with a loop
                     for (int i = (selected.size() - 1); i >= 0; i--) {
                         if (selected.valueAt(i)) {
                             QuestionObject selecteditem = listviewadapter.getItem(selected.keyAt(i));
-                            // Remove selected items following the ids
                             questionsForSubmit.add(selecteditem.getId());
+                            
                             if(examNameView.getText().toString().equals("")){
-                            	examName = "Untitled";                            	
+                            	Calendar c = Calendar.getInstance(); 
+                            	String timestamp = String.valueOf(c.get(Calendar.MONTH))
+                            	+ String.valueOf(c.get(Calendar.DATE))
+                            	+ String.valueOf(c.get(Calendar.YEAR))
+                            	+ String.valueOf(c.get(Calendar.HOUR_OF_DAY))
+                            	+ String.valueOf(c.get(Calendar.MINUTE))
+                            	+ String.valueOf(c.get(Calendar.SECOND));
+
+                            	examName = "Untitled Exam " + timestamp;                            	
                             }
                             else{
                             	examName = examNameView.getText().toString();
@@ -135,12 +143,18 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
                         }
                     }
                     try {
-						questionsSql.submitQuestions(questionsForSubmit, examName);
+						boolean attempt = questionsSql.submitQuestions(questionsForSubmit, examName);
+						if(attempt)
+							Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " submitted", Toast.LENGTH_SHORT).show();
+						else
+							Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " failed", Toast.LENGTH_SHORT).show();
 					} catch (JSONException e) {
 						Log.w("InstructorFragmentTab2", "Error submitting questions for exam: " + examName);
 						e.printStackTrace();
+					} catch (InterruptedException | ExecutionException e) {
+						e.printStackTrace();
 					}
-                    Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " submitted", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " submitted", Toast.LENGTH_SHORT).show();
                     
                     // Close CAB
                     mode.finish();

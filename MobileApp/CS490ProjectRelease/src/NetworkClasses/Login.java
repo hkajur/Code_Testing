@@ -14,7 +14,7 @@ public class Login{
 	private String user_password;
 	private String token = "0xACA021";
 //	private static String loginURL = "http://192.168.1.102/cstest/index.php";		//HOME SERVER
-//  private static String loginURL = "http://10.200.168.116/cstest/index.php";		//LOCAL SERVER AT SCHOOL
+//  private static String loginURL = "http://10.200.8.191/cstest/index.php";		//LOCAL SERVER AT SCHOOL
 	private static String loginURL = "http://web.njit.edu/~dm282/cs490/index.php";
 //    tag set to login by default
 	private static String tag = "login";

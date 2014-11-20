@@ -11,7 +11,7 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
 
  
     // Confirm Token    
-    if(token == "0xACA021"){
+    if($token == '0xACA021'){
         
         //Choose tag
         switch($tag){
@@ -87,9 +87,18 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
             //CAREFUL -- ARRAY INPUT HERE
             case 'createExam':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertExam.php';
-                $field = 'questionIDS='.cleanData($_REQUEST['questionIDS']).
-                        '&examName='.cleanData($_REQUEST['examName']);
-                callingCurl($url,$field);
+            
+                $ids = cleanData($_REQUEST['questionId']);                
+                $name = cleanData($_REQUEST['examName']);
+                $ids = substr($ids,1,-1);
+                $idArray = explode(',',$ids);
+                
+            
+                $json_array = array("examName" => $name,
+                                    "questionIDs" => $idArray);
+                $json = json_encode($json_array);
+                
+                callingCurlJSON($url,$json);
                 break;
             
             //-----------------------STUDENT POSTS
@@ -157,6 +166,27 @@ function callingCurl($url,$field){
     }		
     curl_close($ch);		
     echo $resp;
+}
+
+
+function callingCurlJSON($url,$field){
+
+    $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $field);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($field))
+                   );
+    $result = curl_exec($ch);
+    if(curl_errno($ch))
+    {
+        echo curl_error($ch);
+        exit;
+    }		
+    curl_close($ch);		
+    echo $result;
 }
 
 function cleanData($data) {
