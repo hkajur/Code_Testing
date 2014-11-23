@@ -17,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.malan.cs490project.CurrentExamAdapter;
-import com.malan.cs490project.ExamInProgress;
 
 import ExamQuestionClasses.ExamObject;
 import NetworkClasses.Login;

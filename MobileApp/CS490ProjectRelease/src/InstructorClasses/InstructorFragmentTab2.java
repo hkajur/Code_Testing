@@ -1,6 +1,11 @@
 package InstructorClasses;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,8 +15,12 @@ import com.malan.cs490project.R;
 
 import ExamQuestionClasses.QuestionObject;
 import NetworkClasses.Login;
+import NetworkClasses.Streamer;
+import SqlClasses.QuestionSql;
 import android.support.v4.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -21,7 +30,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.MultiChoiceModeListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -32,75 +40,66 @@ import android.widget.Toast;
  * */
 
 public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
-		
-	ListView listview;
-	EditText examNameView;
-	ArrayAdapter<String> adapter;	
-	String questions_for_JSON;
-	String examName;
+	
 	Questions_ListViewAdapter listviewadapter;
-	ArrayList<QuestionObject> questions;
+	ListView listview;
+	EditText examNameView;	
+	
+	String response = "";
+	
 	Login session;
+	private QuestionSql questionsSql;
+	String JSON;
+	JSONObject JSON_OBJECT;
+	JSONArray JSON_ARRAY;
+	
+	ArrayList<QuestionObject> questions;
+	
+	String examName;
 	ArrayList<String> questionsForSubmit;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
 	{
         View view = inflater.inflate(R.layout.fragment_instructor_tab2, container, false);
-        return view;
 
-		/*
-		Toast.makeText(getActivity().getBaseContext(), "Press and hold to select", Toast.LENGTH_SHORT).show();
-		//		CREATE VIEW AND FIND RELEVENT VIEW OBJECTS
-		View view = inflater.inflate(R.layout.fragment_instructor_tab2, container, false);
-		
 		examNameView = (EditText) view.findViewById(R.id.examName);		
 		listview = (ListView) view.findViewById(R.id.listView1);
-
-		//		CREATE session FOR POSTING CHOSEN QUESTIONS TO SERVER		
-		session = new Login();
 		
-		//		RETRIEVE ARGUMENTS FROM InstructorPanel
-    	Bundle args = getArguments();
-    	questions_for_JSON = args.getString("QUESTIONS");
-
-		//		CONVERT STRING TO JSON FOR PARSING
+		session = new Login();
+		questionsSql = new QuestionSql(getActivity().getBaseContext());
+		AsyncTask<String, Void, String> thread_response = new GettingQuestions().execute("professor1","getExamQuestions");
 		try {
+			questionsSql.open();
 			questions = new ArrayList<QuestionObject>();
-			JSONObject tempJSON = new JSONObject(questions_for_JSON);
-			questions_for_JSON = tempJSON.get("questions").toString();
-			JSONArray result = new JSONArray(questions_for_JSON);
-			for(int i = 0; i < result.length(); i++)
+			JSON = thread_response.get().toString();
+//			Log.i("InstructorFragmentTab2", JSON);
+			JSON_OBJECT = new JSONObject(JSON);
+			JSON_ARRAY = new JSONArray(JSON_OBJECT.get("questions").toString());
+//			Log.i("InstructorFragmentTab2", JSON_ARRAY.toString());
+			for(int i = 0; i < JSON_ARRAY.length(); i++)
 			{
-				QuestionObject temp_question = new QuestionObject();
-				temp_question.setId(result.getJSONObject(i).getString("questionID"));
-				temp_question.setQuestion(result.getJSONObject(i).getString("question"));
-				temp_question.setType(result.getJSONObject(i).getString("questionType"));
-				
+				QuestionObject temp_question = questionsSql.createQuestion(
+						JSON_ARRAY.getJSONObject(i).getString("questionID"),
+						JSON_ARRAY.getJSONObject(i).getString("questionType"),
+						JSON_ARRAY.getJSONObject(i).getString("question")
+						);
 				questions.add(temp_question);
 			}
-		}
-		catch (JSONException e) {
-			Toast.makeText(getActivity(), "Error parsing JSON", Toast.LENGTH_SHORT).show();
+
+		} catch (InterruptedException | ExecutionException | JSONException e) {
+			Log.w("InstructorFragmentTab2", "Error parsing JSON");
 			e.printStackTrace();
 		}
-
-		//		SET ADAPTER
-		listviewadapter = new Questions_ListViewAdapter(getActivity(), R.layout.question_list_item,questions);		
+		listviewadapter = new Questions_ListViewAdapter(getActivity().getBaseContext(), R.layout.question_list_item,questionsSql.getAllQuestions());		
 		listview.setAdapter(listviewadapter);
         listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 
-
-        //		SET ABILITY TO CHOOSE DIFFERENT QUESTIONS
         listview.setMultiChoiceModeListener(new MultiChoiceModeListener() {
-        	 
-            @SuppressLint("NewApi")
+       	 
 			public void onItemCheckedStateChanged(ActionMode mode,int position, long id, boolean checked) {
-                // Capture total checked items
-                final int checkedCount = listview.getCheckedItemCount();
-                // Set the CAB title according to total checked items
-                mode.setTitle(checkedCount + " Selected");
-                // Calls toggleSelection method from ListViewAdapter Class
-                listviewadapter.toggleSelection(position);
+                final int checkedCount = listview.getCheckedItemCount();    // Capture total checked items
+                mode.setTitle(checkedCount + " Selected");	                // Set the CAB title according to total checked items
+                listviewadapter.toggleSelection(position);					// Calls toggleSelection method from ListViewAdapter Class
             }
  
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
@@ -108,36 +107,55 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
                 case R.id.delete:
                     // Calls getSelectedIds method from ListViewAdapter Class
                     SparseBooleanArray selectedForDel = listviewadapter.getSelectedIds();
-                    // Captures all selected ids with a loop
                     for (int i = (selectedForDel.size() - 1); i >= 0; i--) {
                         if (selectedForDel.valueAt(i)) {
-                            QuestionObject selecteditem = listviewadapter.getItem(selectedForDel.keyAt(i));
-                            // Remove selected items following the ids
+                            QuestionObject selecteditem = listviewadapter.getItem(selectedForDel.keyAt(i));                            
+                            questionsSql.deleteQuestion(selecteditem);
                             listviewadapter.remove(selecteditem);
                         }
                     }
                     // Close CAB
                     mode.finish();
                     return true;
+                    
                 case R.id.submit:
                 	questionsForSubmit = new ArrayList<String>();
                     SparseBooleanArray selected = listviewadapter.getSelectedIds();
-                    // Captures all selected ids with a loop
                     for (int i = (selected.size() - 1); i >= 0; i--) {
                         if (selected.valueAt(i)) {
                             QuestionObject selecteditem = listviewadapter.getItem(selected.keyAt(i));
-                            // Remove selected items following the ids
                             questionsForSubmit.add(selecteditem.getId());
+                            
                             if(examNameView.getText().toString().equals("")){
-                            	examName = "Untitled";                            	
+                            	Calendar c = Calendar.getInstance(); 
+                            	String timestamp = String.valueOf(c.get(Calendar.MONTH))
+                            	+ String.valueOf(c.get(Calendar.DATE))
+                            	+ String.valueOf(c.get(Calendar.YEAR))
+                            	+ String.valueOf(c.get(Calendar.HOUR_OF_DAY))
+                            	+ String.valueOf(c.get(Calendar.MINUTE))
+                            	+ String.valueOf(c.get(Calendar.SECOND));
+
+                            	examName = "Untitled Exam " + timestamp;                            	
                             }
                             else{
                             	examName = examNameView.getText().toString();
                             }
-                            
-                            Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " submitted", Toast.LENGTH_SHORT).show();
                         }
                     }
+                    try {
+						boolean attempt = questionsSql.submitQuestions(questionsForSubmit, examName);
+						if(attempt)
+							Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " submitted", Toast.LENGTH_SHORT).show();
+						else
+							Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " failed", Toast.LENGTH_SHORT).show();
+					} catch (JSONException e) {
+						Log.w("InstructorFragmentTab2", "Error submitting questions for exam: " + examName);
+						e.printStackTrace();
+					} catch (InterruptedException | ExecutionException e) {
+						e.printStackTrace();
+					}
+//                    Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " submitted", Toast.LENGTH_SHORT).show();
+                    
                     // Close CAB
                     mode.finish();
                     return true;
@@ -163,24 +181,37 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
                 return false;
             }
         });
+
+        
 		return view;
-		*/
+
+
+//		Toast.makeText(getActivity().getBaseContext(), "Press and hold to select", Toast.LENGTH_SHORT).show();
 	}
 	
 	
 	
 	@Override
+	public void onResume() {
+		questionsSql.open();
+		super.onResume();
+	} 
+
+	@Override
 	public void onStop() {
+		questionsSql.close();
 	    super.onStop();
 	} 
 	
 	@Override
 	public void onPause(){
+		questionsSql.close();
 		super.onPause();
 	}
 	
 	@Override
 	public void onDestroyView(){
+		questionsSql.close();
 		super.onDestroyView();
 	}
 	
@@ -189,5 +220,37 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 		// TODO Auto-generated method stub
 		
 	}
-	
+//######################################################################################################	
+	private class GettingQuestions extends AsyncTask<String, Void, String> {
+		@Override
+		protected String doInBackground(String... urls) 
+		{
+			try {
+				return postUrl(urls[0],urls[1]);
+			}
+			catch (IOException e){
+				return "Cannot connect. Server is not responding.";
+			}
+		}		
+		private String postUrl(String user_id, String tag) throws IOException {
+			String[] raw_response = {};	         
+			Map<String, String> params = new HashMap<String, String>();				   
+			params.put("user", user_id);
+			params.put("tag", tag);
+			params.put("token", session.getToken());
+			
+			try {
+				Streamer.sendPostRequest(session.getURL(), params);
+				raw_response = Streamer.readMultipleLinesRespone();
+			} catch (IOException ex) {
+				Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
+				ex.printStackTrace();
+			}
+			for(String i : raw_response){
+				response+=i;
+			}
+			Streamer.disconnect();
+			return response;
+		}//END downloadUrl FUNCTION
+	}//END ASYNC CLASS	
 }

@@ -1,6 +1,7 @@
 package InstructorClasses;
 
 import ExamQuestionClasses.QuestionObject;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +13,21 @@ import java.util.List;
 import com.malan.cs490project.R;
  
 
+
+
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.ArrayAdapter;
 
 public class Questions_ListViewAdapter extends ArrayAdapter<QuestionObject> {
-    // Declare Variables
+	// Declare Variables
     Context context;
     LayoutInflater inflater;
     List<QuestionObject> questionlist;
     private SparseBooleanArray mSelectedItemsIds;
  
     public Questions_ListViewAdapter(Context context, int resourceId,List<QuestionObject> questionlist) {
-        super(context, resourceId, questionlist);
+    	super(context, resourceId, questionlist);
         mSelectedItemsIds = new SparseBooleanArray();
         this.context = context;
         this.questionlist = questionlist;
@@ -45,7 +49,26 @@ public class Questions_ListViewAdapter extends ArrayAdapter<QuestionObject> {
             holder = (ViewHolder) view.getTag();
         }
 
+        //DEBUGGING
+//        Log.i("Questions_ListViewAdapter", questionlist.get(position).toString());
+
         holder.question.setText(questionlist.get(position).getQuestion());
+        /* GET TO LATER
+        switch (questionlist.get(position).getType()){
+        	case "MC":
+        		holder.question.setBackgroundColor(R.color.MCback);
+        		break;
+        	case "TF":
+        		holder.question.setBackgroundColor(R.color.TFback);
+        		break;
+        	case "FB":
+        		holder.question.setBackgroundColor(R.color.SHback);
+        		break;
+        	default:
+        		holder.question.setBackgroundColor(R.color.PRback);
+        		break;        
+        }
+        */
         return view;
     }
  

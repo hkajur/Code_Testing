@@ -18,19 +18,14 @@ package InstructorClasses;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import com.malan.cs490project.CurrentExamAdapter;
 import com.malan.cs490project.R;
 
 import ExamQuestionClasses.ExamObject;
-import ExamQuestionClasses.ExamSqlData;
 import NetworkClasses.Login;
-import NetworkClasses.ReleaseExam;
+import SqlClasses.ExamSql;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -41,17 +36,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 /* TODO
- *  - Add functionality for releasing
- *  - Add functionality for deleting
  *  - Add functionality for exam stats
  * */
 
@@ -60,10 +50,8 @@ public class InstructorFragmentTab1 extends Fragment {
 	View view;
 	LinearLayout layout;
 	ListView listview;
-	String instructor_JSON;
-	JSONArray examArray;
 	ExamObject single_exam;
-	private ExamSqlData InstructorsExamsSql;
+	private ExamSql InstructorsExamsSql;
 	private static List<ExamObject> list_exams = new ArrayList<ExamObject>();		
 	public static Login session = new Login();	
 	AdapterView.AdapterContextMenuInfo info;
@@ -74,7 +62,7 @@ public class InstructorFragmentTab1 extends Fragment {
 
 		view = inflater.inflate(R.layout.fragment_instructor_tab1, container, false);
 		
-		InstructorsExamsSql = new ExamSqlData(getActivity());
+		InstructorsExamsSql = new ExamSql(getActivity());
 		InstructorsExamsSql.open();
 		
 		list_exams = InstructorsExamsSql.getAllExams();
@@ -87,7 +75,7 @@ public class InstructorFragmentTab1 extends Fragment {
 					new CurrentExamAdapter(
 							list_exams, 
 							getActivity().getBaseContext()
-							)
+						)
 					);
 		}
 		else{
@@ -101,17 +89,6 @@ public class InstructorFragmentTab1 extends Fragment {
 		}
 		
 		registerForContextMenu(listview);		    
-	    listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-		
-    	listview.setOnItemClickListener(new OnItemClickListener() {
-    		public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
-    	    {   
-    			//DISPLAY THE EXAM HERE IN A SCROLLABLE MANNER    			
-//    	    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-//    	    	startActivity(browserIntent);
-    	    }
-    	});
 		return view;
 	}
 	
@@ -124,6 +101,7 @@ public class InstructorFragmentTab1 extends Fragment {
 	@Override
 	public void onStop()
 	{
+		InstructorsExamsSql.close();
 	    super.onStop();	 
 	}
 	@Override
@@ -134,6 +112,7 @@ public class InstructorFragmentTab1 extends Fragment {
 	
 	@Override
 	public void onDestroyView(){
+		InstructorsExamsSql.close();
 		super.onDestroyView();
 	}
 	
@@ -142,33 +121,41 @@ public class InstructorFragmentTab1 extends Fragment {
 		super.onCreateContextMenu(menu, v, menuInfo);      
 	                    
 		info = (AdapterContextMenuInfo) menuInfo;
-	 
-		menu.setHeaderTitle(list_exams.get(info.position).getName());      
-		menu.add(Menu.NONE, v.getId(), 0, "Release");
-		menu.add(Menu.NONE, v.getId(), 0, "Delete");                  
-		menu.add(Menu.NONE, v.getId(), 0, "Exam Stats");                  
+		
+		single_exam = (ExamObject) listview.getItemAtPosition(info.position);
+		
+		menu.setHeaderTitle(list_exams.get(info.position).getName());
+		if(single_exam.getStatus().equals("Unreleased")){
+			menu.add(Menu.NONE, v.getId(), 0, "Release");
+			menu.add(Menu.NONE, v.getId(), 0, "Delete");                  
+			menu.add(Menu.NONE, v.getId(), 0, "Exam Stats");
+		}
+		else{
+			menu.add(Menu.NONE, v.getId(), 0, "Unrelease");
+			menu.add(Menu.NONE, v.getId(), 0, "Delete");                  
+			menu.add(Menu.NONE, v.getId(), 0, "Exam Stats");			
+		}
 	}
 	        
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		if (item.getTitle().toString().equals("Release")) {
 			//RELEASE THIS EXAM AND NOTIFY STUDENTS
-			ReleaseExam examToRelease = new ReleaseExam();
-			examToRelease.release(info.position);
+			InstructorsExamsSql.releaseExam(single_exam);
+//			single_exam.setStatus("Released");
+			listview.invalidateViews();
+		}
+		else if (item.getTitle().toString().equals("Unrelease")) {
+			//RELEASE THIS EXAM AND NOTIFY STUDENTS
+			InstructorsExamsSql.unreleaseExam(single_exam);
+//			single_exam.setStatus("Unreleased");
+			listview.invalidateViews();
 		}
 		else if (item.getTitle().toString().equals("Delete")) {
 			//REMOVE THIS EXAM FROM THE LIST AND THE DATABASE
 			
-			/*
-			 * if (getListAdapter().getCount() > 0) {
-        		comment = (Comment) getListAdapter().getItem(0);
-        		datasource.deleteComment(comment);
-        		adapter.remove(comment);
-      		}
-      		break;*/
-			
+			InstructorsExamsSql.deleteExam(single_exam);
 			list_exams.remove(info.position);
-//			InstructorsExamsSql.deleteExam();
 			listview.invalidateViews();
 		}
 		else if (item.getTitle().toString().equals("Exam Stats")) {	

@@ -6,5 +6,9 @@
     <color name="grey">#cccccc</color>
     <color name="salmon">#ff567c</color>
     <color name="red">#AA3939</color>
+    <color name="MCback">#FFAAAA</color>	<!-- Light red -->
+    <color name="TFback">#FFB51E</color>	<!-- Orange -->
+    <color name="SHback">#DBF84D</color>	<!-- Green -->
+    <color name="PRback">#A5CFED</color>	<!-- Light blue -->
     
 </resources>

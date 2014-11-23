@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 public class Streamer {
 	private static HttpURLConnection httpConn;
 	 
@@ -28,7 +30,7 @@ public class Streamer {
  
         return httpConn;
     }
- 
+    
 //  Makes an HTTP request using POST method to the specified URL.
     public static HttpURLConnection sendPostRequest(String requestURL,Map<String, String> params) throws IOException {
     	URL url = new URL(requestURL);

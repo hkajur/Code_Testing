@@ -55,7 +55,7 @@ On failure
 
 ```JSON
 {
-   "questionCreated" : "Failed"
+   "questionCreated" : "Failed",
    "Error" : "mysql error"
 }
 ```
@@ -80,12 +80,12 @@ Output Message:
             [
                {
                   "questionID" : "1",
-                  "questionType" "MC",
+                  "questionType" : "MC",
                   "question" : "What is an assignment statement?"
                },
                {
                   "questionID" : "16",
-                  "questionType" : "FB"
+                  "questionType" : "FB",
                   "question" : "Another term for _______________ is data hiding."
                }
       
@@ -124,7 +124,7 @@ On Failure
 
 ```JSON
 {
-      "examCreated" : "Failed"
+      "examCreated" : "Failed",
       "Error" : "Because of some reason"
 }
 ```

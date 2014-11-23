@@ -205,12 +205,12 @@ Gets all the exams for that user that have been graded
 			{
 				"examID" : "1",
 				"examName" : "exam1",
-				"score" : "90"
+				"grade" : "90"
 			},
 			{
 				"examID" : "2",
 				"examName" : "exam2",
-				"score" : "85"
+				"grade" : "85"
 			}
 		]
 }
@@ -273,7 +273,7 @@ Output:
 
 If no exams are graded
 
-```
+```JSON
 {
 	"exam" : []
 }
