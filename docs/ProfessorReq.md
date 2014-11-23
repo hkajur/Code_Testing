@@ -15,6 +15,7 @@ All the requests students should make
 * [Insert Exam](#insertexamphp)
 * [Select Exam to Release](#selectexamreleasephp)
 * [Release Exam](#releaseexamphp)
+* [Delete Exam](#deleteexamphp)
 
 ###insertQuestion.php
 
@@ -202,3 +203,36 @@ On failure
 Returns a JSON indicating whether or not the release exam was successful or not
 
 Note: Release an exam will grade the exam for all the students that took the exam and students can see their grades now
+
+### deleteExam.php
+
+Action: Professor clicks on a specific exam to delete
+
+Request URL: http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/deleteExam.php
+
+Input Request Type: POST 
+
+Input variables: userID, examID
+
+Output:
+
+On success
+
+```JSON
+{
+   "Delete" : "Success"
+}
+```
+
+On failure
+
+```JSON
+{
+   "Error" : "Some reason"
+}
+```
+
+Returns a JSON indicating whether or not the deletion of exam was successful or not
+
+Warning: Once delete you will not get the exam or the grades of the students who took the exam
+Use this call with caution
