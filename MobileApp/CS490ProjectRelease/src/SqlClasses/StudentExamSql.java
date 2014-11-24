@@ -193,7 +193,7 @@ public class StudentExamSql {
 		ExamObject exam = new ExamObject();
 		exam.setId(cursor.getString(0));
 		exam.setName(cursor.getString(1));
-		Log.i("StudentExamSql", "Cursor:" + cursor.getString(0) + " " + cursor.getString(1));
+//		Log.i("StudentExamSql", "Cursor:" + cursor.getString(0) + " " + cursor.getString(1));
 		if(past)
 			exam.setGrade(cursor.getString(2));
 		return exam;

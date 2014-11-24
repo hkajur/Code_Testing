@@ -1,6 +1,7 @@
 package com.malan.cs490project;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,8 @@ public class ExamInProgress extends Activity{
 	EditText answer;
 	Button submit;
 	List<SubmitQuestionObject> submissions;
+	Map<String,RadioGroup> radio_responses;
+	Map<String,EditText> text_responses;
 	StudentExamSql StudentExamsSql;
 	
 	protected void onCreate(Bundle savedInstanceState){
@@ -69,7 +72,15 @@ public class ExamInProgress extends Activity{
 		examID = intent.getStringExtra("EXAM_ID");
 		userID = creds.getValue(AppProfile.PREF_ID);
 		
-		AsyncTask<String, Void, String> thread_response = new GettingQuestions().execute(examID,userID,"conductExams");
+		submissions = new ArrayList<SubmitQuestionObject>();
+		radio_responses = new HashMap<String, RadioGroup>();
+		text_responses = new HashMap<String, EditText>();
+
+		
+		AsyncTask<String, Void, String> thread_response = new GettingQuestions().execute(
+				examID,
+				userID,
+				"conductExams");
 		try {
 			JSON = thread_response.get().toString();
 			
@@ -85,16 +96,23 @@ public class ExamInProgress extends Activity{
 				int temp_placeholder=0;
 				layout = (LinearLayout) findViewById(R.id.container);
 				
+				String questionID = JSON_ARRAY.getJSONObject(i).getString("questionID");
+				
+				SubmitQuestionObject tempQuestion = new SubmitQuestionObject();
+				tempQuestion.setQuestionId(questionID);
+				submissions.add(tempQuestion);
+				
 				question = new TextView(this);
 				question.setText(JSON_ARRAY.getJSONObject(i).getString("question"));
+				question.setPadding(11, 35, 11, 35);
 				layout.addView(question);
 				temp_placeholder = question.getId();
 				if(JSON_ARRAY.getJSONObject(i).getString("question_type").equals("MC") ||
 					JSON_ARRAY.getJSONObject(i).getString("question_type").equals("TF")){
 
 					group = new RadioGroup(this);
-
-					//CHOICES ARE MISSING FROM THE API
+					radio_responses.put(questionID, group);
+					
 					JSONArray choiceArr = (JSONArray) (JSON_ARRAY.getJSONObject(i).getJSONArray("choices"));
 					for(int j=0 ; j<choiceArr.length() ; j++){
 						answers = new RadioButton(this);
@@ -112,6 +130,8 @@ public class ExamInProgress extends Activity{
 				}
 				else{
 	    			answer = new EditText(this);
+	    			text_responses.put(questionID, answer);
+	    			answer.setHint("Answer here");
 	    			temp_placeholder = answer.getId();
 	    			layout.addView(answer);
 				}
@@ -119,6 +139,7 @@ public class ExamInProgress extends Activity{
 			
 			submit = new Button(this);
 			submit.setText("Submit");
+			submit.setBackground(getResources().getDrawable(R.drawable.flat_selector));
 			submit.setLayoutParams(new LayoutParams(
 			        ViewGroup.LayoutParams.MATCH_PARENT,
 			            ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -131,6 +152,44 @@ public class ExamInProgress extends Activity{
 		submit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				JSONArray JsonArrSubmit = new JSONArray();
+				JSONObject JsonObjSubmit;
+				
+				for (SubmitQuestionObject i : submissions){
+					JsonObjSubmit = new JSONObject();
+					if(radio_responses.get(i.getQuestionId()) != null){
+						RadioGroup temp = radio_responses.get(i.getQuestionId());
+						RadioButton selected = (RadioButton) findViewById(temp.getCheckedRadioButtonId());
+						i.setUserAnswer(selected.getText().toString());
+					}
+					if(text_responses.get(i.getQuestionId()) != null){
+						EditText temp = text_responses.get(i.getQuestionId().toString());						
+						i.setUserAnswer(temp.getText().toString());
+					}
+					
+					try {
+						JsonObjSubmit.put("questionID", i.getQuestionId());
+						JsonObjSubmit.put("userAnswer", i.getUserAnswer());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}					
+					JsonArrSubmit.put(JsonObjSubmit);
+				}
+
+				Log.i("ExamInProgress", "Submitting: " + JsonArrSubmit.toString());
+				
+				AsyncTask<String, Void, String> thread_response = new SubmitExam().execute(
+						examID,
+						userID,
+						JsonArrSubmit.toString(),
+						"submitExam");
+
+				try {
+					Log.i("ExamInProgress", "Response: " + thread_response.get());
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
 				Log.i("ExamInProgress", "Exam " + examID + " submitted");
 				if(StudentExamsSql.removeExam(examID))
 					Log.i("ExamInProgress", "Exam " + examID + " submited and altered");
@@ -146,6 +205,7 @@ public class ExamInProgress extends Activity{
 		@Override
 		protected String doInBackground(String... urls) 
 		{
+			response = "";
 			String[] raw_response = {};	         
 			Map<String, String> params = new HashMap<String, String>();				   
 			params.put("examID", urls[0]);
@@ -173,6 +233,7 @@ public class ExamInProgress extends Activity{
 		@Override
 		protected String doInBackground(String... urls) 
 		{
+			response = "";
 			String[] raw_response = {};	         
 			Map<String, String> params = new HashMap<String, String>();				   
 			params.put("examID", urls[0]);

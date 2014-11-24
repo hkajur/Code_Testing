@@ -61,7 +61,9 @@ public class StudentFragmentTab2 extends Fragment {
         
         creds = new AppProfile(getActivity().getBaseContext());
         userID = creds.getValue(AppProfile.PREF_ID);
-        AsyncTask<String, Void, String> thread_response = new GettingQuestions().execute(creds.getValue(AppProfile.PREF_ID),"gradedExams");
+        AsyncTask<String, Void, String> thread_response = new GettingExams().execute(
+        		creds.getValue(AppProfile.PREF_ID),
+        		"gradedExams");
 		
 		try 
     	{
@@ -72,7 +74,6 @@ public class StudentFragmentTab2 extends Fragment {
 				single_exam = new ExamObject();
 				single_exam.setId(JSON_ARRAY.getJSONObject(i).getString("examID"));
 				single_exam.setName(JSON_ARRAY.getJSONObject(i).getString("examName"));
-				single_exam.setGrade(JSON_ARRAY.getJSONObject(i).getString("examName"));
 				list_exams.add(single_exam);
 			}
 		}
@@ -111,8 +112,6 @@ public class StudentFragmentTab2 extends Fragment {
     	    {   
     			ExamObject temp = list_exams.get(position);
 
-    			//pass exam id and user id
-    			
     			Intent intent = new Intent(getActivity().getBaseContext(),ExamReview.class);    			 	
     			intent.putExtra("EXAM_ID", temp.getId());
 				startActivity(intent);
@@ -140,22 +139,14 @@ public class StudentFragmentTab2 extends Fragment {
 	}
 
 	//######################################################################################################	
-		private class GettingQuestions extends AsyncTask<String, Void, String> {
+		private class GettingExams extends AsyncTask<String, Void, String> {
 			@Override
 			protected String doInBackground(String... urls) 
 			{
-				try {
-					return postUrl(urls[0],urls[1]);
-				}
-				catch (IOException e){
-					return "Cannot connect. Server is not responding.";
-				}
-			}		
-			private String postUrl(String user_id, String tag) throws IOException {
 				String[] raw_response = {};	         
 				Map<String, String> params = new HashMap<String, String>();				   
-				params.put("userID", user_id);
-				params.put("tag", tag);
+				params.put("userID", urls[0]);
+				params.put("tag", urls[1]);
 				params.put("token", session.getToken());
 				
 				try {
@@ -170,7 +161,7 @@ public class StudentFragmentTab2 extends Fragment {
 				}
 				Streamer.disconnect();
 				return response;
-			}//END downloadUrl FUNCTION
+			}		
 		}//END ASYNC CLASS	
 
 }

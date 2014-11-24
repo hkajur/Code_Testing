@@ -12,6 +12,7 @@ import com.malan.cs490project.R;
 import NetworkClasses.Login;
 import NetworkClasses.Streamer;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayout;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,7 +37,9 @@ public class InstructorFragmentTab3 extends Fragment {
 	private Button submit;
 	private EditText question_in;
 	private EditText points_in;	
-	private LinearLayout responses;
+	private GridLayout responses;
+	RelativeLayout.LayoutParams RelativeLayoutParams;
+	RelativeLayout.LayoutParams RelativeLayoutParams2;
 	
 	public int points;
 	public String question;
@@ -51,7 +55,7 @@ public class InstructorFragmentTab3 extends Fragment {
         clear = (Button) view.findViewById(R.id.button2);
         question_in = (EditText) view.findViewById(R.id.QuestionText);
         points_in = (EditText) view.findViewById(R.id.points);
-        responses = (LinearLayout) view.findViewById(R.id.fragmentContainer);
+        responses = (GridLayout) view.findViewById(R.id.fragmentContainer);
 
         
         
@@ -67,54 +71,137 @@ public class InstructorFragmentTab3 extends Fragment {
 		    	fragmentTransaction = fragmentManager.beginTransaction();
 	            
 		    	if (text.equals("Multiple Choice")){
+		    		
 		    		responses.removeAllViews();
-		    		temp_placeholder=0;
+
+		    		GridLayout.Spec titleTxtSpecColumn = GridLayout.spec(0, GridLayout.BASELINE);
+		    		GridLayout.Spec titleTxtSpecRow = GridLayout.spec(0);
 		    		
-		    		EditText newText = new EditText(getActivity().getBaseContext());
-		    		temp_placeholder=newText.getId();
-		    		newText.setHint("Answer");
-		    		newText.setHintTextColor(Color.GREEN);
-		    		newText.setTextColor(Color.BLACK);
-		    		newText.setGravity(1);
-	    			responses.addView(newText);
+		    		EditText[] newText = new EditText[8];
 		    		
-	    			for(int i=0 ; i<3 ; i++){
-		    			newText = new EditText(getActivity().getBaseContext());
-		    			newText.setHint("Wrong " + i);
-		    			newText.setHintTextColor(Color.RED);
-		    			newText.setTextColor(Color.BLACK);
-		    			newText.setGravity(1);
-		    			temp_placeholder=newText.getId();
-		    			responses.addView(newText);
-		    		}	
+		    		newText[0] = (EditText) new EditText(getActivity().getBaseContext());
+		    		newText[0].setHint("Answer");
+		    		newText[0].setId(1);
+		    		newText[0].setHintTextColor(Color.GREEN);
+		    		newText[0].setTextColor(Color.BLACK);
+		    		newText[0].setGravity(1);
+		    		responses.addView(newText[0], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+
+		    		
+		    		titleTxtSpecColumn = GridLayout.spec(1, GridLayout.BASELINE);
+		    		titleTxtSpecRow = GridLayout.spec(0);
+		    		newText[1] = new EditText(getActivity().getBaseContext());
+		    		newText[1].setHint("Correct Reason");
+		    		newText[1].setHintTextColor(Color.GREEN);
+		    		newText[1].setTextColor(Color.BLACK);
+		    		newText[1].setGravity(1);
+		    		responses.addView(newText[1], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+
+		    		
+	    			int col = 0;
+	    			int row = 1;
+	    			int place = 2;
+		    		for(int i=0 ; i<3 ; i++){
+		    			col = 0;
+			    		titleTxtSpecColumn = GridLayout.spec(col, GridLayout.BASELINE);
+			    		titleTxtSpecRow = GridLayout.spec(row);
+
+		    			newText[place] = (EditText) new EditText(getActivity().getBaseContext());
+		    			newText[place].setHint("Wrong " + i);
+		    			newText[place].setId(2);
+		    			newText[place].setHintTextColor(Color.RED);
+		    			newText[place].setTextColor(Color.BLACK);
+		    			newText[place].setGravity(1);
+		    			temp_placeholder=newText[place].getId();
+		    			responses.addView(newText[place]);
+		    			
+		    			place++;
+		    			col++;
+		    			
+		    			newText[place] = new EditText(getActivity().getBaseContext());
+		    			newText[place].setHint("Wrong " + i + " reason");
+		    			newText[place].setId(2);
+		    			newText[place].setHintTextColor(Color.RED);
+		    			newText[place].setTextColor(Color.BLACK);
+		    			newText[place].setGravity(1);
+		    			temp_placeholder=newText[place].getId();
+		    			responses.addView(newText[place]);
+		    			place++;
+		    			row++;
+		    		}
+
+		    		
+	    				
 		    	}
 		    	else if (text.equals("True/False")){
 		    		responses.removeAllViews();
-		    		temp_placeholder=0;
 		    		
-		    		EditText newText = new EditText(getActivity().getBaseContext());
-		    		temp_placeholder=newText.getId();
-		    		newText.setHint("Answer");
-		    		newText.setHintTextColor(Color.GREEN);
-		    		newText.setTextColor(Color.BLACK);
-		    		newText.setGravity(1);
-	    			responses.addView(newText);
+		    		GridLayout.Spec titleTxtSpecColumn = GridLayout.spec(0, GridLayout.BASELINE);
+		    		GridLayout.Spec titleTxtSpecRow = GridLayout.spec(0);
 		    		
-	    			newText = new EditText(getActivity().getBaseContext());
-	    			newText.setHint("Wrong");
-	    			newText.setHintTextColor(Color.RED);
-	    			newText.setTextColor(Color.BLACK);
-	    			newText.setGravity(1);
-	    			temp_placeholder=newText.getId();
-	    			responses.addView(newText);	
+		    		EditText[] newText = new EditText[8];
+		    		
+		    		newText[0] = (EditText) new EditText(getActivity().getBaseContext());
+		    		newText[0].setHint("Answer");
+		    		newText[0].setId(1);
+		    		newText[0].setHintTextColor(Color.GREEN);
+		    		newText[0].setTextColor(Color.BLACK);
+		    		newText[0].setGravity(1);
+		    		responses.addView(newText[0], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+
+		    		
+		    		titleTxtSpecColumn = GridLayout.spec(1, GridLayout.BASELINE);
+		    		titleTxtSpecRow = GridLayout.spec(0);
+		    		newText[1] = new EditText(getActivity().getBaseContext());
+		    		newText[1].setHint("Correct Reason");
+		    		newText[1].setHintTextColor(Color.GREEN);
+		    		newText[1].setTextColor(Color.BLACK);
+		    		newText[1].setGravity(1);
+		    		responses.addView(newText[1], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+		    		
+		    		titleTxtSpecColumn = GridLayout.spec(0, GridLayout.BASELINE);
+		    		titleTxtSpecRow = GridLayout.spec(1);
+		    		
+		    		
+		    		newText[2] = (EditText) new EditText(getActivity().getBaseContext());
+		    		newText[2].setHint("Wrong");
+		    		newText[2].setId(1);
+		    		newText[2].setHintTextColor(Color.RED);
+		    		newText[2].setTextColor(Color.BLACK);
+		    		newText[2].setGravity(1);
+		    		responses.addView(newText[2], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+
+		    		
+		    		titleTxtSpecColumn = GridLayout.spec(1, GridLayout.BASELINE);
+		    		titleTxtSpecRow = GridLayout.spec(1);
+		    		newText[3] = new EditText(getActivity().getBaseContext());
+		    		newText[3].setHint("Wrong Reason");
+		    		newText[3].setHintTextColor(Color.RED);
+		    		newText[3].setTextColor(Color.BLACK);
+		    		newText[3].setGravity(1);
+		    		responses.addView(newText[3], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+
 		    	}
-		    	else if(text.equals("Fill in the blank")){
+		    	else if(text.equals("Short Answer")){
 		    		responses.removeAllViews();
-		    		temp_placeholder=0;
+
 		    	}
 		    	else{
 		    		responses.removeAllViews();
-		    		temp_placeholder=0;
+		    		for(int i=0 ; i<3 ; i++){
+		    			EditText newText = new EditText(getActivity().getBaseContext());
+		    			newText = new EditText(getActivity().getBaseContext());
+		    			newText.setHint("Input");
+		    			newText.setTextColor(Color.BLACK);
+		    			newText.setGravity(1);
+		    			responses.addView(newText);	
+		    		
+		    			newText = new EditText(getActivity().getBaseContext());
+		    			newText.setHint("Output");
+		    			newText.setTextColor(Color.BLACK);
+		    			newText.setGravity(1);
+		    			responses.addView(newText);
+		    		}
 		    	}
 		    	fragmentTransaction.commit();
 		    	
