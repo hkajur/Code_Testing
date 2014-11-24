@@ -1,4 +1,5 @@
 <?php
+
     if($_SERVER["REQUEST_METHOD"] == "POST"){
     
         $examID = $_POST["examID"];
@@ -11,7 +12,9 @@
         // Selects the database that you want to use
         $selectdb = mysql_select_db("caj9", $con);
 
-        $sql_query = "SELECT QuestionBank.QuestionID FROM QuestionBank, Exam WHERE QuestionBank.QuestionID = Exam.QuestionID AND QuestionBank.QuestionType = \"PM\" AND ExamID = " . $examID;
+        $sql_query = "SELECT QuestionBank.QuestionID FROM QuestionBank, Exam" 
+                    . " WHERE QuestionBank.QuestionID = Exam.QuestionID "
+                    . " AND QuestionBank.QuestionType = \"PM\" AND ExamID = " . $examID;
 
         $result = mysql_query($sql_query);
 
@@ -26,8 +29,7 @@
         $index = 0;
 
         while($row = mysql_fetch_assoc($result)){
-            $array["questionIDs"][$index] = $row["QuestionID"];
-            $index++;
+            $array["questionIDs"][$index++] = $row["QuestionID"];
         }
 
         echo json_encode($array);

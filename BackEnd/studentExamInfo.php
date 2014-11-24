@@ -13,7 +13,9 @@
         // Selects the database that you want to use
         $selectdb = mysql_select_db("caj9", $con);
 
-        $sql_query = "SELECT COUNT(*) AS NumRight FROM QuestionBank, StudentExamAnswers WHERE QuestionBank.Answer = StudentExamAnswers.Answer AND QuestionBank.QuestionID = StudentExamAnswers.QuestionID AND StudentExamAnswers.UserID = " . $userID . " AND StudentExamAnswers.ExamID = " . $examID;
+        //$sql_query = "SELECT COUNT(*) AS NumRight FROM QuestionBank, StudentExamAnswers WHERE QuestionBank.Answer = StudentExamAnswers.Answer AND QuestionBank.QuestionID = StudentExamAnswers.QuestionID AND StudentExamAnswers.UserID = " . $userID . " AND StudentExamAnswers.ExamID = " . $examID;
+        
+        $sql_query = "SELECT SUM(QuestionBank.Points) AS NumRight FROM QuestionBank, StudentExamAnswers WHERE QuestionBank.Answer = StudentExamAnswers.Answer AND QuestionBank.QuestionID = StudentExamAnswers.QuestionID AND StudentExamAnswers.UserID = " . $userID . " AND StudentExamAnswers.ExamID = " . $examID;
 
         $result = mysql_query($sql_query);
 
@@ -31,7 +33,8 @@
             $array["numCorrect"] = 0;
         }
     
-        $sql_query = "SELECT Count(QuestionID) AS TotalQuestions FROM Exam WHERE ExamID = " . $examID;
+        //$sql_query = "SELECT Count(QuestionID) AS TotalQuestions FROM Exam WHERE ExamID = " . $examID;
+        $sql_query = "SELECT SUM(QuestionBank.Points) AS TotalQuestions FROM Exam, QuestionBank WHERE QuestionBank.QuestionID = Exam.QuestionID AND ExamID = " . $examID;
 
         $result = mysql_query($sql_query);
 

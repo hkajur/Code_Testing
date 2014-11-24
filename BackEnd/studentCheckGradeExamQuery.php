@@ -82,10 +82,11 @@
                 if($str == "MC" || $str == "TF"){
                     $studentExam->exam[$index]->setComment($row["ChoiceComment"]);
                 }
-
+                
                 $studentExam->exam[$index]->checkCorrect();
-
+                
                 $index++;
+
         }
 
         $query = "SELECT QuestionBank.QuestionID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.Answer as correctAnswer, StudentExamAnswers.Answer as studentAnswer FROM QuestionBank, StudentExamAnswers WHERE QuestionBank.questionID = StudentExamAnswers.questionID AND QuestionBank.QuestionType = 'FB' AND ExamID = " . $examID . " AND StudentExamAnswers.userID = " . $userID;
@@ -112,6 +113,29 @@
                 $index++;
         }
 
+        $query = "SELECT QuestionBank.QuestionID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.Answer as correctAnswer, StudentExamAnswers.Answer as studentAnswer FROM QuestionBank, StudentExamAnswers WHERE QuestionBank.questionID = StudentExamAnswers.questionID AND QuestionBank.QuestionType = 'PM' AND ExamID = " . $examID . " AND StudentExamAnswers.userID = " . $userID;
+
+        $result = mysql_query($query);
+
+        if(!$result){
+            die(json_encode(array("Error" => "Result invalid")));
+        }
+
+
+        while($row = mysql_fetch_assoc($result)){
+
+                $studentExam->exam[$index] = 
+                        new questionInfo(
+                        $row["QuestionID"], 
+                        $row["Question"], 
+                        $row["QuestionType"], 
+                        $row["studentAnswer"], 
+                        $row["correctAnswer"]);
+                
+                $studentExam->exam[$index]->checkCorrect();
+
+                $index++;
+        }
         echo json_encode($studentExam);
 
         mysql_close($con);

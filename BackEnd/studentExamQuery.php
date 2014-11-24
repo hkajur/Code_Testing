@@ -55,7 +55,7 @@
         $con = mysql_connect("sql.njit.edu", "caj9", "qEpO163u6") 
                 or die(json_encode(array(
                     "accessExam" =>  "Failed",
-                    "Error" => "Mysql connection error")));
+                    "Error" => "Unable to make a mysql connection")));
                         
         // Selects the database that you want to use
         $selectdb = mysql_select_db("caj9", $con);
@@ -69,21 +69,27 @@
         if(!$result){
                 die(json_encode(array(
                     "accessExam" => "Failed",
-                    "Error" => "Invalid request")));
+                    "Error" => "Invalid Query to the Database")));
         }
 
         $row = mysql_fetch_assoc($result);
 
         $examName = $row["ExamName"];
 
+        if(empty($examName)){
+                die(json_encode(array(
+                    "accessExam" => "Failed",
+                    "Error" => "No such exam exists")));
+        }
+
         // Query that you want to run
         // In this case, we want to check if username and
         // password are valid again our database
         
         $sql_exam_ques = "SELECT Exam.ExamID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.QuestionID"
-                    . " FROM Exam, QuestionBank"
-                    . " WHERE Exam.QuestionID = QuestionBank.QuestionID"
-                    . " AND Exam.ExamID = " . urldecode($examID);
+                        . " FROM Exam, QuestionBank"
+                        . " WHERE Exam.QuestionID = QuestionBank.QuestionID"
+                        . " AND Exam.ExamID = " . urldecode($examID);
                 
 
         // Run the query and store the result into result variable
@@ -104,6 +110,9 @@
 
         if(mysql_num_rows($result) == 0){
             $exam->examID = null;    
+                die(json_encode(array(
+                    "accessExam" => "Failed",
+                    "Error" => "Invalid request")));
         }
 
         $index = 0;

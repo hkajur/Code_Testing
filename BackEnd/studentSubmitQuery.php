@@ -1,5 +1,36 @@
 <?php
 
+    function getProgrammingQuestions($examID){
+        
+        $ch = curl_init();
+
+        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/getProgramQuestionQuery.php";
+
+        $postfields = array("examID" => $examID);
+
+        curl_setopt($ch, CURLOPT_URL, $URL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, count($postfields));
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+
+        $page = curl_exec($ch); // make request
+
+        if(curl_errno($ch))
+            echo 'Curl error: ' . curl_error($ch);
+
+        return $page; 
+    }
+
+    function isProgrammingQuestion($val, $array){
+            
+        foreach($array as $key => $value)
+            if($value == $val)
+                return true;
+
+        return false;
+    }
+
     if($_SERVER["REQUEST_METHOD"] == "POST"){ 
 
         $json = file_get_contents('php://input');
@@ -22,9 +53,22 @@
 
         $userID = $obj["userID"];
         $examID = $obj["examID"];
+
+        $progQuestions = getProgrammingQuestions($examID);
         
+        $progJson = json_decode($progQuestions, true);
+
+        $progLst = $progJson["questionIDs"];
+
+
         foreach($obj["questionAnswer"] as $key => $val){
-                
+
+            $pQuestionID = ""; 
+            
+            if(isProgrammingQuestion($val["questionID"], $progLst)){
+                $pQuestionID = $val["questionID"];
+            }
+
             $insertExam = "INSERT INTO StudentExamAnswers (ExamID, QuestionID, UserID, Answer) " .
                         "VALUES ('" . $examID . "', '" . 
                         $val["questionID"] . "', '" . 
