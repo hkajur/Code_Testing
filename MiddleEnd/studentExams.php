@@ -32,7 +32,7 @@
                       'examID' => urlencode($examID),
                     );
 
-        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/studentExamQuery.php";
+        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/studentExamQuery.php";
 
         $ch = curl_init();
 
