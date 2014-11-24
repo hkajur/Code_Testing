@@ -32,6 +32,11 @@
                 $questionType = "MC";
                 $question = $_POST["question"];
                 $correct = $_POST["correct"];
+                $points = $_POST["points"];
+
+                if(empty($points))
+                    $points = 5;
+
                 $correctReason = $_POST["correct_reason"];
                 
                 $wrongAnswer1 = $_POST["wrongAnswer1"];
@@ -50,8 +55,8 @@
 
                 shuffle_assoc($array);
 
-                $sql_query = "INSERT INTO QuestionBank (Question, QuestionType, Answer) " .
-                             "VALUES ('" . $question . "', '" . $questionType . "', '" . $correct . "')";
+                $sql_query = "INSERT INTO QuestionBank (Question, QuestionType, Answer, Points) " .
+                             "VALUES ('" . $question . "', '" . $questionType . "', '" . $correct . "', '" . $points . "')";
 
                 $result = mysql_query($sql_query);
 
@@ -89,7 +94,8 @@
                 $questionType = "TF";
                 $question = $_POST["question"];
                 $correct = $_POST["correct"];
-                
+                $points = $_POST["points"];
+
                 $correctReason = $_POST["correct_reason"];
                 
                 $wrongAnswer1 = $_POST["wrongAnswer1"];
@@ -99,9 +105,12 @@
                         $wrongAnswer1 => $wrongReason1);
 
                 krsort($array);
+                
+                if(empty($points))
+                    $points = 2;
 
-                $sql_query = "INSERT INTO QuestionBank (Question, QuestionType, Answer) " .
-                             "VALUES ('" . $question . "', '" . $questionType . "', '" . $correct . "')";
+                $sql_query = "INSERT INTO QuestionBank (Question, QuestionType, Answer, Points) " .
+                             "VALUES ('" . $question . "', '" . $questionType . "', '" . $correct . "', '" . $points . "')";
 
                 $result = mysql_query($sql_query);
 
@@ -139,9 +148,13 @@
                 
                 $question = $_POST["question"];
                 $correct = $_POST["correct"];
+                $points = $_POST["points"];
 
-                $sql_query = "INSERT INTO QuestionBank (Question, QuestionType, Answer) " .
-                             "VALUES ('" . $question . "', '" . $questionType . "', '" . $correct . "')";
+                if(empty($points))
+                    $points = 10;
+               
+                $sql_query = "INSERT INTO QuestionBank (Question, QuestionType, Answer, Points) " .
+                             "VALUES ('" . $question . "', '" . $questionType . "', '" . $correct . "', '" . $points . "')";
 
                 $result = mysql_query($sql_query);
 
@@ -172,9 +185,28 @@
                             "Error" => "Input 1 can't be empty")));
                 }
                 
-                $sql_query = "INSERT INTO QuestionBank (Question, QuestionType, Answer) " .
-                             "VALUES ('" . $question . "', '" . $questionType . "', '" . $correct . "')";
+                $points = $_POST["points"];
+                
+                $temp = "";
 
+                $temp = $temp . "Input: " . $input1 . " Output: " . $output1 . ";";
+
+                $correct = "Some value";
+
+                if(empty($points))
+                        $points = 15;
+
+                if(!empty($input2) && !empty($output2))
+                    $temp = $temp . "Input: " . $input2 . " Output: " . $output2 . ";";
+                
+                if(!empty($input3) && !empty($output3))
+                        $temp = $temp . "Input: " . $input3 . " Output: " . $output3 . ";";
+
+                $correct = $temp;
+                
+                $sql_query = "INSERT INTO QuestionBank (Question, QuestionType, Answer, Points) " .
+                             "VALUES ('" . $question . "', '" . $questionType . "', '" . $correct . "', '" . $points . "')";
+                
                 $result = mysql_query($sql_query);
                 
                 if(!$result){
@@ -186,6 +218,7 @@
                 $lastQuestionID = mysql_insert_id();
 
                 $sql_query = "INSERT INTO programQuestions (QuestionID, Input, Output) VALUES ('" . $lastQuestionID . "', '" . $input1 . "', '" . $output1 . "')";
+
 
                 $result = mysql_query($sql_query);
                 if(!$result){

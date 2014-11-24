@@ -10,6 +10,30 @@
                 $this->examName = $name;
                 $this->grade = $gr;
         }
+
+        public function getExamID(){
+            return $examID;
+        }
+
+        private function setExamID($examID){
+            $this->examID = $examID;
+        }
+
+        public function getExamName(){
+            return $examName;
+        }
+        
+        private function setExamName($examName){
+            $this->examName = $examName;
+        }
+        
+        public function getGrade(){
+            return $grade;
+        }
+        
+        private function setGrade($grade){
+            $this->grade = $grade;
+        }
     }
 
     class gradeExamsInfo{

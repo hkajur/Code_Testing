@@ -37,7 +37,7 @@ question_type, question, correct, points
    Else if question_type == "ShortAnswer"
       NO additional post variables required
    Else if question_type == "Programming"
-      NO Additional post variables required
+      Additional Post Variables: input1, output1, input2, output2, input3, output3
 
 ```
 

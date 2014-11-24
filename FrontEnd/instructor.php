@@ -14,6 +14,10 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <title>Code Testing</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
 </head>
 <body>
 <!-- Start of Page -->
@@ -56,6 +60,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <div id="main">
 <div id="content">
 
+
 <div id="iPanel">
         <h1>Instructor Panel</h1><br>
         <p>Welcome instructor to Code Testing!<br><br>
@@ -64,7 +69,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
         To get started, select an option above.</p>
 </div>
 
-</div> 
+</div>
 </div> <!-- End of Main Content -->
 
 <div id="push">

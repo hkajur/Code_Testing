@@ -15,7 +15,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
-<body>
+<body id="takeE">
 <!-- Start of Page -->
 <div id="page">
 
@@ -29,8 +29,8 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 	
 	<div id="nav">
 		<ul id="navitems">
-			<li><a href="takeEx.php">Take Exam</a></li>
-			<li><a href="graded.php">Graded Exam</a></li>
+			<li><a href="takeEx.php" id="takeNav">Take Exam</a></li>
+			<li><a href="graded.php" id="gradedNav">Graded Exam</a></li>
 		</ul>
 	
 	</div>
@@ -68,8 +68,9 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 		//echo $listExam[exams][0][examName];
 		//$num = 1;
 		foreach($listExam[exams] as $p) {
-			
-			echo ' ' . '- ' . "<a href='exam.php?id=$p[examID]'>$p[examName]</a>" . "<br><br>";
+		
+			if($p["examTaken"] == "False")
+				echo ' ' . '- ' . "<a href='exam.php?id=$p[examID]'>$p[examName]</a>" . "<br><br>";
 
 
 		}

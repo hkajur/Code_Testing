@@ -43,12 +43,17 @@
             die(json_encode(array("Error" => curl_error($ch))));
         }
 
-        echo $page;
+        //echo $page;
 	
 	$json = json_decode($page, true);
 
 	if($json["examCreated"] == "Success"){
-		header("Location: createExam.php");
+		echo "<script>
+		alert('Exam Created!');
+		window.location.href='createExam.php';
+		</script>";	
+		//echo "<script>navigate(createExam.php')</script>";
+		//header("Location: createExam.php");
 	} else {
 
 	}

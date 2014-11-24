@@ -44,8 +44,17 @@ $id = $_GET['id'];
 <title>Code Testing</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/flick/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script>
+$(function() {
+    $( ".submits" ).button();
+});
+</script>
+
 </head>
-<body>
+<body id="takeE">
 <!-- Start of Page -->
 <div id="page">
 
@@ -59,7 +68,7 @@ $id = $_GET['id'];
 	
 	<div id="nav">
 		<ul id="navitems">
-			<li><a href="takeEx.php">Take Exam</a></li>
+			<li><a href="takeEx.php" id="takeNav">Take Exam</a></li>
 			<li><a href="graded.php">Graded Exam</a></li>
 		</ul>
 	
@@ -113,10 +122,12 @@ $id = $_GET['id'];
 				echo "<input type='radio' name='answer$p[questionID]' value='2'>".' '.$p[choices][1][choice]."<br><br>";
 			} else if ($p[question_type] == "FB") {
 				echo "<input type='text' name='answer$p[questionID]' value=''><br><br>";
+			} else if ($p[question_type] == "PM") {
+			  	echo "<textarea name='answer$p[questionID]' rows='15' cols='80'></textarea><br><br>";
 			}
 		}
 		?>
-	<input type="submit" value="Submit Exam" />
+	<input class="submits" type="submit" value="Submit Exam" /><br><br>
 	</form>
 </div>
 

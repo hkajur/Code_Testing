@@ -14,8 +14,18 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <title>Code Testing</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/flick/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script>
+$(function() {
+    var spinner = $( "#spinner" ).spinner();
+    $( ".submits" ).button();
+});
+</script>
+
 </head>
-<body>
+<body id="createQ">
 <!-- Start of Page -->
 <div id="page">
 
@@ -29,7 +39,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
         <div id="nav">
                 <ul id="navitems">
-                        <li><a href="createQ.php">Create Questions</a></li>
+                        <li><a href="createQ.php" id="createNav">Create Questions</a></li>
                         <li><a href="createExam.php">Create Exam</a></li>
 			<li><a href="release.php">Release Grades</a></li>
                 </ul>
@@ -63,21 +73,28 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
 <div id="iPanel">
         <h1>Create Question</h1><br>
-	
+	<p>Multiple Choice</p><br>
+
 	<form action="MCSubmit.php" method="post">
 	
-	Question: <input type="text" name="question" value=""><br>
-	Correct Answer: <input type="text" name="correct" value=""><br>
-	Correct Reason: <input type="text" name="correct_reason" value=""><br>
-	Wrong Answer 1: <input type="text" name="wrongAnswer1" value=""><br>
-	Wrong Reason 1: <input type="text" name="wrongReason1" value=""><br>
-	Wrong Answer 2: <input type="text" name="wrongAnswer2" value=""><br>
-	Wrong Reason 2: <input type="text" name="wrongReason2" value=""><br>
-	Wrong Answer 3: <input type="text" name="wrongAnswer3" value=""><br>
-	Wrong Reason 3: <input type="text" name="wrongReason3" value=""><br>
-
-
-	<input type="submit" value="Submit">
+	<div class="Qinput">
+	Question: <input type="text" name="question" value="" required><br>
+	Correct Answer: <input type="text" name="correct" value="" required><br>
+	Correct Reason: <input type="text" name="correct_reason" value="" required><br>
+	Wrong Answer 1: <input type="text" name="wrongAnswer1" value="" required><br>
+	Wrong Reason 1: <input type="text" name="wrongReason1" value="" required><br>
+	Wrong Answer 2: <input type="text" name="wrongAnswer2" value="" required><br>
+	Wrong Reason 2: <input type="text" name="wrongReason2" value="" required><br>
+	Wrong Answer 3: <input type="text" name="wrongAnswer3" value="" required><br>
+	Wrong Reason 3: <input type="text" name="wrongReason3" value="" required><br><br>
+	</div>
+	
+	<p>
+	<label for="spinner">Points:</label>
+	<input id="spinner" name="points">
+	</p><br>
+	
+	<input class="submits" type="submit" value="Submit"><br>
 
 	<?php
 	//<form action="created.php" method="post">
@@ -112,9 +129,3 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 </div> <!-- End of Footer -->
 </body>
 </html>
-
-spell: Command not found.
-
-spell: Command not found.
-
-spell: Command not found.

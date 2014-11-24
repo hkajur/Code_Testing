@@ -14,8 +14,17 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <title>Code Testing</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/flick/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script>
+$(function() {
+    var spinner = $( "#spinner" ).spinner();
+    $( ".submits" ).button();
+});
+</script>
 </head>
-<body id="release">
+<body id="createQ">
 <!-- Start of Page -->
 <div id="page">
 
@@ -30,9 +39,9 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
         <div id="nav">
                 <ul id="navitems">
                         <li><a href="createQ.php" id="createNav">Create Questions</a></li>
-                        <li><a href="createExam.php" id="createExamNav">Create Exam</a></li>
-                        <li><a href="release.php" id="releaseNav">Release Grades</a></li>
-		</ul>
+                        <li><a href="createExam.php">Create Exam</a></li>
+			<li><a href="release.php">Release Grades</a></li>
+                </ul>
 
         </div>
                 <div id="logout">
@@ -58,34 +67,36 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
 
 <!-- Start of Main Content -->
+<div id="main">
 <div id="content">
 
-<div id="sPanel">
-	<h1>Exams to Release</h1><br>
-	<p>Please select an exam to release</p><br>
+<div id="iPanel">
+        <h1>Create Question</h1><br>
+        <p>Fill in the Blank</p><br>
 	
-	<div id="examRelease">
-	<?php
-		$listExam = $_SESSION["exams"];
-		//echo $listExam[exams][0][examName];
-		//$num = 1;
-		foreach($listExam[exams] as $p) {
-	
-			if($p[examReleased] == "False"){
-				echo ' ' . '- ' . "<a href='releaseExam.php?id=$p[examID]'>$p[examName]</a> ";
-				echo $p[examReleased];
-			} else {
-				echo ' ' . '- ' . "<a>$p[examName] </a>";
-				echo $p[examReleased];
-			}
+	<form action="FBSubmit.php" method="post">
+	<div class="Qinput">	
+	Question: <input type="text" name="question" value="" required><br>
+	Correct Answer: <input type="text" name="correct" value="" required><br><br>
+	<p>
+  	<label for="spinner">Points:</label>
+  	<input id="spinner" name="points"><br>
+	</p><br>
 
-			echo "<br><br>";
-		}
-	?>
+	<input class="submits" type="submit" value="Submit"><br>
 	</div>
+
+	<?php
+	//<form action="created.php" method="post">
+	//	<input type="text" name="newQ" value=""><br><br>
+
+	?>
+
+	</form>
 </div>
 
 </div> 
+</div> <!-- End of Main Content -->
 
 <div id="push">
 </div>

@@ -18,6 +18,7 @@
                 $question = rec_input($_POST["question"]);
                 $correct = rec_input($_POST["correct"]);
                 $correctReason = rec_input($_POST["correct_reason"]);
+                $points = rec_input($_POST["points"]);
                 
                 $wrongAnswer1 = rec_input($_POST["wrongAnswer1"]);
                 $wrongReason1 = rec_input($_POST["wrongReason1"]);
@@ -32,6 +33,7 @@
                         'question_type' => $question_type,
                         'question' => $question,
                         'correct' => $correct,
+                        'points' => $points,
                         'correct_reason' => $correctReason,
                         'wrongAnswer1' => $wrongAnswer1,
                         'wrongReason1' => $wrongReason1,
@@ -47,7 +49,8 @@
                 $question = rec_input($_POST["question"]);
                 $correct = rec_input($_POST["correct"]);
                 $correctReason = rec_input($_POST["correct_reason"]);
-                
+                $points = rec_input($_POST["points"]);
+
                 $wrongAnswer1 = rec_input($_POST["wrongAnswer1"]);
                 $wrongReason1 = rec_input($_POST["wrongReason1"]);
 
@@ -55,6 +58,7 @@
                         'question_type' => $question_type,
                         'question' => $question,
                         'correct' => $correct,
+                        'points' => $points,
                         'correct_reason' => $correctReason,
                         'wrongAnswer1' => $wrongAnswer1,
                         'wrongReason1' => $wrongReason1);
@@ -64,10 +68,12 @@
                 
                 $question = rec_input($_POST["question"]);
                 $correct = rec_input($_POST["correct"]);
+                $points = rec_input($_POST["points"]);
                 
                 $postfields = array(
                         'question_type' => $question_type,
                         'question' => $question,
+                        'points' => $points,
                         'correct' => $correct);
 
                 break;
@@ -81,10 +87,12 @@
                 $output1 = rec_input($_POST["output1"]);
                 $output2 = rec_input($_POST["output2"]);
                 $output3 = rec_input($_POST["output3"]);
-
+                $points = rec_input($_POST["points"]);
+                
                 $postfields = array(
                         'question_type' => $question_type,
                         'question' => $question,
+                        'points' => $points,
                         'input1' => $input1,
                         'input2' => $input2,
                         'input3' => $input3,

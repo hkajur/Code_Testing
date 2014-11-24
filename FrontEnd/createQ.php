@@ -14,8 +14,18 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <title>Code Testing</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/flick/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+<script>
+  $(function() {
+    $( "#radio" ).buttonset();
+    $( ".submits" ).button();
+  });
+</script>
 </head>
-<body>
+<body id="createQ">
 <!-- Start of Page -->
 <div id="page">
 
@@ -29,9 +39,9 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
         <div id="nav">
                 <ul id="navitems">
-                        <li><a href="createQ.php">Create Questions</a></li>
-                        <li><a href="createExam.php">Create Exam</a></li>
-			<li><a href="release.php">Release Grades</a></li>
+                        <li><a href="createQ.php" id="createNav">Create Questions</a></li>
+                        <li><a href="createExam.php" id="createExamNav">Create Exam</a></li>
+			<li><a href="release.php" id="releaseNav">Release Grades</a></li>
                 </ul>
 
         </div>
@@ -63,13 +73,17 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
 <div id="iPanel">
         <h1>Create Question</h1><br>
-        <p>Select question type<br>
+        <h3>Select question type</h3><br>
 	
 	<form action="Qtype.php" method="post">
-	<input type="radio" name="type" value="MC">Multiple Choice<br>
-	<input type="radio" name="type" value="TF">True or False<br>
-	<input type="radio" name="type" value="FB">Fill in the Blank<br>
-	<input type="submit" value="Submit">
+	<div id="radio">
+	<input type="radio" id="radio1" name="type" value="MC"><label for="radio1">Multiple Choice</label><br>
+	<input type="radio" id="radio2" name="type" value="TF"><label for="radio2">True or False</label><br>
+	<input type="radio" id="radio3" name="type" value="FB"><label for="radio3">Fill in the Blank</label><br>
+	<input type="radio" id="radio4" name="type" value="PM"><label for="radio4">Programming</label><br>
+	</div>
+	<br>
+	<input class="submits" type="submit" value="Submit">
 
 	<?php
 	//<form action="created.php" method="post">

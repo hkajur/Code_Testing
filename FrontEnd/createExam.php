@@ -14,8 +14,20 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <title>Code Testing</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/flick/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+<script>
+	$(function() {
+		$( "#tabs" ).tabs({
+		});
+		$( ".submits" ).button();
+	});
+</script>
+
 </head>
-<body>
+<body id="createE">
 <!-- Start of Page -->
 <div id="page">
 
@@ -29,10 +41,10 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
         <div id="nav">
                 <ul id="navitems">
-                        <li><a href="createQ.php">Create Questions</a></li>
-                        <li><a href="createExam.php">Create Exam</a></li>
-			<li><a href="release.php">Release Grades</a></li>
-                </ul>
+			<li><a href="createQ.php" id="createNav">Create Questions</a></li>
+			<li><a href="createExam.php" id="createExamNav">Create Exam</a></li>
+			<li><a href="release.php" id="releaseNav">Release Grades</a></li>
+		</ul>
 
         </div>
                 <div id="logout">
@@ -63,11 +75,12 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
 <div id="iPanel">
         <h1>Create Exam</h1><br>
+
+	<form id="examForm" action="teacherCreateExam.php" method="post">
+	<h3>Exam Name</h3>
+	<input id="examName" type="text" name="examName" value="" required><br><br>
 	
-	<form action="teacherCreateExam.php" method="post">
-	Exam Name: <input type="text" name="examName" value=""><br><br>
 	<?php
-	
         $ch = curl_init();
 	$userID = "5";
         $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/allQuestions.php";
@@ -85,14 +98,71 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
         }
 	$json = json_decode($page, true);
 	
-	foreach($json["questions"] as $key => $value){
-		$questionID = $value["questionID"];
-		$question = $value["question"];
-		echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
-		echo "<br />";
-	}
 	?>
-	<input type="submit" value="Submit">
+
+	<div id="tabs">
+		<ul>
+			<li><a href="#tabs-1">Multiple Choice</a><li>
+			<li><a href="#tabs-2">Fill in the Blank</a><li>
+			<li><a href="#tabs-3">True or False</a><li>
+			<li><a href="#tabs-4">Programming</a><li>
+		</ul>
+
+		<div id="tabs-1">
+			<?php
+			foreach($json["questions"] as $key => $value){
+				$questionID = $value["questionID"];
+				$question = $value["question"];
+				$questionType = $value["questionType"];
+				if ($questionType == "MC") {
+					echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\"> $question";
+					echo "<br>";
+				}
+			} ?>
+		</div>
+
+		<div id="tabs-2">
+                	<?php
+                        foreach($json["questions"] as $key => $value){
+                                $questionID = $value["questionID"];
+                                $question = $value["question"];
+                                $questionType = $value["questionType"];
+                                if ($questionType == "FB") {
+                                        echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
+                                        echo "<br>";
+                                } 
+                        } ?>
+                </div>
+
+		<div id="tabs-3">
+                	<?php
+                        foreach($json["questions"] as $key => $value){
+                                $questionID = $value["questionID"];
+                                $question = $value["question"];
+                                $questionType = $value["questionType"];
+                                if ($questionType == "TF") {
+                                        echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
+                                        echo "<br>";
+                                } 
+                        } ?>
+                </div>
+
+		<div id="tabs-4">
+                        <?php
+                        foreach($json["questions"] as $key => $value){
+                                $questionID = $value["questionID"];
+                                $question = $value["question"];
+                                $questionType = $value["questionType"];
+                                if ($questionType == "PM") {
+                                        echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
+                                        echo "<br>";
+                                } 
+                        } ?>
+                </div>
+	</div>	
+	<br>
+
+	<input class="submits" type="submit" value="Create Exam"><br><br>
 
 	<?php
 	//<form action="created.php" method="post">

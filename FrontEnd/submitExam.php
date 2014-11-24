@@ -5,7 +5,7 @@
 		//$num = count($_POST);
 		//echo $num;
 		$examID = $_SESSION["examID"];
-		$userID = 5;
+		$userID = $_SESSION["userpid"];
 		$answer = $_POST["answer"];
 
 		$finalArray = array("examID" => $examID,
@@ -69,12 +69,17 @@
 	
 	$json = json_decode($page, true);
 
-	if($json["examSubmit"] == "Success")
-		header("Location: student.php");
-	else
+	if($json["examSubmit"] == "Success") {
+		echo "<script>
+                alert('Exam Submitted!');
+                window.location.href='student.php';
+                </script>";	
+		//header("Location: student.php");
+	} else {
 		header("Location: exam.php");
+	}
 
-	echo $page;
+	//echo $page;
 
 	} else {
 		die("ERROR: Page must be posted");

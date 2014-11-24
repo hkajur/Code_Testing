@@ -54,7 +54,7 @@
         $con = mysql_connect("sql.njit.edu", "caj9", "qEpO163u6") 
                 or die(json_encode(array(
                     "Backend_Login" =>  "Failed",
-                    "Error" => "Mysql connection error")));
+                    "Error" => "Unable to connect to the database")));
                         
         // Selects the database that you want to use
         $selectdb = mysql_select_db("caj9", $con);
