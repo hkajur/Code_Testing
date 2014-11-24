@@ -132,6 +132,12 @@ public class StudentExamSql {
 		return null;
 	}
 //--------------------------------------------------------------------------------------------------------------
+	public boolean removeExam(String id){
+		Log.i("StudentExamSql", "Exam deleted");
+		boolean done = database.delete(StudentExamSqlDatabase.CURRENT_STUDENT_EXAMS, StudentExamSqlDatabase.EXAM_ID + "=" + id, null) > 0;
+		return done;
+	}	
+//--------------------------------------------------------------------------------------------------------------
 	public String[] getSingleExam(ExamObject exam){
 		String[] temp = {exam.getId(), exam.getName()};
 		return temp;

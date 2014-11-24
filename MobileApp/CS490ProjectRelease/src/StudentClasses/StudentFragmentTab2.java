@@ -1,32 +1,38 @@
 package StudentClasses;
 
+import com.malan.cs490project.AppProfile;
+import com.malan.cs490project.ExamInProgress;
+import com.malan.cs490project.ExamReview;
 import com.malan.cs490project.R;
 
 import android.support.v4.app.Fragment;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.malan.cs490project.CurrentExamAdapter;
 
 import ExamQuestionClasses.ExamObject;
 import NetworkClasses.Login;
-import SqlClasses.StudentExamSql;
+import NetworkClasses.Streamer;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,8 +43,14 @@ public class StudentFragmentTab2 extends Fragment {
 	View view;
 	LinearLayout layout;
 	ListView listview;
-	ExamObject single_exam;
-	private StudentExamSql StudentExamsSql;
+	AppProfile creds;
+	String userID;
+	String examID;
+	String response="";
+	String JSON;
+	JSONObject JSON_OBJECT;
+	JSONArray JSON_ARRAY;
+	ExamObject single_exam;	
 	private static List<ExamObject> list_exams = new ArrayList<ExamObject>();		
 	public static Login session = new Login();	
 	AdapterView.AdapterContextMenuInfo info;	
@@ -47,11 +59,31 @@ public class StudentFragmentTab2 extends Fragment {
 		
         View view = inflater.inflate(R.layout.fragment_student_tab2, container, false);
         
-        StudentExamsSql = new StudentExamSql(getActivity());
-        StudentExamsSql.open();
+        creds = new AppProfile(getActivity().getBaseContext());
+        userID = creds.getValue(AppProfile.PREF_ID);
+        AsyncTask<String, Void, String> thread_response = new GettingQuestions().execute(creds.getValue(AppProfile.PREF_ID),"gradedExams");
 		
-		list_exams = StudentExamsSql.getReleasedExams();
-
+		try 
+    	{
+			JSON_OBJECT = new JSONObject(thread_response.get().toString());
+			JSON_ARRAY = new JSONArray(JSON_OBJECT.get("exams").toString());
+			for(int i = 0; i < JSON_ARRAY.length(); i++)
+			{				
+				single_exam = new ExamObject();
+				single_exam.setId(JSON_ARRAY.getJSONObject(i).getString("examID"));
+				single_exam.setName(JSON_ARRAY.getJSONObject(i).getString("examName"));
+				single_exam.setGrade(JSON_ARRAY.getJSONObject(i).getString("examName"));
+				list_exams.add(single_exam);
+			}
+		}
+    	catch (JSONException e) 
+		{
+			Log.w("JSON PARSING ERROR", "Imported JSON String can't be converted to JSON object");
+			e.printStackTrace();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		} 
+    	
 		layout = (LinearLayout) view;				
 		listview = (ListView) view.findViewById(R.id.listView1);		    
 		if(list_exams.size()!=0){
@@ -73,64 +105,23 @@ public class StudentFragmentTab2 extends Fragment {
 		}
 		
 		registerForContextMenu(listview);
+		
+    	listview.setOnItemClickListener(new OnItemClickListener() {
+    		public void onItemClick(AdapterView<?> parent, View view,int position, long id) 
+    	    {   
+    			ExamObject temp = list_exams.get(position);
 
-        
+    			//pass exam id and user id
+    			
+    			Intent intent = new Intent(getActivity().getBaseContext(),ExamReview.class);    			 	
+    			intent.putExtra("EXAM_ID", temp.getId());
+				startActivity(intent);
+    	    }
+    	});
+
+		
         return view;
 
-		/*
-		
-		view = inflater.inflate(R.layout.fragment_student_tab2, container, false);
-
-    	Bundle args = getArguments();
-    	Student_JSON = args.getString("STUDENT_JSON");
-    	
-
-    	
-    	try 
-    	{
-			examArray = new JSONArray(Student_JSON);
-			for(int i = 0; i < examArray.length(); i++)
-			{
-				if(examArray.getJSONObject(i).getString("examTaken").equals("False")){
-					exams = new ExamObject();
-					exams.setId(examArray.getJSONObject(i).getString("examID"));
-					exams.setName(examArray.getJSONObject(i).getString("examName"));	
-				}				
-				list.add(exams);
-			}
-			
-			layout = (LinearLayout) view;				
-			listview = (ListView) view.findViewById(R.id.listView1);
-			
-			listview.setAdapter(new CurrentExamAdapter(list, getActivity().getBaseContext()));
-			
-
-		    
-		    registerForContextMenu(listview);		    
-		    listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		}
-    	catch (JSONException e) 
-		{
-			Log.w("JSON PARSING ERROR", "Imported JSON String can't be converted to JSON object");
-			e.printStackTrace();
-		}
-    	
-		if(list.size()!=0){
-			listview.setAdapter(new CurrentExamAdapter(list, getActivity().getBaseContext()));
-		}
-		else{
-			TextView tv = new TextView(container.getContext());
-            tv.setBackgroundResource(R.drawable.exam_background);
-            tv.setPadding(15, 10, 10, 15);
-            tv.setTextSize(15);
-            tv.setText("No Past Exams");
-            tv.setGravity(Gravity.CENTER);
-            layout.addView(tv);        	
-		}
-    	
-    	
-		return view;
-		*/		
 	}
 	
 	@Override
@@ -147,4 +138,39 @@ public class StudentFragmentTab2 extends Fragment {
 	public void onDestroyView(){
 		super.onDestroyView();
 	}
+
+	//######################################################################################################	
+		private class GettingQuestions extends AsyncTask<String, Void, String> {
+			@Override
+			protected String doInBackground(String... urls) 
+			{
+				try {
+					return postUrl(urls[0],urls[1]);
+				}
+				catch (IOException e){
+					return "Cannot connect. Server is not responding.";
+				}
+			}		
+			private String postUrl(String user_id, String tag) throws IOException {
+				String[] raw_response = {};	         
+				Map<String, String> params = new HashMap<String, String>();				   
+				params.put("userID", user_id);
+				params.put("tag", tag);
+				params.put("token", session.getToken());
+				
+				try {
+					Streamer.sendPostRequest(session.getURL(), params);
+					raw_response = Streamer.readMultipleLinesRespone();
+				} catch (IOException ex) {
+					Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
+					ex.printStackTrace();
+				}
+				for(String i : raw_response){
+					response+=i;
+				}
+				Streamer.disconnect();
+				return response;
+			}//END downloadUrl FUNCTION
+		}//END ASYNC CLASS	
+
 }

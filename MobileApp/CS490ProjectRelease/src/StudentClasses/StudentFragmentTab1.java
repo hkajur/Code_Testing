@@ -4,9 +4,7 @@ import com.malan.cs490project.ExamInProgress;
 import com.malan.cs490project.R;
 
 import android.support.v4.app.Fragment;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,26 +14,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import com.malan.cs490project.CurrentExamAdapter;
 
 import ExamQuestionClasses.ExamObject;
 import NetworkClasses.Login;
 import SqlClasses.StudentExamSql;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 
 public class StudentFragmentTab1 extends Fragment {
@@ -75,7 +63,7 @@ public class StudentFragmentTab1 extends Fragment {
             tv.setTextSize(15);
             tv.setText("No Outstanding Exams");
             tv.setGravity(Gravity.CENTER);
-            layout.addView(tv);        	
+            layout.addView(tv); 
 		}
 		
 		registerForContextMenu(listview);
@@ -98,17 +86,26 @@ public class StudentFragmentTab1 extends Fragment {
 	}
 	
 	@Override
+	public void onResume() {
+		StudentExamsSql.open();	
+		super.onResume();
+	} 
+
+	@Override
 	public void onStop() {
-	    super.onStop();
+		StudentExamsSql.close();
+		super.onStop();
 	} 
 	
 	@Override
 	public void onPause(){
+		StudentExamsSql.close();
 		super.onPause();
 	}
 	
 	@Override
 	public void onDestroyView(){
+		StudentExamsSql.close();
 		super.onDestroyView();
 	}
 }

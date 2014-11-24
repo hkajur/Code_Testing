@@ -154,7 +154,6 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 					} catch (InterruptedException | ExecutionException e) {
 						e.printStackTrace();
 					}
-//                    Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " submitted", Toast.LENGTH_SHORT).show();
                     
                     // Close CAB
                     mode.finish();

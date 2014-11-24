@@ -7,9 +7,9 @@ import android.support.v4.app.FragmentPagerAdapter;
  
 public class ViewPagerAdapterStudent extends FragmentPagerAdapter {
  
-	final int PAGE_COUNT = 3;
+	final int PAGE_COUNT = 2;
     // Tab Titles
-    private String tabtitles[] = new String[] { "Outstanding", "Past Exams", "Profile" };
+    private String tabtitles[] = new String[] { "Outstanding", "Past Exams" };
     Context context;
  
     public ViewPagerAdapterStudent(FragmentManager fm) {
@@ -36,10 +36,11 @@ public class ViewPagerAdapterStudent extends FragmentPagerAdapter {
         	StudentFragmentTab2 fragmenttab2 = new StudentFragmentTab2();
             return fragmenttab2;
  
-            // Open FragmentTab3.java
+            /* Open FragmentTab3.java USELESS
         case 2:
         	StudentFragmentTab3 fragmenttab3 = new StudentFragmentTab3();
             return fragmenttab3;
+            */
         }
         return null;
     }
