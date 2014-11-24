@@ -13,8 +13,11 @@
 		} else if ($type == 'TF'){
 			header ('Location: TFcreate.php');
 		} else if ($type == 'FB'){
-			header ('Location: SAcreate.php');
-		}
+			header ('Location: FBcreate.php');
+		} else if ($type == 'PM'){
+                        header ('Location: PMcreate.php');
+                }
+
 
 
 

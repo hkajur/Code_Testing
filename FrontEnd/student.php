@@ -19,55 +19,41 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <!-- Start of Page -->
 <div id="page">
 
-<!-- Start of Header -->
-<div id="header">
+	<!-- Start of Header -->
+	<div id="header">
     
         <!-- Start of Logo -->
         <div id="logos">
         	<a href="student.php"><p>Code Testing</p></a>
         </div><!-- End of Logo -->
-	
 	<div id="nav">
 		<ul id="navitems">
 			<li><a href="takeEx.php">Take Exam</a></li>
 			<li><a href="graded.php">Graded Exam</a></li>
 		</ul>
-	
 	</div>
 	        <div id="logout">
                 <a href="logout.php"><input type="submit" value="Log out" /></a>
         </div>
-	
      	<!-- Start of Welcome Div -->
     	<div id="welcome">
-
-	<?php 
+		<?php 
 			echo "Welcome " . $_SESSION["user"];
 			echo " (logged in)";
-	?>
-
+		?>
 	</div> <!-- End of Welcome Div -->
+	</div> <!-- End of Header -->
 
-</div> <!-- End of Header -->
-
-<!-- Start of Main Content -->
-<div id="main">
-<div id="content">
-
-<div id="sPanel">
-	<h1>Student Panel</h1><br>
-	<p>Welcome student to Code Testing!<br><br>
-	Test and improve your programming knowledge by taking tests made by your instructors.<br>
-	Once your test has been graded, it will appear in the graded tests tab in our menu for you to review<br><br>
-	To get started, select an option above. Good luck!</p>
-</div>
-
-</div> 
-</div> <!-- End of Main Content -->
-
-<div id="push">
-</div>
-
+	<!-- Start of Main Content -->
+	<div id="content">
+	<div id="sPanel">
+		<h1>Student Panel</h1><br>
+		<p>Welcome student to Code Testing!<br><br>
+		Test and improve your programming knowledge by taking tests made by your instructors.<br>
+		Once your test has been graded, it will appear in the graded tests tab in our menu for you to review<br><br>
+		To get started, select an option above. Good luck!</p>
+	</div>
+	</div> <!-- End of Content --> 
 </div> <!-- End of Page -->
 
 <!-- Start of Footer -->

@@ -1,12 +1,14 @@
 <?php
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-		$question_type = "TrueFalse";
+		$question_type = "Programming";
 		$question = $_POST["question"];
-		$correct = $_POST["correct"];
-		$correct_reason = $_POST["correct_reason"];
-		$wrongAnswer1 = $_POST["wrongAnswer1"];
-		$wrongReason1 = $_POST["wrongReason1"];
+		$input1 = $_POST["input1"];
+		$output1 = $_POST["output1"];
+		$input2 = $_POST["input2"];
+                $output2 = $_POST["output2"];
+		$input3 = $_POST["input3"];
+                $output3 = $_POST["output3"];
 		$points = $_POST["points"];
 
 		$ch = curl_init();
@@ -15,13 +17,15 @@
 		     $postfields = array(
                         'question_type' => $question_type,
                         'question' => $question,
-                        'correct' => $correct,
-                        'correct_reason' => $correct_reason,
-                        'wrongAnswer1' => $wrongAnswer1,
-                        'wrongReason1' => $wrongReason1,
+                        'input1' => $input1,
+                        'output1' => $output1,
+			'input2' => $input2,
+                        'output2' => $output2,
+			'input3' => $input3,
+                        'output3' => $output3,
 			'points' => $points);
 
-	  curl_setopt($ch, CURLOPT_URL, $URL);
+	curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, count($postfields));
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);

@@ -1,12 +1,10 @@
 <?php
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-		$question_type = "TrueFalse";
+		$question_type = "ShortAnswer";
 		$question = $_POST["question"];
 		$correct = $_POST["correct"];
 		$correct_reason = $_POST["correct_reason"];
-		$wrongAnswer1 = $_POST["wrongAnswer1"];
-		$wrongReason1 = $_POST["wrongReason1"];
 		$points = $_POST["points"];
 
 		$ch = curl_init();
@@ -17,11 +15,9 @@
                         'question' => $question,
                         'correct' => $correct,
                         'correct_reason' => $correct_reason,
-                        'wrongAnswer1' => $wrongAnswer1,
-                        'wrongReason1' => $wrongReason1,
-			'points' => $points);
+                        'points' => $points);
 
-	  curl_setopt($ch, CURLOPT_URL, $URL);
+	curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, count($postfields));
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -43,7 +39,7 @@
                 window.location.href='createQ.php';
                 </script>";	
 		//header("Location: createQ.php");
-	}
+	} 
 	
 	} else {
 		die("Error");

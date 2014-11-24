@@ -1,8 +1,10 @@
 <?php
+	session_start();
 
-	$userID = 11;
+	$userID = $_SESSION["userpid"];
 	$examID = $_GET['id'];
 	echo $examID;
+	echo "User ID " . $userID;
   	$URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/releaseExam.php";
                 
         $ch = curl_init();
@@ -16,13 +18,13 @@
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
 
-	echo "UserID: " . $userID;
+	//echo "UserID: " . $userID;
 	$page = curl_exec($ch);
 
         if(curl_errno($ch)){
             die(json_encode(array("Error" => curl_error($ch))));
         }
-  	
-	echo $page;
+	header("Location: release.php");
+	//echo $page;
         curl_close($ch);
 ?>

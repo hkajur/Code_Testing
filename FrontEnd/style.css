@@ -2,18 +2,35 @@
  * Home page style css
  */
 
-
 *{
     margin: 0;
     padding: 0;
 }
 
-html, body{
-    height: 100%;
+//html, body{
+//	height: 100%;
+//}
+
+html {
+	position: relative;
+	min-height; 100%;
+}
+
+body { margin-bottom: 50px; }
+
+:link {
+        color: #008CBA;
+}
+
+a:visited {
+        color: #008CBA;
+}
+
+.ui-widget {
+	font-size: 90% !important;
 }
 
 #page{
-
     min-height: 100%;
     height: auto !important;
     height: 100%;
@@ -21,17 +38,18 @@ html, body{
 }
 
 body {
-    background: #1d1d1d;
+    //background: #2A4D69;
+    background: #dedede;
 }
 
 /* Start of Header Div */
 
 #header {
-    background: #303030;
-    color: #FFFFFF;
+    //border: 1px solid red;
+    background: #2A4D69;
     height: 100px;
-    position: fixed; 
-    width: 100%; 
+    margin: 0;
+    padding: 0;
 }
 
 #header a {
@@ -40,13 +58,14 @@ body {
 
 #logos {
 	float: left;
-	margin-top: 35px;
+	margin-top: 55px;
 	margin-left: 30px;
-	color: #ebebeb;
+	//background-color: #ebebeb;
 }
 
 #logos p {
-	color: #ebebeb;
+	//color: #ebebeb;
+	color: #ffffff;
 	font-family: Garamond, "Times New Roman", serif;
 	font-size: 34px;
 	font-weight: 500;
@@ -54,8 +73,8 @@ body {
 
 #nav {
 	float: left;
-	margin-top: 40px;
-	margin-left: 30px;
+	margin-top: 60px;
+	margin-left: 40px;
 }
 
 ul {
@@ -64,20 +83,44 @@ ul {
 
 #nav li{
 	float: left;
-	margin-left: 30px;
 }
 
 #nav li a {
-	color: #ebebeb;
+	color: #ffffff;
 	font-family: Garamond, "Times New Roman", serif;
 	font-size: 20px;
+	padding: 10px;
+}
+
+
+#nav li a:hover {
+	//border: 1px solid red;
+	//border-bottom: 2px solid #8d8d8d;
+}
+
+#nav li a:focus {
+//	background-color: red;
+}
+
+body#createQ a#createNav,
+body#createE a#createExamNav,
+body#release a#releaseNav,
+body#graded a#gradedNav,
+body#takeE a#takeNav {
+	padding: 10px;
+	padding-bottom: 38px;
+	background: #dedede;
+	color: #2A4D69;
+	//border-radius: 10px;
+	//border: 2px solid #008CBA;
 }
 
 #welcome {
 	float: right;
-	margin-top: 40px;
+	margin-top: 60px;
 	margin-right: 30px;
 	font-family: Garamond, "Times New Roman", serif;
+	color: #ffffff;
 }
 
 /* End of Header Div */
@@ -88,19 +131,19 @@ ul {
 #logout {
     float: right;
     //height: 30px;
-    margin-top: 37px;
+    margin-top: 57px;
     margin-right: 30px;
     //width: 80px;
 }
 
 
 #logout input {
-    background-color: #008CBA;
-    border: 1px solid #008CBA;
+    background-color: #dedede;
+    border: 1px solid #dedede;
     box-shadow: 0px 0px 3px grey;
     font-family: Garamond, "Times New Roman", serif;
     font-size: 13px;
-    color: #FFFFFF;
+    color: #2A4D69;
     height: 25px;
     width: 70px;
 }
@@ -114,23 +157,11 @@ ul {
 
 /* Start of Main */
 
-#main {
-    background: #1d1d1d;
-    color: #ccc;
+#content {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 17px;
-    font-style: normal;
-    font-weight: 200;
-    height: 100%;
-    letter-spacing: 0em;
-    line-height: 1.4;
-    padding-top: 110px;
-    padding-bottom: 5px;
-    word-spacing: 0em;
-}
-
-#main #content {
     width: 800px;
+    padding-top: 50px;
     margin-left: auto;
     margin-right: auto;
     height: 100%;
@@ -144,31 +175,58 @@ ul {
 	color: green;
 }
 
-a:link {
-	color: #008CBA;
-}
-
-a:visited {
-	color: #008CBA;
-}
 /*Start of student/instructor*/
 
-#sPanel {
-	margin-top: 40px;
-}
-
-#sPanel h1 {
+#sPanel p {
 	text-align: center;
+	color: #2A4D69;
 }
 
-#iPanel {
-        margin-top: 40px;
-}
+#sPanel h1 { font-family: Garamond, "Times New Roman", serif; }
 
-#iPanel h1 {
+#sPanel h1, h2, h3 {
 	text-align: center;
+	color: #2A4D69;
 }
 
+#iPanel p {
+	text-align: center;
+	color: #2A4D69;
+}
+
+#iPanel h1 { font-family: Garamond, "Times New Roman", serif; }
+
+#iPanel h1, h2, h3 {
+	text-align: center;
+	color: #2A4D69;
+}
+
+#radio {
+	//border: 2px solid red;
+	width: 300px;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+#radio label { width: 300px; }
+
+.submits { 
+	position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+ }
+
+#examName {
+	//border: 2px solid red;
+	width: 200px;
+	height: 20px;
+	text-align: center;
+	font-size: 17px;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
 
 /*end of student/instructor*/
 
@@ -195,7 +253,7 @@ a:visited {
 }
 
 #login h2 {
-    color: #ebebeb;
+    color: #2A4D69;
     font-family: sans-serif;
     font-family: Garamond, "Times New Roman", serif;
     font-weight: 300;
@@ -250,6 +308,7 @@ a:visited {
    margin-right: auto;
    margin-top: 10px;
    font-family: sans-serif;
+   color: #2A4D69;
    font-size: 15px;
    text-align: center;
    width: 250px;
@@ -257,36 +316,67 @@ a:visited {
 
 /* End of Login Form Style */
 
+.Qinput input[type="text"] {
+	width: 400px;
+	margin-right: 200px;
+	float: right;
+}
+
+#examRelease a {
+	float: right;
+}
+
+#gradedStyle p {
+	text-align: left;
+}
+
+#wrong p {
+	color: red;
+}
+
+#right p {
+        color: green;
+}
+
+
 /* End of Main */
 
 /* Start of Footer */
 
 #footer {
-    background: #303030;
-    bottom: 0px;
-    color: #ccc;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    background-color: #2A4D69;
+    color: #ffffff;
     font-family: serif;
 }
 
-#footer, #push {
+/*
+#fdsdooter {
     height: 70px;
 }
 
-#push {
-    background: #1d1d1d;
-}
+//#push {
+//    background: #BC9055;
+//}
+*/
 
 #footer #copyright {
     float: left;
-    height: 20px;
-    padding-left: 40px;
-    padding-top: 25px;
-    width: 400px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 40px;
 }
 
 #footer #authors {
     float: right;
-    margin-top: 25px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
     margin-right: 40px;
 }
 

@@ -11,6 +11,7 @@
 		$wrongReason1 = $_POST["wrongReason1"];
 		$wrongReason2 = $_POST["wrongReason2"];
 		$wrongReason3 = $_POST["wrongReason3"];
+		$points = $_POST["points"];
 
 
 		$ch = curl_init();
@@ -26,7 +27,8 @@
                         'wrongAnswer2' => $wrongAnswer2,
                         'wrongReason2' => $wrongReason2,
                         'wrongAnswer3' => $wrongAnswer3,
-                        'wrongReason3' => $wrongReason3);
+                        'wrongReason3' => $wrongReason3,
+			'points' => $points);
 
 	  curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -45,7 +47,11 @@
 	$json = json_decode($page, true);
 
 	if($json["questionCreated"] == "Success"){
-		header("Location: createQ.php");
+		echo "<script>
+                alert('Question Created!');
+                window.location.href='createQ.php';
+                </script>";	
+		//header("Location: createQ.php");
 	}
 	
 	} else {

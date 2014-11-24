@@ -15,7 +15,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
-<body>
+<body id="graded">
 <!-- Start of Page -->
 <div id="page">
 
@@ -29,8 +29,8 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 	
 	<div id="nav">
 		<ul id="navitems">
-			<li><a href="takeEx.php">Take Exam</a></li>
-			<li><a href="graded.php">Graded Exam</a></li>
+			<li><a href="takeEx.php" id="takeNav">Take Exam</a></li>
+			<li><a href="graded.php" id="gradedNav">Graded Exam</a></li>
 		</ul>
 	
 	</div>
