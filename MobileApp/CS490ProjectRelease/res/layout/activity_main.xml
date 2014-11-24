@@ -15,7 +15,7 @@
         android:textColor="#FFFFFF"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"        
+        android:background="@drawable/flat_selector"        
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="92dp"

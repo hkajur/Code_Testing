@@ -16,7 +16,7 @@
         android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme" >
         
-        
+		<!-- Splash screen activity -->        
 		<activity
             android:name=".Splashscreen"
             android:label="@string/app_name"
@@ -35,18 +35,7 @@
             android:screenOrientation="portrait" >
         </activity>
         
-        
-        <!-- activity
-            android:name=".MainActivity"
-            android:label="@string/header"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-->
-        <!-- Student activity -->
+		<!-- Student activity -->
         <activity
             android:name=".StudentPanel"
             android:theme="@style/Theme.AppCompat.Light"
@@ -56,6 +45,34 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.cs490project.MainActivity" />
+        </activity>
+        
+        <!-- Exam in progress activity -->
+        <activity
+            android:name=".ExamInProgress"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:label="@string/title_activity_dashboard"
+            android:parentActivityName=".StudentPanel"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.cs490project.StudentPanel" />
+			<intent-filter>
+                <action android:name="StudentClasses.EXAMINPROGRESS" /> 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>            
+        </activity>
+
+        <!-- Exam in review activity -->
+        <activity
+            android:name=".ExamReview"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:label="@string/title_activity_dashboard"
+            android:parentActivityName=".StudentPanel"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.cs490project.StudentPanel" />
         </activity>
         
         <!-- Instructor activity -->

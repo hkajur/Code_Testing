@@ -23,6 +23,7 @@
     
     <string name="questionType">Type of question</string>
     <string name="questionType1">Multiple Choice</string>
-    <string name="questionType2">Programming Question</string>
+    <string name="questionType2">Fill in the blank</string>
     <string name="questionType3">True/False</string>
+    <string name="questionType4">Programming</string>
 </resources>

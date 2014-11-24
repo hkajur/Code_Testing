@@ -23,7 +23,7 @@ import com.malan.cs490project.R;
 
 import ExamQuestionClasses.ExamObject;
 import NetworkClasses.Login;
-import SqlClasses.ExamSql;
+import SqlClasses.InstructorExamSql;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -51,7 +51,7 @@ public class InstructorFragmentTab1 extends Fragment {
 	LinearLayout layout;
 	ListView listview;
 	ExamObject single_exam;
-	private ExamSql InstructorsExamsSql;
+	private InstructorExamSql InstructorsExamsSql;
 	private static List<ExamObject> list_exams = new ArrayList<ExamObject>();		
 	public static Login session = new Login();	
 	AdapterView.AdapterContextMenuInfo info;
@@ -62,7 +62,7 @@ public class InstructorFragmentTab1 extends Fragment {
 
 		view = inflater.inflate(R.layout.fragment_instructor_tab1, container, false);
 		
-		InstructorsExamsSql = new ExamSql(getActivity());
+		InstructorsExamsSql = new InstructorExamSql(getActivity());
 		InstructorsExamsSql.open();
 		
 		list_exams = InstructorsExamsSql.getAllExams();
@@ -95,6 +95,20 @@ public class InstructorFragmentTab1 extends Fragment {
 	@Override
 	public void onResume(){
 		InstructorsExamsSql.open();
+		
+		list_exams = InstructorsExamsSql.getAllExams();
+
+		
+		layout = (LinearLayout) view;				
+		listview = (ListView) view.findViewById(R.id.listView1);		    
+		if(list_exams.size()!=0){
+			listview.setAdapter(
+					new CurrentExamAdapter(
+							list_exams, 
+							getActivity().getBaseContext()
+						)
+					);
+		}
 	    super.onResume();
 	}
 	

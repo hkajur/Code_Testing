@@ -1,114 +1,93 @@
 package com.malan.cs490project;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
-import NetworkClasses.ExamRetrieve;
+import com.malan.cs490project.R;
+
+import ExamQuestionClasses.SubmitQuestionObject;
 import NetworkClasses.Login;
+import NetworkClasses.Streamer;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.TextView;
-
-/*TODO
- *  - Include automatic submission when time runs out
- * */
+import android.util.Log;
 
 public class ExamInProgress extends Activity{
 
-	String exam_id;
-	String user_id;
-	String response;
-	String string_questions;
+	//TODO
+	//	- Add network to retrieve
+	//  - Remove upon submission
+	//  - Get JSON to populate interface
+	// to conduct: conductExams
+	// to submit: submitExam
+	
+	Intent intent;
+	AppProfile creds;
 	Login session;
-	JSONObject JSONresponse;
-	TextView examName;
-	ArrayList<QuestionObject> list = new ArrayList<QuestionObject>();
-	ExamRetrieve exams;
+	String userID;
+	String examID;
+	String response = "";
+	String JSON;
+	List<SubmitQuestionObject> submissions;
 	
-	
-	
-	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_exam_in_progress);
-		examName = (TextView)findViewById(R.id.ExamNameView);
 		
+		session = new Login();
 		
-		Intent intent = getIntent();
-		exam_id = intent.getStringExtra("EXAM_ID");
-		user_id = intent.getStringExtra("USER_ID");
+		creds = new AppProfile(ExamInProgress.this);
+		intent = getIntent();
+		examID = intent.getStringExtra("EXAM_ID");
+		userID = creds.getValue(AppProfile.PREF_ID);
 		
-		
-		exams = new ExamRetrieve(exam_id,user_id);
-		
-		
-		
+		AsyncTask<String, Void, String> thread_response = new GettingQuestions().execute(examID,userID,"getExamQuestions");
 		try {
-			response = exams.getResponse();
-			JSONresponse = new JSONObject(response);
-			examName.setText(JSONresponse.getString("examName"));
-			
-			string_questions = JSONresponse.get("questions").toString();
-			JSONArray questions = new JSONArray(string_questions);
-			
-			
-			
-			for (int i=0; i < questions.length() ; i++) 
-			{
-				try
-				{
-					JSONObject tempJSON = questions.getJSONObject(i);
-					QuestionObject tempQuestion = new QuestionObject(
-							tempJSON.getString("questionID"),
-							tempJSON.getString("question_type"),
-							tempJSON.getString("question")
-							);
-					JSONArray tempChoices = new JSONArray(tempJSON.getJSONArray("choices"));
-					for(int j=0 ; j<tempChoices.length() ; j++)
-					{
-						JSONObject blah = tempChoices.getJSONObject(j);
-						tempQuestion.addToChoices(blah.getString("choice"));
-					}
-					list.add(tempQuestion);
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}				
-			}
-			
-		} catch (JSONException e) {
+			JSON = thread_response.get().toString();
+		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
 		}
+		Log.i("ExamInProgress", "ExamID: " + examID + " / userID: " + creds.getValue(AppProfile.PREF_ID));
+		Log.i("ExamInProgress", "Response: " + JSON);
 		
 	}
 
-//###################################################################################################################	
-	
-    
-    private class QuestionObject {
-    	
-    	public String ID;
-    	public String TYPE;
-    	public String QUESTION;
-    	public String[] CHOICES = new String[4];
-    	private int counter = 0;
-    	
-    	public QuestionObject(String id, String type, String question){
-        	ID = id;
-        	TYPE = type;
-        	QUESTION = question;
-    	}
-    	
-    	public void addToChoices(String choice){
-    		CHOICES[counter] = choice;
-    		counter++;
-    	}
-    	
-    }
+//######################################################################################################	
+	private class GettingQuestions extends AsyncTask<String, Void, String> {
+		@Override
+		protected String doInBackground(String... urls) 
+		{
+			String[] raw_response = {};	         
+			Map<String, String> params = new HashMap<String, String>();				   
+			params.put("examID", urls[0]);
+			params.put("userID", urls[1]);			
+			params.put("tag", urls[2]);
+			params.put("token", session.getToken());
+			
+			try {
+				if(session.getURL() == null)
+					Log.w("ExamInProgress", "URL MISSING");
+				if(params == null)
+					Log.w("ExamInProgress", "PARAM MISSING");
+				else{
+				Streamer.sendPostRequest(session.getURL(), params);
+				raw_response = Streamer.readMultipleLinesRespone();
+				}
+				
+			} catch (IOException ex) {
+				Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
+				ex.printStackTrace();
+			}
+			for(String i : raw_response){
+				response+=i;
+			}
+			Streamer.disconnect();
+			return response;
+		}		
+	}//END ASYNC CLASS	
 }

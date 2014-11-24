@@ -69,7 +69,6 @@ public class QuestionSql {
 			return false;
 		}
 		
-		//network thread here to send over exam
 		//if post successful instructorexam.addexam here with unreleased		
 	}
 

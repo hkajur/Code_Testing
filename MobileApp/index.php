@@ -84,7 +84,6 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
                 callingCurl($url,$field);
                 break;
 
-            //CAREFUL -- ARRAY INPUT HERE
             case 'createExam':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertExam.php';
             

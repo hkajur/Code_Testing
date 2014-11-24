@@ -2,6 +2,7 @@ package com.malan.cs490project;
 
 
 import StudentClasses.ViewPagerAdapterStudent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -19,5 +20,6 @@ public class StudentPanel extends FragmentActivity{
 
         // Set the ViewPagerAdapter into ViewPager
         viewPager.setAdapter(new ViewPagerAdapterStudent(getSupportFragmentManager()));
+
     }
 }

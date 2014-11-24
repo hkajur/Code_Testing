@@ -17,9 +17,13 @@ import java.util.Map;
 import ExamQuestionClasses.ExamObject;
 import NetworkClasses.Streamer;
 import NetworkClasses.Login;
-import SqlClasses.ExamSql;
+import SqlClasses.InstructorExamSql;
+import SqlClasses.StudentExamSql;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,10 +37,12 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends Activity {
-	public final static String BACKLOGIN = "BACKEND LOGIN STATUS: ";
 	public final static String STUDENT_JSON = "";
 	public final static String INSTRUCTOR_JSON = "";
-	private ExamSql InstructorsExamsSql;
+	public SharedPreferences settings;
+	public AppProfile cred;
+	private InstructorExamSql InstructorsExamsSql;
+	private StudentExamSql StudentExamsSql;
 	public static Login session = new Login();
 
 	
@@ -50,16 +56,18 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		InstructorsExamsSql = new ExamSql(this);
-
+		cred = new AppProfile(MainActivity.this);
+		
+		InstructorsExamsSql = new InstructorExamSql(this);
+		StudentExamsSql = new StudentExamSql(this);
 		
 		username = (EditText)findViewById(R.id.ucidText);
 		password = (EditText)findViewById(R.id.passText);
 		
-//		username.setText("student2");
-		username.setText("professor1");
-//		password.setText("!student2");
-		password.setText("!professor1");
+		username.setText("student2");
+//		username.setText("professor1");
+		password.setText("!student2");
+//		password.setText("!professor1");
 		
 		//DEBUGGING ONLY
 		//Checks network connectivity		
@@ -130,13 +138,26 @@ public class MainActivity extends Activity {
     	@Override
     	protected String doInBackground(String... urls) 
     	{
-    		try {
-    			return downloadUrl(urls[0],urls[1],urls[2],urls[3],urls[4]);
-//    			RETURN ONLY SUCCESS
-    		}
-    		catch (IOException e){
-    			return "Cannot connect. Server is not responding.";
-    		}
+    		String response = null;	         
+			
+			//PARAMETERS TO SEND
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("ucid", urls[1]);
+			params.put("password", urls[2]);	        
+			params.put("tag", urls[3]);	        
+			params.put("token", urls[4]);
+			
+			//TRY TO POST PARAMETERS TO SERVER AND GET RESPONSE
+			try {
+				Streamer.sendPostRequest(urls[0], params);
+			    response = Streamer.readSingleLineRespone();
+			} catch (IOException ex) {
+				Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
+			    ex.printStackTrace();
+			}
+			//CLOSE CONNECTION AND RETURN THE JSON REPONSE
+			Streamer.disconnect();	        
+			return response;
     	}
 //    	###################################################################################################################
     	
@@ -161,11 +182,30 @@ public class MainActivity extends Activity {
 				*/
 				if(response.get("Backend_Login").toString().equals("Success") && response.get("userType").toString().equals("Student"))
 				{
-//					Toast.makeText(getApplicationContext(), "Logging in..", Toast.LENGTH_SHORT).show();
+					StudentExamsSql.open();
+					ExamObject exams;
+					JSONArray StudentsExamArr = new JSONArray(response.get("exams").toString());
+
+					Log.i("MainActivity: ", "userID: "+ response.get("userID").toString());
+					Log.i("MainActivity: ", "Type: "+ response.get("userType").toString());
+					Log.i("STUDENT_JSON SAYS: ", response.get("exams").toString());
+					
+					for(int i = 0; i < StudentsExamArr.length(); i++)
+					{
+						exams = new ExamObject();
+						//examId, examName, examStat
+						exams = StudentExamsSql.createCurrentExam(
+								StudentsExamArr.getJSONObject(i).getString("examID"),
+								StudentsExamArr.getJSONObject(i).getString("examName"),
+								StudentsExamArr.getJSONObject(i).getString("examTaken")
+								);				
+					}
+					StudentExamsSql.close();
+					
+					cred.setID(response.get("userID").toString());
+					
 					Intent intent = new Intent(MainActivity.this,StudentPanel.class);
-					intent.putExtra("USER_NAME", response.get("userName").toString());
-					intent.putExtra("USER_ID", response.get("userID").toString());
-					intent.putExtra("STUDENT_JSON", response.get("exams").toString());
+//					intent.putExtra("USER_ID", response.get("userID").toString());
 					MainActivity.this.startActivity(intent);
 				}//END STUDENT
 				
@@ -182,6 +222,8 @@ public class MainActivity extends Activity {
 					ExamObject exams;
 					JSONArray InstructorsExamArr = new JSONArray(response.get("exams").toString());
 
+					Log.i("MainActivity: ", "userID: "+ response.get("userID").toString());
+					Log.i("MainActivity: ", "Type: "+ response.get("userType").toString());
 					Log.i("INSTRUCTOR_JSON SAYS: ", response.get("exams").toString());
 					
 					for(int i = 0; i < InstructorsExamArr.length(); i++)
@@ -201,15 +243,7 @@ public class MainActivity extends Activity {
 									InstructorsExamArr.getJSONObject(i).getString("examName"),
 									"Unreleased"
 									);
-						}				
-							/* FOR LATER
-							if(InstructorsExam.getJSONObject(i).getString("examInProgress").equals("True")){
-								exams.setStatus("Exam in progress");	
-							}
-							if(InstructorsExam.getJSONObject(i).getString("examScheduled").equals("True")){
-								exams.setStatus("Exam scheduled");	
-							}
-							*/				
+						}
 					}
 					InstructorsExamsSql.close();
 					Intent intent = new Intent(MainActivity.this,InstructorPanel.class);
@@ -221,31 +255,6 @@ public class MainActivity extends Activity {
 				Toast.makeText(getApplicationContext(), "Server has not responded. Try again.", Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}					
-		}
-		
-//    	###################################################################################################################		
-           
-		private String downloadUrl(String myurl,String ucid,String password,String tag,String token) throws IOException {
-		    String response = null;	         
-	         
-		    //PARAMETERS TO SEND
-	        Map<String, String> params = new HashMap<String, String>();
-	        params.put("ucid", ucid);
-	        params.put("password", password);
-	        params.put("token", token);
-	        params.put("tag", tag);
-	         
-	        //TRY TO POST PARAMETERS TO SERVER AND GET RESPONSE
-	        try {
-	        	Streamer.sendPostRequest(myurl, params);
-	            response = Streamer.readSingleLineRespone();
-	        } catch (IOException ex) {
-	        	Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
-	            ex.printStackTrace();
-	        }
-	        //CLOSE CONNECTION AND RETURN THE JSON REPONSE
-	        Streamer.disconnect();	        
-			return response;
-		}
+		}		
     }//END ASYNC CLASS
 }

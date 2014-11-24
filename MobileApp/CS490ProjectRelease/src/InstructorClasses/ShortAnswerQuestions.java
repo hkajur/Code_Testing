@@ -41,18 +41,7 @@ public class ShortAnswerQuestions extends Fragment{
 	{
 		View view = inflater.inflate(R.layout.fragment_add_short_questions, container, false);
 
-		question = (EditText) view.findViewById(R.id.ShortEditText1);
-		input1   = (EditText) view.findViewById(R.id.SHeditText1);
-		output1  = (EditText) view.findViewById(R.id.SHeditText2);
-		input2	 = (EditText) view.findViewById(R.id.SHeditText3); 
-		output2  = (EditText) view.findViewById(R.id.SHeditText4);
-		input3	 = (EditText) view.findViewById(R.id.SHeditText5); 
-		output3	 = (EditText) view.findViewById(R.id.SHeditText6);
 		
-		
-    	Bundle args = getArguments();
-    	user_id = args.getString("USER_ID");
-    	
     	//DEBUGGING NETWORK CONNECTION
 /*------==============================================================================================================
     			ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);

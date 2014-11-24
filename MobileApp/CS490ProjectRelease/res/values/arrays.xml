@@ -4,5 +4,6 @@
         <item>@string/questionType1</item>
         <item>@string/questionType2</item>
         <item>@string/questionType3</item>
+        <item>@string/questionType4</item>
     </string-array>    
 </resources>

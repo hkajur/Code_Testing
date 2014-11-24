@@ -40,7 +40,7 @@ public class TrueFalseQuestions extends Fragment{
 	{
 		View view = inflater.inflate(R.layout.fragment_add_tf_questions, container, false);
 		
-		question = (EditText) view.findViewById(R.id.TFQuestion);
+		
 		answer1 = (EditText) view.findViewById(R.id.TFeditText1); //Correct
 		reason1 = (EditText) view.findViewById(R.id.TFeditText2);	//Correct
 		

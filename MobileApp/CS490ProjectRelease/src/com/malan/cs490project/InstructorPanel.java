@@ -10,8 +10,7 @@ public class InstructorPanel extends FragmentActivity{
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {		
-		super.onCreate(savedInstanceState);
-        		
+		super.onCreate(savedInstanceState);        		
         // Get the view from activity_main.xml
         setContentView(R.layout.activity_user_panel);
  

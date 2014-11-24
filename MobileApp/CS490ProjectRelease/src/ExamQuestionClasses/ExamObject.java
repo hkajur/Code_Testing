@@ -5,7 +5,15 @@ public class ExamObject {
 	String EXAM_ID;
 	public String EXAM_NAME;
 	public String EXAM_STATUS;
+	public String EXAM_GRADE;
 
+	public String getGrade() {
+		return EXAM_GRADE;
+	}
+	
+	public void setGrade(String grade) {
+		this.EXAM_GRADE = grade;
+	}
 	public String getName() {
 		return EXAM_NAME;
 	}
