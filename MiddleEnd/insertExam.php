@@ -5,7 +5,7 @@
         $json = file_get_contents('php://input');
         $obj = json_decode($json, true);
 
-        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/insertExamQuery.php";
+        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/insertExamQuery.php";
 
         $ch = curl_init($URL);
 
