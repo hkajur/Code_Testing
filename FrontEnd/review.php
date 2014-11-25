@@ -90,9 +90,45 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 		foreach($result[exam] as $p) {
 			
 
-			echo "<p>Question: $p[question]</p>";
-			echo "<p>Your Answer: $p[studentAnswer]</p>";
-			echo "<p>Correct Answer: $p[correctAnswer]</p>";
+			echo "<p>Question: $p[question]</p><br>";
+            $studentAnsArr = explode(";", $p["studentAnswer"]);
+
+            if(count($studentAnsArr) > 1){
+                
+                echo "<p>Your Answer:</p><br>";
+                echo "<table border=1>";
+                
+                foreach($studentAnsArr as $k => $v){
+                    $v = preg_replace("/(Input: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
+                    $v = preg_replace("/(Output: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
+                    echo "<tr>" . $v . "</tr>";
+                }
+                
+                echo "</table><br>";
+
+            } else {
+                echo "<p>Your Answer: $p[studentAnswer]</p>";
+            }
+			//echo "<p>Correct Answer: $p[correctAnswer]</p>";
+            
+            $actualAnsArr = explode(";", $p["correctAnswer"]);
+
+            if(count($actualAnsArr) > 1){
+                
+                echo "<p>Correct Answer:</p><br>";
+                echo "<table border=1>";
+                
+                foreach($studentAnsArr as $k => $v){
+                    $v = preg_replace("/(Input: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
+                    $v = preg_replace("/(Output: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
+                    echo "<tr>" . $v . "</tr>";
+                }
+                
+                echo "</table><br>";
+
+            } else {
+                echo "<p>Correct Answer: $p[correctAnswer]</p>";
+            }
 			if(!empty($p["comment"]) && !is_null($p["comment"])){
                         echo "<p>Feedback: $p[comment]</p>";
                         }
