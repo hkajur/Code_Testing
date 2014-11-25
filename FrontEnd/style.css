@@ -7,10 +7,6 @@
     padding: 0;
 }
 
-//html, body{
-//	height: 100%;
-//}
-
 html {
 	position: relative;
 	min-height; 100%;
@@ -18,22 +14,16 @@ html {
 
 body { margin-bottom: 50px; }
 
-:link {
-        color: #008CBA;
-}
+:link { color: #008CBA; }
 
-a:visited {
-        color: #008CBA;
-}
+a:visited { color: #008CBA; }
 
-.ui-widget {
-	font-size: 90% !important;
-}
+.ui-widget { font-size: 90% !important; }
 
 #page{
     min-height: 100%;
     height: auto !important;
-    height: 100%;
+    //height: 100%;
     margin: 0 auto -70px;
 }
 
@@ -230,26 +220,23 @@ body#takeE a#takeNav {
 
 /*end of student/instructor*/
 
-/* Start of Login Form Style */
+/*
+ * Start of Login Form Style 
+ */
 
 #login {
-    //height: 350px;
     margin-left: auto;
     margin-right: auto;
     width: 400px;
 }
 
 #login form[name="loginForm"] {
-    //height: auto;
     margin-top: 15%;
     margin-left: auto;
     margin-right: auto;
     padding-bottom: 20px;
     padding-top: 20px;
     width: 300px;
-    //background-color: #303030;
-    //border: 1px solid white;
-    //border-radius: 30px;
 }
 
 #login h2 {
@@ -284,23 +271,8 @@ body#takeE a#takeNav {
 }
 
 #login #submit input[type="submit"] {
-    background-color: #008CBA;
-    border: 1px solid black;
-    border-color: #007295;
-    box-shadow: 0px 0px 3px grey;
-    color: #FFFFFF;
-    height: 36px;
-    font-family: sans-serif;
-    font-size: 15px;
-    margin-left: 0px;
-    outline: none;
-    text-align: center;
-    width: 250px;
-}
-
-#login #submit input[type="submit"]:hover {
-   background-color: #007295;
-   cursor: pointer; 
+	width: 250px;
+	border-color: #adadad;
 }
 
 #login #error {
@@ -323,6 +295,10 @@ body#takeE a#takeNav {
 }
 
 #examRelease a {
+	float: right;
+}
+
+#reviewExam a {
 	float: right;
 }
 
@@ -353,16 +329,6 @@ body#takeE a#takeNav {
     color: #ffffff;
     font-family: serif;
 }
-
-/*
-#fdsdooter {
-    height: 70px;
-}
-
-//#push {
-//    background: #BC9055;
-//}
-*/
 
 #footer #copyright {
     float: left;

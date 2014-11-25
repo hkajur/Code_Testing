@@ -32,6 +32,13 @@
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
 
         $page = curl_exec($ch);
+	
+	//echo $page;
+
+	echo "<script>
+		alert('Question Created!');
+		window.location.href='createQ.php';
+		</script>";
 
         if(curl_errno($ch)){
                 die(json_encode(array(
@@ -40,12 +47,13 @@
         }
 	
 	$json = json_decode($page, true);
-
+	//echo $json;
 	if($json["questionCreated"] == "Success"){
-		echo "<script>
-                alert('Question Created!');
-                window.location.href='createQ.php';
-                </script>";	
+		//echo "hello";
+		//echo "<script>
+                //alert('Question Created!');
+                //window.location.href='createQ.php';
+                //</script>";	
 		//header("Location: createQ.php");
 	}
 	

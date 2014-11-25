@@ -15,6 +15,15 @@
 <title>Code Testing</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/flick/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script>
+        $(function() {
+                $( ".submits" ).button();
+        });
+</script>
+
 </head>
 <body>
 <!-- Start of Page -->
@@ -53,7 +62,7 @@
             
             <!-- Start of Submit Div -->
             <div id="submit">
-                <input type="submit" value="Sign in"/>
+                <input class="submits" type="submit" value="Sign in"/>
             </div> <!-- End of Submit Div -->
 
 	    <div id="error">

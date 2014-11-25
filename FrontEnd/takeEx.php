@@ -69,10 +69,12 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 		//$num = 1;
 		foreach($listExam[exams] as $p) {
 		
-			if($p["examTaken"] == "False")
-				echo ' ' . '- ' . "<a href='exam.php?id=$p[examID]'>$p[examName]</a>" . "<br><br>";
+			if($p["examTaken"] == "False"){
+				echo "<br>";
+				echo ' ' . "<a href='exam.php?id=$p[examID]'>$p[examName]</a>";
+				echo "<br><hr>";
 
-
+			}
 		}
 	?>
 </div>

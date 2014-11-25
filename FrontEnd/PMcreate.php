@@ -68,60 +68,41 @@ $(function() {
 
 
 <!-- Start of Main Content -->
-<div id="main">
 <div id="content">
-
 <div id="iPanel">
         <h1>Create Question</h1><br>
         <p>Programming</p><br>
-	
 	<form action="PMSubmit.php" method="post">
-	<div class="Qinput">	
-	Question: <input type="text" name="question" value="" required><br><br>
-	Input 1:  <input type="text" name="input1" value="" required><br>
-	Output 1:  <input type="text" name="output1" value="" required><br><br>
-	Input 2:  <input type="text" name="input2" value="" required><br>
-	Output 2:  <input type="text" name="output2" value="" required><br><br>
-	Input 3:  <input type="text" name="input3" value="" required><br>
-	Output 3:  <input type="text" name="output3" value="" required><br><br>
-	<p>
-	<label for="spinner">Points:</label>
-	<input id="spinner" name="points">
-	</p><br>
-
-	<input class="submits" type="submit" value="Submit"><br>
-	</div>
-
-	<?php
-	//<form action="created.php" method="post">
-	//	<input type="text" name="newQ" value=""><br><br>
-
-	?>
-
+		<div class="Qinput">	
+		Question: <input type="text" name="question" value="" required><br><br>
+		Input 1:  <input type="text" name="input1" value="" required><br>
+		Output 1: <input type="text" name="output1" value="" required><br><br>
+		Input 2:  <input type="text" name="input2" value="" required><br>
+		Output 2: <input type="text" name="output2" value="" required><br><br>
+		Input 3:  <input type="text" name="input3" value="" required><br>
+		Output 3: <input type="text" name="output3" value="" required><br><br>
+		<p>
+		<label for="spinner">Points:</label>
+		<input id="spinner" name="points">
+		</p><br>
+		<input class="submits" type="submit" value="Submit"><br>
+		</div>
 	</form>
 </div>
-
 </div> 
-</div> <!-- End of Main Content -->
-
-<div id="push">
-</div>
 
 </div> <!-- End of Page -->
 
 <!-- Start of Footer -->
 <div id="footer">
-    
     <!-- Start of Copyright -->
     <div id="copyright">
         <p>Copyright &copy 2014</p>
     </div> <!-- End of Copyright -->
-    
     <!-- Start of Authors -->
     <div id="authors">
         <p>Developed by: Harish, Andres, Dmitri, Christopher</p>
     </div> <!-- End of Authors -->
-
 </div> <!-- End of Footer -->
 </body>
 </html>

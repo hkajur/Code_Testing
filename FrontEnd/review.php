@@ -64,15 +64,14 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 	<div id="gradedStyle">	
 	<?php
 
-	
-		$examID = $_GET['id'];
-		$userID = $_SESSION["userpid"];
-		 $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentCheckGradedExam.php"; 
-		 $ch = curl_init($URL);
+	$examID = $_GET['id'];
+	$userID = $_SESSION["userpid"];
+	$URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentCheckGradedExam.php"; 
+	$ch = curl_init($URL);
 
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(
-                            array("userID" => $userID,
+                            	array("userID" => $userID,
 			    		"examID" => $examID)));
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -84,17 +83,11 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
         }
 	$result = json_decode($page, true);
 	
-		//echo $listExam[exams][0][examName];
-		//$num = 1;
+	foreach($result[exam] as $p) {		
+		echo "Question: $p[question]" . " <b>(possible points: " . $p["points"] . ")</b>";
+            	$studentAnsArr = explode(";", $p["studentAnswer"]);
 
-		foreach($result[exam] as $p) {
-			
-
-			echo "<p>Question: $p[question]</p><br>";
-            $studentAnsArr = explode(";", $p["studentAnswer"]);
-
-            if(count($studentAnsArr) > 1){
-                
+            	if(count($studentAnsArr) > 1){
                 echo "<p>Your Answer:</p><br>";
                 echo "<table border=1>";
                 
@@ -103,17 +96,15 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
                     $v = preg_replace("/(Output: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
                     echo "<tr>" . $v . "</tr>";
                 }
-                
                 echo "</table><br>";
 
-            } else {
+            	} else {
                 echo "<p>Your Answer: $p[studentAnswer]</p>";
-            }
-			//echo "<p>Correct Answer: $p[correctAnswer]</p>";
+            	}
             
-            $actualAnsArr = explode(";", $p["correctAnswer"]);
+		$actualAnsArr = explode(";", $p["correctAnswer"]);
 
-            if(count($actualAnsArr) > 1){
+		if(count($actualAnsArr) > 1){
                 
                 echo "<p>Correct Answer:</p><br>";
                 echo "<table border=1>";
@@ -126,9 +117,9 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
                 
                 echo "</table><br>";
 
-            } else {
+            	} else {
                 echo "<p>Correct Answer: $p[correctAnswer]</p>";
-            }
+            	}
 			if(!empty($p["comment"]) && !is_null($p["comment"])){
                         echo "<p>Feedback: $p[comment]</p>";
                         }
@@ -139,12 +130,6 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 			else {
 				echo "<div id=\"wrong\"><p>You are incorrect</p></div><br>";
 			}
-			//echo "</div>";
-
-			//if(!empty($p["comment"]) && !is_null($p["comment"])){
-			//echo "<p>Feedback: $p[comment]</p>";
-			//}
-			//echo "<br>";
 
 		}
 	?>

@@ -70,18 +70,19 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 		//echo $listExam[exams][0][examName];
 		//$num = 1;
 		foreach($listExam[exams] as $p) {
-	
+			echo "<br>";	
 			if($p[examReleased] == "False"){
-				echo ' ' . '- ' . "<a href='releaseExam.php?id=$p[examID]'>$p[examName]</a> ";
+				echo ' ' . "<a href='releaseExam.php?id=$p[examID]'>$p[examName]</a> ";
 				echo $p[examReleased];
 			} else {
-				echo ' ' . '- ' . "<a>$p[examName] </a>";
+				echo ' ' . "<a>$p[examName] </a>";
 				echo $p[examReleased];
 			}
 
-			echo "<br><br>";
+			echo "<br><hr>";
 		}
 	?>
+	<br><br>
 	</div>
 </div>
 

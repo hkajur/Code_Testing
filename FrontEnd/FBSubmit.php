@@ -45,3 +45,5 @@
 		die("Error");
 	}
 ?>
+
+spell: Command not found.

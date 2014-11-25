@@ -115,8 +115,9 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 				$question = $value["question"];
 				$questionType = $value["questionType"];
 				if ($questionType == "MC") {
-					echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\"> $question";
 					echo "<br>";
+					echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\"> $question";
+					echo "<br><hr>";
 				}
 			} ?>
 		</div>
@@ -128,8 +129,9 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
                                 $question = $value["question"];
                                 $questionType = $value["questionType"];
                                 if ($questionType == "FB") {
-                                        echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
                                         echo "<br>";
+					echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
+                                        echo "<br><hr>";
                                 } 
                         } ?>
                 </div>
@@ -141,8 +143,9 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
                                 $question = $value["question"];
                                 $questionType = $value["questionType"];
                                 if ($questionType == "TF") {
-                                        echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
                                         echo "<br>";
+					echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
+                                        echo "<br><hr>";
                                 } 
                         } ?>
                 </div>
@@ -154,8 +157,9 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
                                 $question = $value["question"];
                                 $questionType = $value["questionType"];
                                 if ($questionType == "PM") {
-                                        echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
                                         echo "<br>";
+					echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
+                                        echo "<br><hr>";
                                 } 
                         } ?>
                 </div>
