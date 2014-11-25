@@ -118,7 +118,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
                 echo "<p>Correct Answer:</p><br>";
                 echo "<table border=1>";
                 
-                foreach($studentAnsArr as $k => $v){
+                foreach($actualAnsArr as $k => $v){
                     $v = preg_replace("/(Input: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
                     $v = preg_replace("/(Output: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
                     echo "<tr>" . $v . "</tr>";

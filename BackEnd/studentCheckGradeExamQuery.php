@@ -7,13 +7,14 @@
         public $questionType;
         public $studentAnswer;
         public $correctAnswer;
+        public $points;
 
         public $userCorrect;
         public $comment;
 
 
-        public function __construct($id, $q, $type, $sAns, $cAns, $com){
-                
+        public function __construct($p, $id, $q, $type, $sAns, $cAns, $com){
+            $this->points = $p; 
             $this->questionID = $id;
             $this->question = $q;
             $this->questionType = $type;
@@ -55,7 +56,7 @@
         
         $selectdb = mysql_select_db("caj9", $con);
         
-        $sql_query = "SELECT Choice.ChoiceComment, QuestionBank.QuestionID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.Answer as correctAnswer, StudentExamAnswers.Answer as studentAnswer FROM QuestionBank, StudentExamAnswers, Choice WHERE QuestionBank.questionID = StudentExamAnswers.questionID AND Choice.QuestionID = QuestionBank.QuestionID AND Choice.Choice = StudentExamAnswers.Answer AND ExamID = " . $examID . " AND StudentExamAnswers.userID = " . $userID;
+        $sql_query = "SELECT QuestionBank.Points, Choice.ChoiceComment, QuestionBank.QuestionID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.Answer as correctAnswer, StudentExamAnswers.Answer as studentAnswer FROM QuestionBank, StudentExamAnswers, Choice WHERE QuestionBank.questionID = StudentExamAnswers.questionID AND Choice.QuestionID = QuestionBank.QuestionID AND Choice.Choice = StudentExamAnswers.Answer AND ExamID = " . $examID . " AND StudentExamAnswers.userID = " . $userID;
 
         $result = mysql_query($sql_query);
 
@@ -71,6 +72,7 @@
                 
                 $studentExam->exam[$index] = 
                         new questionInfo(
+                        $row["Points"], 
                         $row["QuestionID"], 
                         $row["Question"], 
                         $row["QuestionType"], 
@@ -89,7 +91,7 @@
 
         }
 
-        $query = "SELECT QuestionBank.QuestionID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.Answer as correctAnswer, StudentExamAnswers.Answer as studentAnswer FROM QuestionBank, StudentExamAnswers WHERE QuestionBank.questionID = StudentExamAnswers.questionID AND QuestionBank.QuestionType = 'FB' AND ExamID = " . $examID . " AND StudentExamAnswers.userID = " . $userID;
+        $query = "SELECT QuestionBank.Points, QuestionBank.QuestionID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.Answer as correctAnswer, StudentExamAnswers.Answer as studentAnswer FROM QuestionBank, StudentExamAnswers WHERE QuestionBank.questionID = StudentExamAnswers.questionID AND QuestionBank.QuestionType = 'FB' AND ExamID = " . $examID . " AND StudentExamAnswers.userID = " . $userID;
 
         $result = mysql_query($query);
 
@@ -102,6 +104,7 @@
 
                 $studentExam->exam[$index] = 
                         new questionInfo(
+                        $row["Points"], 
                         $row["QuestionID"], 
                         $row["Question"], 
                         $row["QuestionType"], 
@@ -113,7 +116,7 @@
                 $index++;
         }
 
-        $query = "SELECT QuestionBank.QuestionID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.Answer as correctAnswer, StudentExamAnswers.Answer as studentAnswer FROM QuestionBank, StudentExamAnswers WHERE QuestionBank.questionID = StudentExamAnswers.questionID AND QuestionBank.QuestionType = 'PM' AND ExamID = " . $examID . " AND StudentExamAnswers.userID = " . $userID;
+        $query = "SELECT QuestionBank.Points, QuestionBank.QuestionID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.Answer as correctAnswer, StudentExamAnswers.Answer as studentAnswer FROM QuestionBank, StudentExamAnswers WHERE QuestionBank.questionID = StudentExamAnswers.questionID AND QuestionBank.QuestionType = 'PM' AND ExamID = " . $examID . " AND StudentExamAnswers.userID = " . $userID;
 
         $result = mysql_query($query);
 
@@ -126,6 +129,7 @@
 
                 $studentExam->exam[$index] = 
                         new questionInfo(
+                        $row["Points"], 
                         $row["QuestionID"], 
                         $row["Question"], 
                         $row["QuestionType"], 

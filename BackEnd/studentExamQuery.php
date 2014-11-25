@@ -16,12 +16,14 @@
         public $questionID;
         public $question_type;
         public $question;
+        public $points;
         public $choices;
 
-        public function __construct($id, $type, $ques){
+        public function __construct($id, $type, $ques, $points){
             $this->questionID = $id;
             $this->question_type = $type;
             $this->question = $ques;
+            $this->points = $points;
             $this->choices = array();
         }
     }
@@ -86,7 +88,7 @@
         // In this case, we want to check if username and
         // password are valid again our database
         
-        $sql_exam_ques = "SELECT Exam.ExamID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.QuestionID"
+        $sql_exam_ques = "SELECT QuestionBank.Points, Exam.ExamID, QuestionBank.Question, QuestionBank.QuestionType, QuestionBank.QuestionID"
                         . " FROM Exam, QuestionBank"
                         . " WHERE Exam.QuestionID = QuestionBank.QuestionID"
                         . " AND Exam.ExamID = " . urldecode($examID);
@@ -112,14 +114,14 @@
             $exam->examID = null;    
                 die(json_encode(array(
                     "accessExam" => "Failed",
-                    "Error" => "Invalid request")));
+                    "Error" => "No Questions inside the exam")));
         }
 
         $index = 0;
 
         while($row = mysql_fetch_assoc($result)){
                 $exam->questions[$index++] = 
-                        new questionInfo($row["QuestionID"], $row["QuestionType"], $row["Question"]);
+                        new questionInfo($row["QuestionID"], $row["QuestionType"], $row["Question"], $row["Points"]);
 
         }
 

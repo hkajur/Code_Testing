@@ -4,7 +4,7 @@
     
         $userID = $_POST["userID"];
     
-        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/selectExamsRelease.php"; 
+        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/selectExamsRelease.php"; 
                 
         $ch = curl_init();
 

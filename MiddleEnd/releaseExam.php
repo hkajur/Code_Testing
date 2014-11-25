@@ -5,7 +5,7 @@
         $userID = $_POST["userID"];
         $examID = $_POST["examID"];
     
-        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/studentsTookExam.php";
+        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/studentsTookExam.php";
                 
         $ch = curl_init();
 
@@ -28,7 +28,7 @@
 
         foreach($obj["userIDs"] as $ind => $studentUserID){
      
-            $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/studentExamInfo.php";
+            $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/studentExamInfo.php";
 
             $ch = curl_init();
             
@@ -65,7 +65,7 @@
                     "examID" => $examID,
                     "grade" => $grade);
 
-            $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/insertGrade.php";
+            $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/insertGrade.php";
 
             $ch = curl_init();
     
@@ -84,7 +84,7 @@
 
         }
 
-        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/updateTeacherExam.php";
+        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/updateTeacherExam.php";
 
         $postfields = array(
                         "userID" => $userID,

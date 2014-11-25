@@ -45,7 +45,7 @@
                         new teacherInfo($row["ExamID"], $row["ExamName"], $row["ExamReleased"]);
             }
 
-
             echo json_encode($exams);
+            mysql_close($con);
     }
 ?>
