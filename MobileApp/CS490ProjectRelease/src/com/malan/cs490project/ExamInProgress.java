@@ -18,6 +18,8 @@ import NetworkClasses.Login;
 import NetworkClasses.Streamer;
 import SqlClasses.StudentExamSql;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,10 +36,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class ExamInProgress extends Activity{
-
-	//TODO
-	//  - Remove upon submission
-	// to submit: submitExam
 	
 	Intent intent;
 	AppProfile creds;
@@ -58,6 +56,7 @@ public class ExamInProgress extends Activity{
 	Map<String,RadioGroup> radio_responses;
 	Map<String,EditText> text_responses;
 	StudentExamSql StudentExamsSql;
+	boolean valid;
 	
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -152,7 +151,7 @@ public class ExamInProgress extends Activity{
 		submit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				valid = false;
 				JSONArray JsonArrSubmit = new JSONArray();
 				JSONObject JsonObjSubmit;
 				
@@ -160,14 +159,32 @@ public class ExamInProgress extends Activity{
 					JsonObjSubmit = new JSONObject();
 					if(radio_responses.get(i.getQuestionId()) != null){
 						RadioGroup temp = radio_responses.get(i.getQuestionId());
-						RadioButton selected = (RadioButton) findViewById(temp.getCheckedRadioButtonId());
-						i.setUserAnswer(selected.getText().toString());
+						if(temp.getCheckedRadioButtonId() != -1){
+							RadioButton selected = (RadioButton) findViewById(temp.getCheckedRadioButtonId());
+							i.setUserAnswer(selected.getText().toString());
+							valid = true;
+							Log.w("ExamInProgress", "State of validity: " + valid);
+						}
+						else{
+							Log.w("ExamInProgress", "Missing Radio INPUT");
+							valid = false;
+							Log.w("ExamInProgress", "State of validity: " + valid);
+							break;
+						}
 					}
 					if(text_responses.get(i.getQuestionId()) != null){
-						EditText temp = text_responses.get(i.getQuestionId().toString());						
-						i.setUserAnswer(temp.getText().toString());
-					}
-					
+						EditText temp = text_responses.get(i.getQuestionId().toString());
+						if(temp.getText().toString() != null){
+							i.setUserAnswer(temp.getText().toString());
+							valid = true;
+							Log.w("ExamInProgress", "State of validity: " + valid);
+						}
+						else{
+							i.setUserAnswer("No-Response-Submitted");
+							valid = true;
+							Log.w("ExamInProgress", "State of validity: " + valid);							
+						}
+					}				
 					try {
 						JsonObjSubmit.put("questionID", i.getQuestionId());
 						JsonObjSubmit.put("userAnswer", i.getUserAnswer());
@@ -179,22 +196,38 @@ public class ExamInProgress extends Activity{
 
 				Log.i("ExamInProgress", "Submitting: " + JsonArrSubmit.toString());
 				
-				AsyncTask<String, Void, String> thread_response = new SubmitExam().execute(
-						examID,
-						userID,
-						JsonArrSubmit.toString(),
-						"submitExam");
-
+				AsyncTask<String, Void, String> thread_response = null;
+				if(valid){
+					thread_response = new SubmitExam().execute(
+							examID,
+							userID,
+							JsonArrSubmit.toString(),
+							"submitExam");
+				}
 				try {
 					Log.i("ExamInProgress", "Response: " + thread_response.get());
+					Log.i("ExamInProgress", "Exam " + examID + " submitted");
+					if(StudentExamsSql.removeExam(examID))
+						Log.i("ExamInProgress", "Exam " + examID + " submited and altered");
+					StudentExamsSql.close();
+					finish();
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
+				} catch (NullPointerException e){
+					Log.i("ExamInProgress", "Response: Exam NOT submitted. Missing Radio Input");
+					AlertDialog.Builder alertDialog = new AlertDialog.Builder(ExamInProgress.this);
+					alertDialog.setTitle("Missing Answers");
+					alertDialog.setCancelable(false);
+					alertDialog.setMessage("You are missing answers to one or more multiple choice questions.");
+					alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+					alertDialog.setNeutralButton("Ok",
+					        new DialogInterface.OnClickListener() {
+					            public void onClick(DialogInterface dialog, int which) {					            	
+					            	dialog.dismiss();
+					            }
+					        });
+					alertDialog.show();
 				}
-				Log.i("ExamInProgress", "Exam " + examID + " submitted");
-				if(StudentExamsSql.removeExam(examID))
-					Log.i("ExamInProgress", "Exam " + examID + " submited and altered");
-				StudentExamsSql.close();
-				finish();
 			}
         });
 		

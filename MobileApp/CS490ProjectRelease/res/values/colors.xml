@@ -6,6 +6,7 @@
     <color name="grey">#cccccc</color>
     <color name="salmon">#ff567c</color>
     <color name="red">#AA3939</color>
+    <color name="ButtonRed">#D46A6A</color>
     <color name="MCback">#FFAAAA</color>	<!-- Light red -->
     <color name="TFback">#FFB51E</color>	<!-- Orange -->
     <color name="SHback">#DBF84D</color>	<!-- Green -->

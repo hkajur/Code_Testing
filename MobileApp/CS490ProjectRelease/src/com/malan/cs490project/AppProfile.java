@@ -9,6 +9,7 @@ public class AppProfile extends Application{
 
 	public static final String PREFS_NAME = "AppProfile";
 	public static final String PREF_ID = "user_ID";
+	public static final String PREF_PASS = "user_ID";
 	private SharedPreferences settings;
 
 	public AppProfile(Context context){
@@ -21,6 +22,10 @@ public class AppProfile extends Application{
 	
 	public void setID(String id){
 		settings.edit().putString(PREF_ID, id).commit();
+	}
+	
+	public void setPass(String pass){
+		settings.edit().putString(PREF_PASS, pass).commit();
 	}
 	
 	public boolean isID(String key){

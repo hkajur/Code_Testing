@@ -1,20 +1,5 @@
 package InstructorClasses;
 
-/*
- * InstructorFragmentTab1
- * 	- Shows all exams for instructor
- * 	- Allows user to 
- * 			* Release exam
- * 			* Delete exam
- * 			* View exam stats
- *  - OnLogin/OnSwitchTabs:
- *  		* Retrieve all exams from backend
- *  - OnDelete/OnRelease:
- *  		* Post status of exam to backend and remove from list
- *  - OnViewStats:
- *  		* Start activity with statistics about exam
- * */
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
-/* TODO
- *  - Add functionality for exam stats
- * */
+//TODO figure how to refresh view to show new exams
 
 public class InstructorFragmentTab1 extends Fragment {
 	
@@ -142,12 +124,9 @@ public class InstructorFragmentTab1 extends Fragment {
 		if(single_exam.getStatus().equals("Unreleased")){
 			menu.add(Menu.NONE, v.getId(), 0, "Release");
 			menu.add(Menu.NONE, v.getId(), 0, "Delete");                  
-			menu.add(Menu.NONE, v.getId(), 0, "Exam Stats");
 		}
 		else{
-			menu.add(Menu.NONE, v.getId(), 0, "Unrelease");
-			menu.add(Menu.NONE, v.getId(), 0, "Delete");                  
-			menu.add(Menu.NONE, v.getId(), 0, "Exam Stats");			
+			menu.add(Menu.NONE, v.getId(), 0, "Delete");                  	
 		}
 	}
 	        
@@ -155,25 +134,14 @@ public class InstructorFragmentTab1 extends Fragment {
 	public boolean onContextItemSelected(MenuItem item) {
 		if (item.getTitle().toString().equals("Release")) {
 			//RELEASE THIS EXAM AND NOTIFY STUDENTS
-			InstructorsExamsSql.releaseExam(single_exam);
-//			single_exam.setStatus("Released");
-			listview.invalidateViews();
-		}
-		else if (item.getTitle().toString().equals("Unrelease")) {
-			//RELEASE THIS EXAM AND NOTIFY STUDENTS
-			InstructorsExamsSql.unreleaseExam(single_exam);
-//			single_exam.setStatus("Unreleased");
+			InstructorsExamsSql.releaseExam(getActivity().getBaseContext(), single_exam);
 			listview.invalidateViews();
 		}
 		else if (item.getTitle().toString().equals("Delete")) {
-			//REMOVE THIS EXAM FROM THE LIST AND THE DATABASE
-			
-			InstructorsExamsSql.deleteExam(single_exam);
+
+			InstructorsExamsSql.deleteExam(getActivity().getBaseContext(), single_exam);
 			list_exams.remove(info.position);
 			listview.invalidateViews();
-		}
-		else if (item.getTitle().toString().equals("Exam Stats")) {	
-			//OPEN ACTIVITY WITH STATS ABOUT THIS EXAM
 		}
 		else{
 			return false;

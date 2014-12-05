@@ -64,32 +64,10 @@ public class MainActivity extends Activity {
 		username = (EditText)findViewById(R.id.ucidText);
 		password = (EditText)findViewById(R.id.passText);
 		
-//		username.setText("student2");
-		username.setText("professor1");
-//		password.setText("!student2");
-		password.setText("!professor1");
-		
-		//DEBUGGING ONLY
-		//Checks network connectivity		
-		
-		/*
-		ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()){
-        	new DownloadWebpageTask().execute("http://web.njit.edu/~dm282/cs490/index.php");
-        }
-        else{
-        	//Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();	
-        }
-		if(isConnectedToServer("http://web.njit.edu/~dm282/cs490/index.php", 1500))
-		{
-			Toast.makeText(getApplicationContext(), "Server Online", Toast.LENGTH_SHORT).show();
-		}
-		else
-		{
-			//Toast.makeText(getApplicationContext(), "Connectivity error. Check your connections.", Toast.LENGTH_SHORT).show();
-		}
-        */
+		username.setText("student2");
+//		username.setText("professor1");
+		password.setText("!student2");
+//		password.setText("!professor1");
 	}
 	
 //===============================================================================================================	
@@ -152,6 +130,7 @@ public class MainActivity extends Activity {
 				Streamer.sendPostRequest(urls[0], params);
 			    response = Streamer.readSingleLineRespone();
 			} catch (IOException ex) {
+				Toast.makeText(getApplicationContext(), "Issue connecting to server", Toast.LENGTH_LONG).show();
 				Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
 			    ex.printStackTrace();
 			}
@@ -165,10 +144,6 @@ public class MainActivity extends Activity {
 		protected void onPostExecute(String result) 
 		{
 			JSONObject response;
-			
-			
-			//STUDENT: dm282 / test		
-			//TEACHER: professor1 / !professor1
 			
 			try {
 				response = new JSONObject(result);
@@ -205,7 +180,6 @@ public class MainActivity extends Activity {
 					cred.setID(response.get("userID").toString());
 					
 					Intent intent = new Intent(MainActivity.this,StudentPanel.class);
-//					intent.putExtra("USER_ID", response.get("userID").toString());
 					MainActivity.this.startActivity(intent);
 				}//END STUDENT
 				
@@ -246,6 +220,9 @@ public class MainActivity extends Activity {
 						}
 					}
 					InstructorsExamsSql.close();
+					
+					cred.setID(response.get("userID").toString());
+					
 					Intent intent = new Intent(MainActivity.this,InstructorPanel.class);
 					MainActivity.this.startActivity(intent);
 				}//END INSTRUCTOR

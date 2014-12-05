@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.malan.cs490project.AppProfile;
 import com.malan.cs490project.R;
 
 import ExamQuestionClasses.QuestionObject;
@@ -27,27 +28,24 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-/*TODO
- * - Include due DATE/TIME functionality
- * - Include time per exam functionality
- * */
-
-public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
+public class InstructorFragmentTab2 extends Fragment{
 	
 	Questions_ListViewAdapter listviewadapter;
 	ListView listview;
 	EditText examNameView;	
 	
-	String response = "";
+	String response;
 	
 	Login session;
+	String userID;
+	AppProfile creds;
+	
 	private QuestionSql questionsSql;
 	String JSON;
 	JSONObject JSON_OBJECT;
@@ -65,17 +63,21 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 		examNameView = (EditText) view.findViewById(R.id.examName);		
 		listview = (ListView) view.findViewById(R.id.listView1);
 		
+		creds = new AppProfile(getActivity().getBaseContext());
+		userID = creds.getValue(AppProfile.PREF_ID);
+
+		
 		session = new Login();
 		questionsSql = new QuestionSql(getActivity().getBaseContext());
-		AsyncTask<String, Void, String> thread_response = new GettingQuestions().execute("professor1","getExamQuestions");
+		AsyncTask<String, Void, String> thread_response = new GettingQuestions().execute(
+				userID,
+				"getExamQuestions");
 		try {
 			questionsSql.open();
 			questions = new ArrayList<QuestionObject>();
 			JSON = thread_response.get().toString();
-//			Log.i("InstructorFragmentTab2", JSON);
 			JSON_OBJECT = new JSONObject(JSON);
 			JSON_ARRAY = new JSONArray(JSON_OBJECT.get("questions").toString());
-//			Log.i("InstructorFragmentTab2", JSON_ARRAY.toString());
 			for(int i = 0; i < JSON_ARRAY.length(); i++)
 			{
 				QuestionObject temp_question = questionsSql.createQuestion(
@@ -143,18 +145,15 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
                         }
                     }
                     try {
-						boolean attempt = questionsSql.submitQuestions(questionsForSubmit, examName);
+						boolean attempt = questionsSql.submitExam(questionsForSubmit, examName);
 						if(attempt)
 							Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " submitted", Toast.LENGTH_SHORT).show();
 						else
 							Toast.makeText(getActivity().getBaseContext(), "Exam: " + examName + " failed", Toast.LENGTH_SHORT).show();
-					} catch (JSONException e) {
+					} catch (InterruptedException | ExecutionException | JSONException e) {
 						Log.w("InstructorFragmentTab2", "Error submitting questions for exam: " + examName);
 						e.printStackTrace();
-					} catch (InterruptedException | ExecutionException e) {
-						e.printStackTrace();
-					}
-                    
+					}                     
                     // Close CAB
                     mode.finish();
                     return true;
@@ -183,12 +182,7 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 
         
 		return view;
-
-
-//		Toast.makeText(getActivity().getBaseContext(), "Press and hold to select", Toast.LENGTH_SHORT).show();
 	}
-	
-	
 	
 	@Override
 	public void onResume() {
@@ -214,28 +208,16 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 		super.onDestroyView();
 	}
 	
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
-	}
 //######################################################################################################	
 	private class GettingQuestions extends AsyncTask<String, Void, String> {
 		@Override
 		protected String doInBackground(String... urls) 
 		{
-			try {
-				return postUrl(urls[0],urls[1]);
-			}
-			catch (IOException e){
-				return "Cannot connect. Server is not responding.";
-			}
-		}		
-		private String postUrl(String user_id, String tag) throws IOException {
+			response = "";
 			String[] raw_response = {};	         
 			Map<String, String> params = new HashMap<String, String>();				   
-			params.put("user", user_id);
-			params.put("tag", tag);
+			params.put("user", urls[0]);
+			params.put("tag", urls[1]);
 			params.put("token", session.getToken());
 			
 			try {
@@ -250,6 +232,6 @@ public class InstructorFragmentTab2 extends Fragment implements OnClickListener{
 			}
 			Streamer.disconnect();
 			return response;
-		}//END downloadUrl FUNCTION
+		}
 	}//END ASYNC CLASS	
 }

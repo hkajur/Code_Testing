@@ -46,7 +46,7 @@
         android:id="@+id/fragmentContainerTEMP"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/button2"
+        android:layout_above="@+id/button1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/QuestionText"
@@ -62,7 +62,7 @@
                 android:layout_width="540dp"
                 android:layout_height="match_parent"
                 app:columnCount="2"
-                app:rowCount="8" >
+                app:rowCount="4" >
 
 
 
@@ -81,7 +81,7 @@
         android:text="Submit"
         android:textColor="@color/white" />
 
-    <Button
+    <!--Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,6 +90,6 @@
         android:background="@drawable/flat_selector"
         android:gravity="center"
         android:text="Clear"
-        android:textColor="@color/white" />
+        android:textColor="@color/white" /-->
 
 </RelativeLayout>

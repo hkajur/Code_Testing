@@ -1697,29 +1697,30 @@ containing a value of this type.
         public static final int abc_config_showMenuShortcutsWhenKeyboardPresent=0x7f060003;
     }
     public static final class color {
-        public static final int MCback=0x7f070036;
+        public static final int ButtonRed=0x7f070036;
+        public static final int MCback=0x7f070037;
         /**  Green 
          */
-        public static final int PRback=0x7f070039;
+        public static final int PRback=0x7f07003a;
         /**  Orange 
          */
-        public static final int SHback=0x7f070038;
+        public static final int SHback=0x7f070039;
         /**  Light red 
          */
-        public static final int TFback=0x7f070037;
-        public static final int abc_background_cache_hint_selector_material_dark=0x7f07003a;
-        public static final int abc_background_cache_hint_selector_material_light=0x7f07003b;
+        public static final int TFback=0x7f070038;
+        public static final int abc_background_cache_hint_selector_material_dark=0x7f07003b;
+        public static final int abc_background_cache_hint_selector_material_light=0x7f07003c;
         public static final int abc_input_method_navigation_guard=0x7f070003;
-        public static final int abc_primary_text_disable_only_material_dark=0x7f07003c;
-        public static final int abc_primary_text_disable_only_material_light=0x7f07003d;
-        public static final int abc_primary_text_material_dark=0x7f07003e;
-        public static final int abc_primary_text_material_light=0x7f07003f;
-        public static final int abc_search_url_text=0x7f070040;
+        public static final int abc_primary_text_disable_only_material_dark=0x7f07003d;
+        public static final int abc_primary_text_disable_only_material_light=0x7f07003e;
+        public static final int abc_primary_text_material_dark=0x7f07003f;
+        public static final int abc_primary_text_material_light=0x7f070040;
+        public static final int abc_search_url_text=0x7f070041;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
-        public static final int abc_secondary_text_material_dark=0x7f070041;
-        public static final int abc_secondary_text_material_light=0x7f070042;
+        public static final int abc_secondary_text_material_dark=0x7f070042;
+        public static final int abc_secondary_text_material_light=0x7f070043;
         public static final int accent_material_dark=0x7f07000f;
         public static final int accent_material_light=0x7f07000e;
         public static final int background_floating_material_dark=0x7f070006;
@@ -1983,8 +1984,12 @@ containing a value of this type.
         public static final int flat_selector=0x7f02003a;
         public static final int ic_launcher=0x7f02003b;
         public static final int logo=0x7f02003c;
-        public static final int rect_normal=0x7f02003d;
-        public static final int rect_pressed=0x7f02003e;
+        public static final int mc_icon=0x7f02003d;
+        public static final int pr_icon=0x7f02003e;
+        public static final int rect_normal=0x7f02003f;
+        public static final int rect_pressed=0x7f020040;
+        public static final int sa_icon=0x7f020041;
+        public static final int tf_icon=0x7f020042;
     }
     public static final class id {
         public static final int EXAMNAME=0x7f090083;
@@ -2001,10 +2006,10 @@ containing a value of this type.
         public static final int PReditText2=0x7f090071;
         public static final int ProgQuestion=0x7f09006e;
         public static final int QuestionText=0x7f09007e;
-        public static final int Question_place=0x7f090086;
-        public static final int ReasonEditText=0x7f09005e;
+        public static final int Question_place=0x7f090087;
+        public static final int ReasonEditText=0x7f09005d;
         public static final int RelativeLayout1=0x7f090082;
-        public static final int ResponseEditText=0x7f090060;
+        public static final int ResponseEditText=0x7f09005f;
         public static final int SpinnerFeedbackType=0x7f09007c;
         public static final int TFeditText1=0x7f090072;
         public static final int TFeditText2=0x7f090075;
@@ -2023,12 +2028,12 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f090043;
         public static final int action_mode_bar_stub=0x7f090042;
         public static final int action_mode_close_button=0x7f090035;
-        public static final int action_settings=0x7f09008b;
+        public static final int action_settings=0x7f09008c;
         public static final int activity_chooser_view_content=0x7f090036;
         public static final int alignBounds=0x7f090012;
         public static final int alignMargins=0x7f090013;
         public static final int always=0x7f09002a;
-        public static final int back=0x7f09005d;
+        public static final int back=0x7f09005c;
         public static final int beginning=0x7f090031;
         public static final int both=0x7f090009;
         public static final int bottom=0x7f090014;
@@ -2039,17 +2044,17 @@ containing a value of this type.
         public static final int center_vertical=0x7f090017;
         public static final int checkbox=0x7f09003e;
         public static final int choice=0x7f09000d;
-        public static final int choice1=0x7f090087;
-        public static final int choice2=0x7f090088;
-        public static final int choice3=0x7f090089;
-        public static final int choice4=0x7f09008a;
+        public static final int choice1=0x7f090088;
+        public static final int choice2=0x7f090089;
+        public static final int choice3=0x7f09008a;
+        public static final int choice4=0x7f09008b;
         public static final int clip_horizontal=0x7f090018;
         public static final int clip_vertical=0x7f090019;
         public static final int collapseActionView=0x7f09002b;
         public static final int container=0x7f090055;
         public static final int decor_content_parent=0x7f090044;
         public static final int default_activity_button=0x7f090039;
-        public static final int delete=0x7f09008c;
+        public static final int delete=0x7f09008d;
         public static final int dialog=0x7f09002f;
         public static final int disableHome=0x7f090024;
         public static final int dismiss=0x7f09000e;
@@ -2065,7 +2070,7 @@ containing a value of this type.
         public static final int fragmentContainer=0x7f090081;
         public static final int fragmentContainerTEMP=0x7f09007f;
         public static final int fragment_container=0x7f090056;
-        public static final int front=0x7f09005f;
+        public static final int front=0x7f09005e;
         public static final int home=0x7f090000;
         public static final int homeAsUp=0x7f090025;
         public static final int horizontal=0x7f090010;
@@ -2074,6 +2079,7 @@ containing a value of this type.
         public static final int ifRoom=0x7f09002c;
         public static final int image=0x7f090038;
         public static final int imageView1=0x7f09005a;
+        public static final int img=0x7f090085;
         public static final int left=0x7f09000a;
         public static final int listMode=0x7f090021;
         public static final int listView1=0x7f090079;
@@ -2082,12 +2088,12 @@ containing a value of this type.
         public static final int never=0x7f09002d;
         public static final int none=0x7f09000b;
         public static final int normal=0x7f090022;
-        public static final int pager=0x7f09005c;
+        public static final int pager=0x7f09005b;
         public static final int passText=0x7f090058;
         public static final int points=0x7f09007d;
         public static final int progress_circular=0x7f090007;
         public static final int progress_horizontal=0x7f090008;
-        public static final int question=0x7f090085;
+        public static final int question=0x7f090086;
         public static final int questions_Row=0x7f090077;
         public static final int radio=0x7f090040;
         public static final int radio0=0x7f090062;
@@ -2117,10 +2123,10 @@ containing a value of this type.
         public static final int split_action_bar=0x7f090004;
         public static final int start=0x7f09001e;
         public static final int status=0x7f090084;
-        public static final int submit=0x7f09008d;
+        public static final int submit=0x7f09008e;
         public static final int submit_area=0x7f090051;
         public static final int tabMode=0x7f090023;
-        public static final int textView1=0x7f09005b;
+        public static final int textView1=0x7f090060;
         public static final int title=0x7f09003c;
         public static final int top=0x7f09001f;
         public static final int ucidText=0x7f090059;
@@ -2184,30 +2190,29 @@ containing a value of this type.
         public static final int activity_main=0x7f030019;
         public static final int activity_past_exams_breakdown=0x7f03001a;
         public static final int activity_splash=0x7f03001b;
-        public static final int activity_splash_main=0x7f03001c;
-        public static final int activity_student=0x7f03001d;
-        public static final int activity_user_panel=0x7f03001e;
-        public static final int custom_swipe_row=0x7f03001f;
-        public static final int frag_mc_questions=0x7f030020;
-        public static final int frag_open_questions=0x7f030021;
-        public static final int frag_tf_questions=0x7f030022;
-        public static final int fragment_add_mc_questions=0x7f030023;
-        public static final int fragment_add_prog_questions=0x7f030024;
-        public static final int fragment_add_short_questions=0x7f030025;
-        public static final int fragment_add_tf_questions=0x7f030026;
-        public static final int fragment_answers=0x7f030027;
-        public static final int fragment_empty=0x7f030028;
-        public static final int fragment_instructor_tab1=0x7f030029;
-        public static final int fragment_instructor_tab2=0x7f03002a;
-        public static final int fragment_instructor_tab3=0x7f03002b;
-        public static final int fragment_student_tab1=0x7f03002c;
-        public static final int fragment_student_tab2=0x7f03002d;
-        public static final int fragment_student_tab3=0x7f03002e;
-        public static final int list_current_exams=0x7f03002f;
-        public static final int question_list_item=0x7f030030;
-        public static final int row_questions_in_progress=0x7f030031;
-        public static final int simple_list_item=0x7f030032;
-        public static final int support_simple_spinner_dropdown_item=0x7f030033;
+        public static final int activity_student=0x7f03001c;
+        public static final int activity_user_panel=0x7f03001d;
+        public static final int custom_swipe_row=0x7f03001e;
+        public static final int frag_mc_questions=0x7f03001f;
+        public static final int frag_open_questions=0x7f030020;
+        public static final int frag_tf_questions=0x7f030021;
+        public static final int fragment_add_mc_questions=0x7f030022;
+        public static final int fragment_add_prog_questions=0x7f030023;
+        public static final int fragment_add_short_questions=0x7f030024;
+        public static final int fragment_add_tf_questions=0x7f030025;
+        public static final int fragment_answers=0x7f030026;
+        public static final int fragment_empty=0x7f030027;
+        public static final int fragment_instructor_tab1=0x7f030028;
+        public static final int fragment_instructor_tab2=0x7f030029;
+        public static final int fragment_instructor_tab3=0x7f03002a;
+        public static final int fragment_student_tab1=0x7f03002b;
+        public static final int fragment_student_tab2=0x7f03002c;
+        public static final int fragment_student_tab3=0x7f03002d;
+        public static final int list_current_exams=0x7f03002e;
+        public static final int question_list_item=0x7f03002f;
+        public static final int row_questions_in_progress=0x7f030030;
+        public static final int simple_list_item=0x7f030031;
+        public static final int support_simple_spinner_dropdown_item=0x7f030032;
     }
     public static final class menu {
         public static final int dashboard=0x7f0d0000;

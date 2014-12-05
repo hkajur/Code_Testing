@@ -1,8 +1,11 @@
 package InstructorClasses;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,52 +16,175 @@ import NetworkClasses.Login;
 import NetworkClasses.Streamer;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayout;
+import android.text.InputType;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 public class InstructorFragmentTab3 extends Fragment {
 	
-	int temp_placeholder=0;
+	String questionTypeMarker = ""; 
 	
 	private Spinner choice;
-	private Button clear;
 	private Button submit;
 	private EditText question_in;
 	private EditText points_in;	
-	private GridLayout responses;
+	private GridLayout responses_layout;
 	RelativeLayout.LayoutParams RelativeLayoutParams;
 	RelativeLayout.LayoutParams RelativeLayoutParams2;
+	Display display;
+	Point size;
+	int width;	
 	
-	public int points;
-	public String question;
-	public Map<String,String> answers;
+	private EditText[] mcEditText = new EditText[8]; 
+	private EditText[] prEditText = new EditText[6];
+	private EditText[] tfEditText = new EditText[4];
+	private EditText saEditText;
+	
+	
+	public String questionType;
+	public String question;	
+	public String points;
+	public List<String> responses;
 	
 	public Login session;
+	
+	public JSONObject response;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
 	{
         View view = inflater.inflate(R.layout.fragment_instructor_tab3, container, false);
         choice = (Spinner) view.findViewById(R.id.SpinnerFeedbackType);
         submit = (Button) view.findViewById(R.id.button1);
-        clear = (Button) view.findViewById(R.id.button2);
         question_in = (EditText) view.findViewById(R.id.QuestionText);
         points_in = (EditText) view.findViewById(R.id.points);
-        responses = (GridLayout) view.findViewById(R.id.fragmentContainer);
+        responses_layout = (GridLayout) view.findViewById(R.id.fragmentContainer);
+        
+		display = getActivity().getWindowManager().getDefaultDisplay();
+		size = new Point();
+		display.getSize(size);
+		final int width = size.x;	
 
         
-        
+        /*
+         * question_type, question,  points
+
+   If question_type == "MultipleChoice"
+      Additional Post Variables: correct, correct_reason, wrongAnswer1, wrongReason1, wrongAnswer2, wrongReason2, wrongAnswer3, wrongReason3
+   Else if question_type == "TrueFalse"
+      Additional Post Variables: correct,correct_reason, wrongAnswer1, wrongReason1
+   Else if question_type == "ShortAnswer"
+      NO additional post variables required
+   Else if question_type == "Programming"
+      Additional Post Variables: input1, output1, input2, output2, input3, output3
+
+         * */
+
+        submit.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	
+            	AsyncTask<String, Void, String> response_thread = null;
+            	switch (questionTypeMarker){
+            		case "MC":
+            			responses = new ArrayList<String>();
+            			questionType = "Multiple Choice";
+            			question = question_in.getText().toString();
+            			points = points_in.getText().toString();
+            			for(EditText i : mcEditText){
+            				responses.add(i.getText().toString());
+            			}
+            			Log.i("MC QUESTION", responses.toString());
+            			response_thread = new questionSubmit().execute(
+                    			questionType,
+                    			question,
+                    			points,
+                    			responses.toString(),
+            					"MultipleChoiceQuestionInsert");		
+            			break;
+            		case "TF":
+            			responses = new ArrayList<String>();
+            			questionType = "TrueFalse";
+            			question = question_in.getText().toString();
+            			points = points_in.getText().toString();
+            			for(EditText i : tfEditText){
+            				responses.add(i.getText().toString());
+            			}
+            			Log.i("TF QUESTION", responses.toString());
+            			response_thread = new questionSubmit().execute(
+                    			questionType,
+                    			question,
+                    			points,
+                    			responses.toString(),
+            					"TrueFalseChoiceQuestionInsert");		            			
+            			break;
+            		case "SA":
+            			responses = new ArrayList<String>();
+            			questionType = "ShortAnswer";
+            			question = question_in.getText().toString();
+            			points = points_in.getText().toString();
+            			response_thread = new questionSubmit().execute(
+                    			questionType,
+                    			question,
+                    			points,
+                    			saEditText.getText().toString(),
+            					"ShortAnswerQuestionInsert");		            			
+            			break;
+            		case "PR":
+            			responses = new ArrayList<String>();
+            			questionType = "Programming";
+            			question = question_in.getText().toString();
+            			points = points_in.getText().toString();
+            			for(EditText i : prEditText){
+            				responses.add(i.getText().toString());
+            			}
+            			Log.i("PROGRAM QUESTION", responses.toString());
+            			response_thread = new questionSubmit().execute(
+                    			questionType,
+                    			question,
+                    			points,
+                    			responses.toString(),
+            					"ProgramQuestionInsert");		            			
+            			break;
+            		default:
+            			break;            			
+            	}
+            	
+    			try {
+    				String result = response_thread.get();
+    				Log.i("InstructorFragmentTab3", result);
+    				response = new JSONObject(result);
+    				
+    				if(response.get("questionCreated").toString().equals("Success")){
+    					Toast.makeText(getActivity().getBaseContext(), "Question added", Toast.LENGTH_SHORT).show();
+    					Log.i("InstructorFragmentTab3", "Question submitted");
+    				}
+    				else{
+    					Log.i("InstructorFragmentTab3", "Error submitting");
+    					Log.w("InstructorFragmentTab3", response.get("Error").toString());
+    					Toast.makeText(getActivity().getBaseContext(), "Error submitting", Toast.LENGTH_SHORT).show();
+    				}
+    			} catch (ExecutionException | InterruptedException | JSONException e) {
+    				Toast.makeText(getActivity().getBaseContext(), "Server has not responded. Try again.", Toast.LENGTH_SHORT).show();
+    				e.printStackTrace();
+    			} 
+
+            	
+
+            }
+        });
         
 		choice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			
@@ -71,31 +197,33 @@ public class InstructorFragmentTab3 extends Fragment {
 		    	fragmentTransaction = fragmentManager.beginTransaction();
 	            
 		    	if (text.equals("Multiple Choice")){
-		    		
-		    		responses.removeAllViews();
+		    		questionTypeMarker = "MC";
+		    		responses_layout.removeAllViews();
 
 		    		GridLayout.Spec titleTxtSpecColumn = GridLayout.spec(0, GridLayout.BASELINE);
 		    		GridLayout.Spec titleTxtSpecRow = GridLayout.spec(0);
 		    		
-		    		EditText[] newText = new EditText[8];
-		    		
-		    		newText[0] = (EditText) new EditText(getActivity().getBaseContext());
-		    		newText[0].setHint("Answer");
-		    		newText[0].setId(1);
-		    		newText[0].setHintTextColor(Color.GREEN);
-		    		newText[0].setTextColor(Color.BLACK);
-		    		newText[0].setGravity(1);
-		    		responses.addView(newText[0], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+		    		mcEditText[0] = (EditText) new EditText(getActivity().getBaseContext());
+		    		mcEditText[0].setHint("Answer");
+		    		mcEditText[0].setWidth(width);
+		    		mcEditText[0].setId(1);
+		    		mcEditText[0].setHintTextColor(Color.GREEN);
+		    		mcEditText[0].setTextColor(Color.BLACK);
+		    		mcEditText[0].setGravity(1);
+		    		mcEditText[0].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    		responses_layout.addView(mcEditText[0], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
 
 		    		
 		    		titleTxtSpecColumn = GridLayout.spec(1, GridLayout.BASELINE);
 		    		titleTxtSpecRow = GridLayout.spec(0);
-		    		newText[1] = new EditText(getActivity().getBaseContext());
-		    		newText[1].setHint("Correct Reason");
-		    		newText[1].setHintTextColor(Color.GREEN);
-		    		newText[1].setTextColor(Color.BLACK);
-		    		newText[1].setGravity(1);
-		    		responses.addView(newText[1], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+		    		mcEditText[1] = new EditText(getActivity().getBaseContext());
+		    		mcEditText[1].setHint("Correct Reason");
+		    		mcEditText[1].setWidth(width);
+		    		mcEditText[1].setHintTextColor(Color.GREEN);
+		    		mcEditText[1].setTextColor(Color.BLACK);
+		    		mcEditText[1].setGravity(1);
+		    		mcEditText[1].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    		responses_layout.addView(mcEditText[1], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
 
 		    		
 	    			int col = 0;
@@ -106,102 +234,147 @@ public class InstructorFragmentTab3 extends Fragment {
 			    		titleTxtSpecColumn = GridLayout.spec(col, GridLayout.BASELINE);
 			    		titleTxtSpecRow = GridLayout.spec(row);
 
-		    			newText[place] = (EditText) new EditText(getActivity().getBaseContext());
-		    			newText[place].setHint("Wrong " + i);
-		    			newText[place].setId(2);
-		    			newText[place].setHintTextColor(Color.RED);
-		    			newText[place].setTextColor(Color.BLACK);
-		    			newText[place].setGravity(1);
-		    			temp_placeholder=newText[place].getId();
-		    			responses.addView(newText[place]);
+			    		mcEditText[place] = (EditText) new EditText(getActivity().getBaseContext());
+			    		mcEditText[place].setHint("Wrong " + i);
+			    		mcEditText[place].setWidth(width);
+			    		mcEditText[place].setId(2);
+			    		mcEditText[place].setHintTextColor(Color.RED);
+			    		mcEditText[place].setTextColor(Color.BLACK);
+			    		mcEditText[place].setGravity(1);
+			    		mcEditText[place].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    			responses_layout.addView(mcEditText[place]);
 		    			
 		    			place++;
 		    			col++;
 		    			
-		    			newText[place] = new EditText(getActivity().getBaseContext());
-		    			newText[place].setHint("Wrong " + i + " reason");
-		    			newText[place].setId(2);
-		    			newText[place].setHintTextColor(Color.RED);
-		    			newText[place].setTextColor(Color.BLACK);
-		    			newText[place].setGravity(1);
-		    			temp_placeholder=newText[place].getId();
-		    			responses.addView(newText[place]);
+		    			mcEditText[place] = new EditText(getActivity().getBaseContext());
+		    			mcEditText[place].setHint("Wrong " + i + " reason");
+		    			mcEditText[place].setWidth(width);
+		    			mcEditText[place].setId(2);
+		    			mcEditText[place].setHintTextColor(Color.RED);
+		    			mcEditText[place].setTextColor(Color.BLACK);
+		    			mcEditText[place].setGravity(1);
+		    			mcEditText[place].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    			responses_layout.addView(mcEditText[place]);
 		    			place++;
 		    			row++;
 		    		}
-
 		    		
-	    				
+		    		Toast.makeText(getActivity(), "Scroll left/right for anwers/feedback", Toast.LENGTH_LONG).show();
+		    		
 		    	}
 		    	else if (text.equals("True/False")){
-		    		responses.removeAllViews();
+		    		questionTypeMarker = "TF";
+		    		responses_layout.removeAllViews();
 		    		
 		    		GridLayout.Spec titleTxtSpecColumn = GridLayout.spec(0, GridLayout.BASELINE);
 		    		GridLayout.Spec titleTxtSpecRow = GridLayout.spec(0);
 		    		
-		    		EditText[] newText = new EditText[8];
 		    		
-		    		newText[0] = (EditText) new EditText(getActivity().getBaseContext());
-		    		newText[0].setHint("Answer");
-		    		newText[0].setId(1);
-		    		newText[0].setHintTextColor(Color.GREEN);
-		    		newText[0].setTextColor(Color.BLACK);
-		    		newText[0].setGravity(1);
-		    		responses.addView(newText[0], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+		    		tfEditText[0] = (EditText) new EditText(getActivity().getBaseContext());
+		    		tfEditText[0].setHint("Answer");
+		    		tfEditText[0].setWidth(width);
+		    		tfEditText[0].setId(1);
+		    		tfEditText[0].setHintTextColor(Color.GREEN);
+		    		tfEditText[0].setTextColor(Color.BLACK);
+		    		tfEditText[0].setGravity(1);
+		    		tfEditText[0].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    		responses_layout.addView(tfEditText[0], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
 
 		    		
 		    		titleTxtSpecColumn = GridLayout.spec(1, GridLayout.BASELINE);
 		    		titleTxtSpecRow = GridLayout.spec(0);
-		    		newText[1] = new EditText(getActivity().getBaseContext());
-		    		newText[1].setHint("Correct Reason");
-		    		newText[1].setHintTextColor(Color.GREEN);
-		    		newText[1].setTextColor(Color.BLACK);
-		    		newText[1].setGravity(1);
-		    		responses.addView(newText[1], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+		    		tfEditText[1] = new EditText(getActivity().getBaseContext());
+		    		tfEditText[1].setHint("Correct Reason");
+		    		tfEditText[1].setWidth(width);
+		    		tfEditText[1].setHintTextColor(Color.GREEN);
+		    		tfEditText[1].setTextColor(Color.BLACK);
+		    		tfEditText[1].setGravity(1);
+		    		tfEditText[1].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    		responses_layout.addView(tfEditText[1], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
 		    		
 		    		titleTxtSpecColumn = GridLayout.spec(0, GridLayout.BASELINE);
 		    		titleTxtSpecRow = GridLayout.spec(1);
 		    		
 		    		
-		    		newText[2] = (EditText) new EditText(getActivity().getBaseContext());
-		    		newText[2].setHint("Wrong");
-		    		newText[2].setId(1);
-		    		newText[2].setHintTextColor(Color.RED);
-		    		newText[2].setTextColor(Color.BLACK);
-		    		newText[2].setGravity(1);
-		    		responses.addView(newText[2], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+		    		tfEditText[2] = (EditText) new EditText(getActivity().getBaseContext());
+		    		tfEditText[2].setHint("Wrong");
+		    		tfEditText[2].setWidth(width);
+		    		tfEditText[2].setId(1);
+		    		tfEditText[2].setHintTextColor(Color.RED);
+		    		tfEditText[2].setTextColor(Color.BLACK);
+		    		tfEditText[2].setGravity(1);
+		    		tfEditText[2].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    		responses_layout.addView(tfEditText[2], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
 
 		    		
 		    		titleTxtSpecColumn = GridLayout.spec(1, GridLayout.BASELINE);
 		    		titleTxtSpecRow = GridLayout.spec(1);
-		    		newText[3] = new EditText(getActivity().getBaseContext());
-		    		newText[3].setHint("Wrong Reason");
-		    		newText[3].setHintTextColor(Color.RED);
-		    		newText[3].setTextColor(Color.BLACK);
-		    		newText[3].setGravity(1);
-		    		responses.addView(newText[3], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+		    		tfEditText[3] = new EditText(getActivity().getBaseContext());
+		    		tfEditText[3].setHint("Wrong Reason");
+		    		tfEditText[3].setWidth(width);
+		    		tfEditText[3].setHintTextColor(Color.RED);
+		    		tfEditText[3].setTextColor(Color.BLACK);
+		    		tfEditText[3].setGravity(1);
+		    		tfEditText[3].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    		responses_layout.addView(tfEditText[3], new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
 
+		    		Toast.makeText(getActivity(), "Scroll left/right for anwers/feedback", Toast.LENGTH_LONG).show();
+		    		
 		    	}
 		    	else if(text.equals("Short Answer")){
-		    		responses.removeAllViews();
+		    		questionTypeMarker = "SA";
+		    		responses_layout.removeAllViews();
+
+		    		GridLayout.Spec titleTxtSpecColumn = GridLayout.spec(0, GridLayout.BASELINE);
+		    		GridLayout.Spec titleTxtSpecRow = GridLayout.spec(0);		    		
+		    		
+		    		saEditText = (EditText) new EditText(getActivity().getBaseContext());
+		    		saEditText.setHint("Answer");
+		    		saEditText.setId(1);
+		    		saEditText.setHintTextColor(Color.GREEN);
+		    		saEditText.setTextColor(Color.BLACK);
+		    		saEditText.setGravity(1);
+		    		saEditText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    		responses_layout.addView(saEditText, new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
 
 		    	}
 		    	else{
-		    		responses.removeAllViews();
-		    		for(int i=0 ; i<3 ; i++){
-		    			EditText newText = new EditText(getActivity().getBaseContext());
-		    			newText = new EditText(getActivity().getBaseContext());
-		    			newText.setHint("Input");
-		    			newText.setTextColor(Color.BLACK);
-		    			newText.setGravity(1);
-		    			responses.addView(newText);	
+		    		questionTypeMarker = "PR";
+		    		responses_layout.removeAllViews();
 		    		
-		    			newText = new EditText(getActivity().getBaseContext());
-		    			newText.setHint("Output");
-		    			newText.setTextColor(Color.BLACK);
-		    			newText.setGravity(1);
-		    			responses.addView(newText);
+		    		GridLayout.Spec titleTxtSpecColumn;
+		    		GridLayout.Spec titleTxtSpecRow;
+		    		
+		    		int counter = 0;
+		    		for(int i=0 ; i<3 ; i++){
+			    		titleTxtSpecColumn = GridLayout.spec(0, GridLayout.BASELINE);
+			    		titleTxtSpecRow = GridLayout.spec(i);
+		    			prEditText[counter] = new EditText(getActivity().getBaseContext());
+		    			prEditText[counter] = new EditText(getActivity().getBaseContext());
+		    			prEditText[counter].setHint("Input");
+		    			prEditText[counter].setWidth(width);
+		    			prEditText[counter].setTextColor(Color.BLACK);
+		    			prEditText[counter].setGravity(1);
+		    			prEditText[counter].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    			responses_layout.addView(prEditText[counter],new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));	
+		    		
+		    			counter++;
+		    			
+			    		titleTxtSpecColumn = GridLayout.spec(1, GridLayout.BASELINE);
+			    		titleTxtSpecRow = GridLayout.spec(i);
+		    			prEditText[counter] = new EditText(getActivity().getBaseContext());
+		    			prEditText[counter].setHint("Output");
+		    			prEditText[counter].setWidth(width);
+		    			prEditText[counter].setTextColor(Color.BLACK);
+		    			prEditText[counter].setGravity(1);
+		    			prEditText[counter].setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		    			responses_layout.addView(prEditText[counter],new GridLayout.LayoutParams(titleTxtSpecRow, titleTxtSpecColumn));
+		    			counter++;
 		    		}
+
+		    		Toast.makeText(getActivity(), "Scroll left/right for anwers/feedback", Toast.LENGTH_LONG).show();
+		    		
 		    	}
 		    	fragmentTransaction.commit();
 		    	
@@ -211,11 +384,14 @@ public class InstructorFragmentTab3 extends Fragment {
 		    	fragmentTransaction.commit();
 		    }
 		});
-
-        
         
         return view;
 	}	
+	@Override
+	public void onResume(){
+		super.onResume();		
+	}
+	
 	@Override
 	public void onStop() {
 	    super.onStop();
@@ -230,8 +406,10 @@ public class InstructorFragmentTab3 extends Fragment {
 	public void onDestroyView(){
 		super.onDestroyView();
 	}
-
-	public class HttpAsyncTask extends AsyncTask<String, Void, String> {
+	
+//===============================================================================================================================	
+	
+	public class questionSubmit extends AsyncTask<String, Void, String> {
 	    @Override
     	protected String doInBackground(String... urls) 
     	{
@@ -240,11 +418,13 @@ public class InstructorFragmentTab3 extends Fragment {
 	         
 			//PARAMETERS TO SEND
 			Map<String, String> params = new HashMap<String, String>();				   
-			params.put("token", urls[0]);
-			params.put("tag", "TrueFalseChoiceQuestionInsert");
-			params.put("question_type", "TrueFalse");
-
-			params.put("question", question.toString());
+			params.put("token", session.getToken());
+			
+			params.put("question_type", urls[0]);
+			params.put("question", urls[1]);
+			params.put("points", urls[2]);
+			params.put("responses", urls[3]);
+			params.put("tag", urls[4]);
 
 			try {
 				Streamer.sendPostRequest(session.getURL(), params);
@@ -256,28 +436,6 @@ public class InstructorFragmentTab3 extends Fragment {
 			Streamer.disconnect();	        
 			return response;
     	}
-		@Override
-		protected void onPostExecute(String result) 
-		{
-			JSONObject response;
-			Toast.makeText(getActivity().getBaseContext(), result.toString(), Toast.LENGTH_LONG).show();
-			try {
-				response = new JSONObject(result);
-				
-				if(response.get("questionCreated").toString().equals("Success")){
-					Toast.makeText(getActivity().getBaseContext(), "Question added", Toast.LENGTH_SHORT).show();
-					Log.i("InstructorFragmentTab3", "Question submitted");
-				}
-				else{
-					Log.i("InstructorFragmentTab3", "Error submitting");
-					Log.w("InstructorFragmentTab3", response.get("Error").toString());
-					Toast.makeText(getActivity().getBaseContext(), "Error submitting", Toast.LENGTH_SHORT).show();
-				}
-			} catch (JSONException e) {
-				Toast.makeText(getActivity().getBaseContext(), "Server has not responded. Try again.", Toast.LENGTH_SHORT).show();
-				e.printStackTrace();
-			}
-		}
 	}//END ASYNC CLASS 
 }
 

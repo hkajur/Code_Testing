@@ -29,52 +29,78 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
                 break;
             
             case 'ReleaseExam':
-                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertExam.php';
+                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/releaseExam.php';
                 $field = 'userID='.cleanData($_REQUEST['userID']).
                         '&examID='.cleanData($_REQUEST['examID']);
+            
                 callingCurl($url,$field);
                 break;
             
             case 'ExamStats':
                 break;
-                        
+            
             case 'TrueFalseChoiceQuestionInsert':
-                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertQuestion.php';
+                $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertQuestion.php';                
+                $responses = cleanData($_REQUEST['responses']);
+                $ids = substr($ids,1,-1);
+                $idArray = explode(',',$ids);
                 $field = 'question_type='.cleanData($_REQUEST['question_type']).
                     '&question='.cleanData($_REQUEST['question']).
-                    '&correct='.cleanData($_REQUEST['correct']).
-                    '&correct_reason='.cleanData($_REQUEST['correct_reason']).
-                    '&wrongAnswer1='.cleanData($_REQUEST['wrongAnswer1']).
-                    '&wrongReason1'.cleanData($_REQUEST['wrongReason1']);
+                    '&points='.cleanData($_REQUEST['points']).
+                    '&correct='.$idArray[0].
+                    '&correct_reason='.$idArray[1].
+                    '&wrongAnswer1='.$idArray[2].
+                    '&wrongReason1'.$idArray[3];
                 callingCurl($url,$field);
                 break;        
             
             case 'MultipleChoiceQuestionInsert':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertQuestion.php';
+                $responses = cleanData($_REQUEST['responses']);
+                $ids = substr($ids,1,-1);
+                $idArray = explode(',',$ids);            
                 $field = 'question_type='.cleanData($_REQUEST['question_type']).
                         '&question='.cleanData($_REQUEST['question']).
-                        '&correct='.cleanData($_REQUEST['correct']).
-                        '&correct_reason='.cleanData($_REQUEST['correct_reason']).
-                        '&wrongAnswer1='.cleanData($_REQUEST['wrongAnswer1']).
-                        '&wrongReason1'.cleanData($_REQUEST['wrongReason1']).
-                        '&wrongAnswer2'.cleanData($_REQUEST['wrongcleanData(Answer2']).
-                        '&wrongReason2'.cleanData($_REQUEST['wrongReason2']).
-                        '&wrongAnswer3'.cleanData($_REQUEST['wrongAnswer3']).
-                        '&wrongReason3'.cleanData($_REQUEST['wrongReason3']);
+                        '&points='.cleanData($_REQUEST['points']).
+                        '&correct='.$idArray[0].
+                        '&correct_reason='.$idArray[1].
+                        '&wrongAnswer1='.$idArray[2].
+                        '&wrongReason1'.$idArray[3].
+                        '&wrongAnswer2'.$idArray[4].
+                        '&wrongReason2'.$idArray[5].
+                        '&wrongAnswer3'.$idArray[6].
+                        '&wrongReason3'.$idArray[7];
                 callingCurl($url,$field);
                 break;
             
             case 'ShortAnswerQuestionInsert':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertQuestion.php';
+                $responses = cleanData($_REQUEST['responses']);
+                $ids = substr($ids,1,-1);
+                $idArray = explode(',',$ids);
                 $field = 'question_type='.cleanData($_REQUEST['question_type']).
-                    '&question='.cleanData($_REQUEST['question']);
+                    '&question='.cleanData($_REQUEST['question']).
+                    '&points='.cleanData($_REQUEST['points']).
+                    '&correct='.cleanData($_REQUEST['response']);
                 callingCurl($url,$field);        
                 break;
 
             case 'ProgramQuestionInsert':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertQuestion.php';
+                $responses = cleanData($_REQUEST['responses']);
+                $ids = substr($ids,1,-1);
+                $idArray = explode(',',$ids);
                 $field = 'question_type='.cleanData($_REQUEST['question_type']).
-                    '&question='.cleanData($_REQUEST['question']);
+                    '&question='.cleanData($_REQUEST['question']).
+                    '&points='.cleanData($_REQUEST['points']).
+                    '&input1='.$idArray[0].
+                    '&output1='.$idArray[1].
+                    '&input2='.$idArray[2].
+                    '&output2='.$idArray[3].
+                    '&input3='.$idArray[4].
+                    '&output3='.$idArray[5];
+
+                echo $field;
                 callingCurl($url,$field);        
                 break;
             
@@ -111,6 +137,13 @@ if (isset($_REQUEST['tag']) && $_REQUEST['tag'] != '')
             //CAREFUL -- ARRAY INPUT HERE
             case 'submitExam':
                 $url = 'http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/studentSubmit.php';
+            
+            //FIX THIS
+            
+                $answers = cleanData($_REQUEST['questionAnswer']);
+                
+                                     
+            
                 $field = 'userID='.cleanData($_REQUEST['userID']).
                         '&examID='.cleanData($_REQUEST['examID']).
                         '&questionAnswer='.cleanData($_REQUEST['questionAnswer']);

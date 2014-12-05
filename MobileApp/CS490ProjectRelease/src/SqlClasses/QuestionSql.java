@@ -21,10 +21,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
-/*TODO
- * - Add network functionality when creating question. Add that to EACH CLASS
- * */
-
 public class QuestionSql {
 
 	private SQLiteDatabase database;
@@ -48,10 +44,12 @@ public class QuestionSql {
 		dbHelper.close();
 	}
 //--------------------------------------------------------------------------------------------------------------
-	public boolean submitQuestions(ArrayList<String> questionsForSubmit, String exam_name) throws JSONException, InterruptedException, ExecutionException{
+	public boolean submitExam(ArrayList<String> questionsForSubmit, String exam_name) throws JSONException, InterruptedException, ExecutionException{
 		String temp = questionsForSubmit.toString();
 		
-		AsyncTask<String, Void, String> response_thread = new NetworkThread().execute(temp, exam_name, "createExam");
+		AsyncTask<String, Void, String> response_thread = new submitExamThread().execute(temp, 
+				exam_name, 
+				"createExam");
 		
 		Log.i("QuestionSql", "Exam " + exam_name + " submitted");
 		Log.i("QuestionSql", "Exam_name: " + exam_name + " / Questions: " + temp);
@@ -61,6 +59,8 @@ public class QuestionSql {
 		JSONObject returned = new JSONObject(response_thread.get());
 		if(returned.getString("examCreated").equals("Success")){
 			Log.i("QuestionSql", "Response: " + exam_name + " == SUCCESS");
+			
+			
 			return true;
 		}
 		else{
@@ -68,8 +68,40 @@ public class QuestionSql {
 			Log.w("QuestionSql", "Error: " + returned.getString("Error"));
 			return false;
 		}
+	}
+
+//--------------------------------------------------------------------------------------------------------------
+	public boolean createQuestion(String points, String questionType, String[] responses, String question) {
 		
-		//if post successful instructorexam.addexam here with unreleased		
+		AsyncTask<String, Void, String> response_thread = null;
+		
+		switch (questionType){
+			case "MC":
+				response_thread = new submitQuestionThread().execute(responses.toString(), "MultipleChoiceQuestionInsert");
+				break;
+			case "TF":
+				response_thread = new submitQuestionThread().execute(responses.toString(), "TrueFalseChoiceQuestionInsert");
+				break;
+			case "SH":
+				response_thread = new submitQuestionThread().execute(responses.toString(), "ShortAnswerQuestionInsert");
+				break;
+			case "PR":
+				response_thread = new submitQuestionThread().execute(responses.toString(), "ProgramQuestionInsert");
+				break;
+		}
+			
+		try {
+			String response = response_thread.get();
+			JSONObject JSON = new JSONObject(response);
+			if(JSON.getString("questionCreated").equals("Success")){
+				return true;
+			}
+			else
+				return false;
+		} catch (InterruptedException | ExecutionException | JSONException e) {
+			e.printStackTrace();
+		}
+		return false; 
 	}
 
 //--------------------------------------------------------------------------------------------------------------
@@ -115,7 +147,7 @@ public class QuestionSql {
 //--------------------------------------------------------------------------------------------------------------
 	public void deleteQuestion(QuestionObject question) {
 		String id = question.getId();
-		String response=null;
+//		String response="";
 		//Set Params
 
 		/* ENABLE ONCE SERVER SET UP
@@ -133,8 +165,7 @@ public class QuestionSql {
 			Log.w("ExamSqlData", "Execution malfunction while deleting exam");
 			e.printStackTrace();
 		}
-
-		
+			
 		//If exam deleted successfully online, delete on mobile version
 		if(response.equals("Success")){
 			Log.i("ExamSqlData: ","Exam deleted with id: " + id);
@@ -152,8 +183,7 @@ public class QuestionSql {
 				QuestionSqlDatabase.DISPLAY_QUESTIONS, 
 				QuestionSqlDatabase.QUESTION_ID + " = " + id, 
 				null);	        	
-
-	}
+	}	
 //--------------------------------------------------------------------------------------------------------------
 	public List<QuestionObject> getAllQuestions() {
 		List<QuestionObject> questions = new ArrayList<QuestionObject>();
@@ -189,7 +219,34 @@ public class QuestionSql {
 	
 //################################################################################################	
 	
-	private class NetworkThread extends AsyncTask<String, Void, String> {	
+	private class submitExamThread extends AsyncTask<String, Void, String> {	
+		@Override
+		protected String doInBackground(String... urls) 
+		{
+			String response = ""; 
+			
+			Map<String, String> params = new HashMap<String, String>();				   
+			params.put("token", session.getToken());				
+			params.put("questionId", urls[0]);
+			params.put("examName", urls[1]);
+			params.put("tag", urls[2]);
+			
+			
+			//Send request to server to delete exam with following id
+			try {
+				Streamer.sendPostRequest(session.getURL(), params);
+				response = Streamer.readSingleLineRespone();
+			} catch (IOException ex) {
+				Log.w("QuestionsSqlData", "Could not connect to server");
+				ex.printStackTrace();
+			}
+			Streamer.disconnect();	        
+			return response;
+		}		
+	}//END ASYNC CLASS	
+//################################################################################################	
+	
+	private class submitQuestionThread extends AsyncTask<String, Void, String> {	
 		@Override
 		protected String doInBackground(String... urls) 
 		{

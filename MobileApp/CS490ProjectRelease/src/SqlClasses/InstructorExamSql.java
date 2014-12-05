@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.malan.cs490project.AppProfile;
+
 import ExamQuestionClasses.ExamObject;
 import NetworkClasses.Login;
 import NetworkClasses.Streamer;
@@ -20,7 +25,6 @@ import android.util.Log;
 
 public class InstructorExamSql{
 
-	private String response;
 	private SQLiteDatabase database;
 	private InstructorExamSqlDatabase dbHelper;
 	private String[] allColumns = { 
@@ -43,6 +47,9 @@ public class InstructorExamSql{
 	}
 //--------------------------------------------------------------------------------------------------------------
 	public ExamObject createExam(String examId, String examName, String examStat) {
+		
+		//TODO ADD NETWORK FUNCTIONALITY HERE
+		
 		ContentValues values = new ContentValues();
 
 		Cursor cursor = database.query(
@@ -87,138 +94,76 @@ public class InstructorExamSql{
 		return temp;
 	}	
 //--------------------------------------------------------------------------------------------------------------	
-	public void releaseExam(ExamObject exam){
+	public void releaseExam(Context context, ExamObject exam){
+		AppProfile creds = new AppProfile(context);
+		String userID = creds.getValue(AppProfile.PREF_ID);
+		JSONObject temp;
+		
 		String id = exam.getId();
-		String response=null;
+		String response="";
 		ContentValues values = new ContentValues();
 		
-		exam.setStatus("Released");
-		
-		/*
-		values.put(ExamSqlDataBase.GRADES_RELEASED, "Released");
-		database.update(
-				ExamSqlDataBase.INSTRUCTOR_EXAMS, 
-				values, 
-				ExamSqlDataBase.EXAM_ID + " = " + exam.getId(), 
-				null);
-			*/
-		Log.i("ExamSqlData", "Exam " + exam.getName() + " released");
-		
 		// ENABLE ONCE SERVER SET UP
-		AsyncTask<String, Void, String> response_thread = new NetworkThread().execute(id,"professor1","ReleaseExam");		
+		AsyncTask<String, Void, String> response_thread = new NetworkThread().execute(
+				exam.getId(),
+				userID,
+				"ReleaseExam");		
 		
+		try {
+			response = response_thread.get();
+			
+			temp = new JSONObject(response);
+			Log.i("ExamSqlData", response);
+			
+			if(temp.getString("Update").equals("Success")){
+				Log.i("ExamSqlData", "Exam " + exam.getName() + " released");
+				values.put(InstructorExamSqlDatabase.GRADES_RELEASED, "Released");
+				database.update(
+					InstructorExamSqlDatabase.INSTRUCTOR_EXAMS, 
+					values, 
+					InstructorExamSqlDatabase.EXAM_ID + " = " + exam.getId(), 
+					null);
+				exam.setStatus("Released");
+			}
+			else{
+				Log.i("ExamSqlData: ","Error releasing exam with exam_id: " + id);
+			}	
+			
+		} catch (InterruptedException | ExecutionException | JSONException e) {
+			Log.w("ExamSqlData", "Interrupted connection while releasing exam");
+			e.printStackTrace();
+		} 
+		//If exam deleted successfully online, delete on mobile version
+		
+	}
+//--------------------------------------------------------------------------------------------------------------
+	public void deleteExam(Context context, ExamObject exam) {
+		String id = exam.getId();
+		String response="";
+		
+		AppProfile creds = new AppProfile(context);
+		String userID = creds.getValue(AppProfile.PREF_ID);
+
+		
+		AsyncTask<String, Void, String> response_thread = new NetworkThread().execute(exam.getId(),userID,"DeleteExam");
 		try {
 			response = response_thread.get();
 		} catch (InterruptedException | ExecutionException e) {
-			Log.w("ExamSqlData", "Interrupted connection while releasing exam");
-			e.printStackTrace();
-		}
-		
-		//If exam deleted successfully online, delete on mobile version
-		if(response.equals("Success")){
-			Log.i("ExamSqlData", "Exam " + exam.getName() + " released");
-			values.put(InstructorExamSqlDatabase.GRADES_RELEASED, "Released");
-			database.update(
-				InstructorExamSqlDatabase.INSTRUCTOR_EXAMS, 
-				values, 
-				InstructorExamSqlDatabase.EXAM_ID + " = " + exam.getId(), 
-				null);
-		}
-		else{
-			Log.i("ExamSqlData: ","Error releasing exam with exam_id: " + id);
-		}	
-		
-	}
-//--------------------------------------------------------------------------------------------------------------	
-	public void unreleaseExam(ExamObject exam){
-		ContentValues values = new ContentValues();
-
-		exam.setStatus("Unreleased");
-		values.put(InstructorExamSqlDatabase.GRADES_RELEASED, "Unreleased");
-		database.update(
-				InstructorExamSqlDatabase.INSTRUCTOR_EXAMS, 
-				values, 
-				InstructorExamSqlDatabase.EXAM_ID + " = " + exam.getId(), 
-				null);
-		//ADD FUNCTIONALITY TO RELEASE ON THE SERVER		
-		Log.i("ExamSqlData", "Exam " + exam.getName() + " unreleased");
-		
-		
-		/* ENABLE ONCE SERVER SET UP
-		AsyncTask<String, Void, String> response_thread = new NetworkThread().execute(id,"professor1","UnreleaseExam");
-		try {
-			response = response_thread.get();
-		} 
-		catch (InterruptedException e) 
-		{
 			Log.w("ExamSqlData", "Interrupted connection while deleting exam");
 			e.printStackTrace();
 		}
-		catch (ExecutionException e) 
-		{
-			Log.w("ExamSqlData", "Execution malfunction while deleting exam");
-			e.printStackTrace();
-		}
-
-		
-		//If exam deleted successfully online, delete on mobile version
-		if(response.equals("Success")){
-			Log.i("ExamSqlData", "Exam " + exam.getName() + " unreleased");
-			values.put(ExamSqlDataBase.GRADES_RELEASED, "Unreleased");
-			database.update(
-				ExamSqlDataBase.INSTRUCTOR_EXAMS, 
-				values, 
-				ExamSqlDataBase.EXAM_ID + " = " + exam.getId(), 
-				null);
-		}
-		else{
-			Log.i("ExamSqlData: ","Error unreleasing exam with exam_id: " + id);
-		}	
-		*/	
-
-		
-		}
-//--------------------------------------------------------------------------------------------------------------
-	public void deleteExam(ExamObject exam) {
-		String id = exam.getId();
-		String response=null;
-		//Set Params
-
-		/* ENABLE ONCE SERVER SET UP
-		AsyncTask<String, Void, String> response_thread = new NetworkThread().execute(id,"professor1","DeleteExam");
-		try {
-			response = response_thread.get();
-		} 
-		catch (InterruptedException e) 
-		{
-			Log.w("ExamSqlData", "Interrupted connection while deleting exam");
-			e.printStackTrace();
-		}
-		catch (ExecutionException e) 
-		{
-			Log.w("ExamSqlData", "Execution malfunction while deleting exam");
-			e.printStackTrace();
-		}
-
 		
 		//If exam deleted successfully online, delete on mobile version
 		if(response.equals("Success")){
 			Log.i("ExamSqlData: ","Exam deleted with id: " + id);
 			database.delete(
-					ExamSqlDataBase.INSTRUCTOR_EXAMS, 
-					ExamSqlDataBase.EXAM_ID + " = " + id, 
+					InstructorExamSqlDatabase.INSTRUCTOR_EXAMS, 
+					InstructorExamSqlDatabase.EXAM_ID + " = " + id, 
 					null);	        	
 		}
 		else{
 			Log.i("ExamSqlData: ","Error deleting exam with exam_id: " + id);
 		}	
-		*/	
-		Log.i("ExamSqlData: ","Exam deleted with id: " + id);
-		database.delete(
-				InstructorExamSqlDatabase.INSTRUCTOR_EXAMS, 
-				InstructorExamSqlDatabase.EXAM_ID + " = " + id, 
-				null);	        	
-
 	}
 //--------------------------------------------------------------------------------------------------------------
 	public List<ExamObject> getAllExams() {

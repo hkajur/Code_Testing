@@ -14,17 +14,19 @@ import NetworkClasses.Streamer;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayout;
 import android.util.Log;
+import android.view.Display;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ExamReview extends Activity{
 	
 	LinearLayout container;
-	LinearLayout questionRow;
-	LinearLayout response_container;
+	GridLayout questionRow;	
 	TextView question;
 	TextView answer;
 	TextView comment;
@@ -32,38 +34,41 @@ public class ExamReview extends Activity{
 	Intent intent;
 	String examID;
 	String userID;
-	String response = "";
+	String response;
 	String JSON;
 	JSONObject JSON_OBJECT;
 	JSONArray JSON_ARRAY;
 	Login session;
 	int color;
+	GridLayout.Spec Column;
+	GridLayout.Spec Row;
+	GridLayout.Spec ansColumn;
+	GridLayout.Spec ansRow;
+	GridLayout.Spec comColumn;
+	GridLayout.Spec comRow;
+	Display display;
+	Point size;
+	int width;
 	
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_past_exams_breakdown);
-	
+		
 		session = new Login();
 		
 		creds = new AppProfile(ExamReview.this);
 		intent = getIntent();
 		examID = intent.getStringExtra("EXAM_ID");
 		userID = creds.getValue(AppProfile.PREF_ID);
-
-		/*
+	
 		container = (LinearLayout) findViewById(R.id.container);
-		response_container = (LinearLayout) findViewById(R.id.responseContainer);
-		question = (TextView) findViewById(R.id.question);
-		answer = (TextView) findViewById(R.id.answer);
-		comment = (TextView) findViewById(R.id.comment);
-		*/
-		container = (LinearLayout) findViewById(R.id.container);
-		questionRow = new LinearLayout(this);
-		response_container = new LinearLayout(this);
-		question = new TextView(this);
-		answer = new TextView(this);
-		comment = new TextView(this);
 		
+		display = getWindowManager().getDefaultDisplay();
+		size = new Point();
+		display.getSize(size);
+		int width = size.x;	
+		
+		Log.i("WIDTH OF SCREEN", "WIDTH OF CONTAINER: "  + width);
 		
 		AsyncTask<String, Void, String> thread_response = new GetExams().execute(
 				examID,
@@ -72,32 +77,58 @@ public class ExamReview extends Activity{
 		
 		try {
 			JSON = thread_response.get().toString();
-			Log.i("ExamInProgress", "ExamID: " + examID + " / userID: " + creds.getValue(AppProfile.PREF_ID));
-			Log.i("ExamInProgress", "Response: " + JSON);
+			Log.i("ExamReview", "ExamID: " + examID + " / userID: " + creds.getValue(AppProfile.PREF_ID));
+			Log.i("ExamReview", "Response: " + JSON);
 
 			JSON_OBJECT = new JSONObject(JSON);
 			JSON_ARRAY = new JSONArray(JSON_OBJECT.get("exam").toString());
 
 			for(int i=0 ; i<JSON_ARRAY.length() ; i++){
-				if(JSON_ARRAY.getJSONObject(i).getString("userCorrect").equals("Correct"))
+				questionRow = new GridLayout(this);
+				question = new TextView(this);					//Question
+				answer = new TextView(this);					//User's answer
+				comment = new TextView(this);					//Comment about user's answer
+								
+				answer.setWidth(width/2);
+				comment.setWidth(width/2);
+				
+				Column = GridLayout.spec(0, 2);
+	    		Row = GridLayout.spec(0);
+	    		ansColumn = GridLayout.spec(0, GridLayout.BASELINE);
+	    		ansRow = GridLayout.spec(1);
+				comColumn = GridLayout.spec(1, GridLayout.BASELINE);
+	    		comRow = GridLayout.spec(1);
+								
+				
+				//Set color of response, based on correct answer
+				if(JSON_ARRAY.getJSONObject(i).getString("userCorrect").equals("True"))
 					color = Color.GREEN;
 				else
 					color = Color.RED;
+				
+				//Set textViews to put into grid
 				question.setText(JSON_ARRAY.getJSONObject(i).getString("question"));
 				answer.setText(JSON_ARRAY.getJSONObject(i).getString("studentAnswer"));
-				answer.setTextColor(color);
+				answer.setTextColor(color);	
 				if(JSON_ARRAY.getJSONObject(i).getString("comment") != null)
 					comment.setText(JSON_ARRAY.getJSONObject(i).getString("comment"));
-				else
-					comment.setText("");
+				else if(JSON_ARRAY.getJSONObject(i).getString("comment").equals("null") || JSON_ARRAY.getJSONObject(i).getString("comment")==null)
+					comment.setText("No Comment");
 				
-				response_container.addView(answer);
-				response_container.addView(comment);
-				questionRow.addView(question, 						    new LinearLayout.LayoutParams(
-						LinearLayout.LayoutParams.MATCH_PARENT,    
-						LinearLayout.LayoutParams.WRAP_CONTENT));
-				questionRow.addView(response_container);
-				container.addView(questionRow);
+				
+				
+				questionRow.addView(question, new GridLayout.LayoutParams(Row, Column));
+				questionRow.addView(answer,new GridLayout.LayoutParams(ansRow, ansColumn));				
+				questionRow.addView(comment,new GridLayout.LayoutParams(comRow, comColumn));
+				
+				
+				//Alter the row containing question info
+				questionRow.setPadding(10, 20, 10, 20);
+				if(i%2 == 0)
+					questionRow.setBackgroundResource(R.color.PRback);
+						
+				//Add row to list of questions
+				container.addView(questionRow);								
 			}
 			
 		} catch (InterruptedException | ExecutionException | JSONException e) {
@@ -109,7 +140,8 @@ public class ExamReview extends Activity{
 	private class GetExams extends AsyncTask<String, Void, String> {
 		@Override
 		protected String doInBackground(String... urls) 
-		{
+		{			
+			response = "";
 			String[] raw_response = {};	         
 			Map<String, String> params = new HashMap<String, String>();				   
 			params.put("examID", urls[0]);

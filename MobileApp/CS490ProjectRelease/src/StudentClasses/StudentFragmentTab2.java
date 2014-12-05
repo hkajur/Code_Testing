@@ -46,7 +46,7 @@ public class StudentFragmentTab2 extends Fragment {
 	AppProfile creds;
 	String userID;
 	String examID;
-	String response="";
+	String response;
 	String JSON;
 	JSONObject JSON_OBJECT;
 	JSONArray JSON_ARRAY;
@@ -138,30 +138,30 @@ public class StudentFragmentTab2 extends Fragment {
 		super.onDestroyView();
 	}
 
-	//######################################################################################################	
-		private class GettingExams extends AsyncTask<String, Void, String> {
-			@Override
-			protected String doInBackground(String... urls) 
-			{
-				String[] raw_response = {};	         
-				Map<String, String> params = new HashMap<String, String>();				   
-				params.put("userID", urls[0]);
-				params.put("tag", urls[1]);
-				params.put("token", session.getToken());
-				
-				try {
-					Streamer.sendPostRequest(session.getURL(), params);
-					raw_response = Streamer.readMultipleLinesRespone();
-				} catch (IOException ex) {
-					Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
-					ex.printStackTrace();
-				}
-				for(String i : raw_response){
-					response+=i;
-				}
-				Streamer.disconnect();
-				return response;
-			}		
-		}//END ASYNC CLASS	
-
+//######################################################################################################	
+	private class GettingExams extends AsyncTask<String, Void, String> {
+		@Override
+		protected String doInBackground(String... urls) 
+		{
+			response = "";
+			String[] raw_response = {};	         
+			Map<String, String> params = new HashMap<String, String>();				   
+			params.put("userID", urls[0]);
+			params.put("tag", urls[1]);
+			params.put("token", session.getToken());
+			
+			try {
+				Streamer.sendPostRequest(session.getURL(), params);
+				raw_response = Streamer.readMultipleLinesRespone();
+			} catch (IOException ex) {
+				Log.w("INTERNET CONNECTIVITY", "Could not connect to server");
+				ex.printStackTrace();
+			}
+			for(String i : raw_response){
+				response+=i;
+			}
+			Streamer.disconnect();
+			return response;
+		}		
+	}//END ASYNC CLASS	
 }

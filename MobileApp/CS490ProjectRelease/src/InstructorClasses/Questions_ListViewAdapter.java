@@ -6,12 +6,14 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import com.malan.cs490project.R;
  
+
 
 
 
@@ -36,6 +38,7 @@ public class Questions_ListViewAdapter extends ArrayAdapter<QuestionObject> {
  
     private class ViewHolder {
         TextView question;
+        ImageView icon;
     }
  
     public View getView(int position, View view, ViewGroup parent) {
@@ -43,32 +46,38 @@ public class Questions_ListViewAdapter extends ArrayAdapter<QuestionObject> {
         if (view == null) {
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.question_list_item, null);
+            
+            
             holder.question = (TextView) view.findViewById(R.id.question);
+            holder.icon = (ImageView) view.findViewById(R.id.img);
+            
             view.setTag(holder);
+            if(questionlist.get(position).getType().equals("MC") || questionlist.get(position).getType().equals("FB")){
+//            	view.setBackgroundResource(R.color.MCback);
+            	holder.icon.setImageResource(R.drawable.mc_icon);
+            }
+            else if(questionlist.get(position).getType().equals("TF")){
+//            	view.setBackgroundResource(R.color.TFback);
+            	holder.icon.setImageResource(R.drawable.tf_icon);
+            }
+            else if(questionlist.get(position).getType().equals("SH")){
+//            	view.setBackgroundResource(R.color.SHback);
+            	holder.icon.setImageResource(R.drawable.sa_icon);
+            }
+            else if(questionlist.get(position).getType().equals("PM")){
+//            	view.setBackgroundResource(R.color.PRback);
+            	holder.icon.setImageResource(R.drawable.pr_icon);
+            }
+
         } else {
             holder = (ViewHolder) view.getTag();
         }
 
         //DEBUGGING
-//        Log.i("Questions_ListViewAdapter", questionlist.get(position).toString());
+//        Log.i("Questions_ListViewAdapter", questionlist.get(position).getType());
 
         holder.question.setText(questionlist.get(position).getQuestion());
-        /* GET TO LATER
-        switch (questionlist.get(position).getType()){
-        	case "MC":
-        		holder.question.setBackgroundColor(R.color.MCback);
-        		break;
-        	case "TF":
-        		holder.question.setBackgroundColor(R.color.TFback);
-        		break;
-        	case "FB":
-        		holder.question.setBackgroundColor(R.color.SHback);
-        		break;
-        	default:
-        		holder.question.setBackgroundColor(R.color.PRback);
-        		break;        
-        }
-        */
+
         return view;
     }
  
