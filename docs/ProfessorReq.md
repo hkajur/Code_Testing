@@ -62,6 +62,72 @@ On failure
 
 Returns a JSON indicating if the question was successfully inserted into the database
 
+The insert programming question is optional. This will make it so the user can add questions that have more than one argument as input. Main purpose is to accept the partial credit question. I made it so both can work at the same time. 
+
+###insertProgrammingQuestion.php
+
+Action: Professor clicks on the create programming question
+
+Request URL: http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/insertProgrammingQuestion.php
+
+Input Request Type: JSON POST
+
+Input Variables: 
+
+```JSON
+{  
+   "question_type":"ProgrammingQuestion",
+   "question":"Write a function named operation that takes in 3 parameters and gives the result of operation",
+   "input1":[  
+      "*",
+      "3",
+      "4"
+   ],
+   "output1":"12",
+   "input2":[  
+      "+",
+      "7",
+      "9"
+   ],
+   "output2":"16",
+   "input3":[  
+      "-",
+      "9",
+      "4"
+   ],
+   "output3":"5",
+   "input4":[  
+      "/",
+      "10",
+      "5"
+   ],
+   "output4":"2"
+}
+```
+
+Output:
+
+On success
+
+```JSON
+{
+   "questionCreated" : "Success"
+}
+```
+
+On failure
+
+```JSON
+{
+   "questionCreated" : "Failed",
+   "Error" : "mysql error"
+}
+```
+
+NOTE: The only difference this is from the other one is the fact that input1, input2, input3, input4 are all arrays and this is a JSON POST instead of a regular POSt.
+
+Returns a JSON indicating if the question was successfully inserted into the database
+
 ### allQuestions.php
 
 Action: Professor clicks on the quesiton bank

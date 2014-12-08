@@ -13,8 +13,8 @@
         $selectdb = mysql_select_db("caj9", $con);
 
         $sql_query = "SELECT QuestionBank.QuestionID FROM QuestionBank, Exam" 
-                    . " WHERE QuestionBank.QuestionID = Exam.QuestionID "
-                    . " AND QuestionBank.QuestionType = \"PM\" AND ExamID = " . $examID;
+                   . " WHERE QuestionBank.QuestionID = Exam.QuestionID "
+                   . " AND QuestionBank.QuestionType = \"PM\" AND ExamID = " . $examID;
 
         $result = mysql_query($sql_query);
 
