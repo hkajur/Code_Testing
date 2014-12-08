@@ -17,6 +17,7 @@ import com.malan.cs490project.R;
 
 
 
+
 import android.content.Context;
 import android.graphics.Color;
 import android.widget.ArrayAdapter;
@@ -52,25 +53,34 @@ public class Questions_ListViewAdapter extends ArrayAdapter<QuestionObject> {
             holder.icon = (ImageView) view.findViewById(R.id.img);
             
             view.setTag(holder);
-            if(questionlist.get(position).getType().equals("MC") || questionlist.get(position).getType().equals("FB")){
-//            	view.setBackgroundResource(R.color.MCback);
+            if(questionlist.get(position).getType().equals("MC")){
             	holder.icon.setImageResource(R.drawable.mc_icon);
             }
-            else if(questionlist.get(position).getType().equals("TF")){
-//            	view.setBackgroundResource(R.color.TFback);
+            if(questionlist.get(position).getType().equals("TF")){
             	holder.icon.setImageResource(R.drawable.tf_icon);
             }
-            else if(questionlist.get(position).getType().equals("SH")){
-//            	view.setBackgroundResource(R.color.SHback);
+            if(questionlist.get(position).getType().equals("SH") || questionlist.get(position).getType().equals("FB")){
             	holder.icon.setImageResource(R.drawable.sa_icon);
             }
-            else if(questionlist.get(position).getType().equals("PM")){
-//            	view.setBackgroundResource(R.color.PRback);
+            if(questionlist.get(position).getType().equals("PM")){
             	holder.icon.setImageResource(R.drawable.pr_icon);
             }
 
         } else {
             holder = (ViewHolder) view.getTag();
+            if(questionlist.get(position).getType().equals("MC")){
+            	holder.icon.setImageResource(R.drawable.mc_icon);
+            }
+            if(questionlist.get(position).getType().equals("TF")){
+            	holder.icon.setImageResource(R.drawable.tf_icon);
+            }
+            if(questionlist.get(position).getType().equals("SH") || questionlist.get(position).getType().equals("FB")){
+            	holder.icon.setImageResource(R.drawable.sa_icon);
+            }
+            if(questionlist.get(position).getType().equals("PM")){
+            	holder.icon.setImageResource(R.drawable.pr_icon);
+            }
+
         }
 
         //DEBUGGING

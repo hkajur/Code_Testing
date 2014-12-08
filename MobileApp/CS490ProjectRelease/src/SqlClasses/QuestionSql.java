@@ -71,40 +71,6 @@ public class QuestionSql {
 	}
 
 //--------------------------------------------------------------------------------------------------------------
-	public boolean createQuestion(String points, String questionType, String[] responses, String question) {
-		
-		AsyncTask<String, Void, String> response_thread = null;
-		
-		switch (questionType){
-			case "MC":
-				response_thread = new submitQuestionThread().execute(responses.toString(), "MultipleChoiceQuestionInsert");
-				break;
-			case "TF":
-				response_thread = new submitQuestionThread().execute(responses.toString(), "TrueFalseChoiceQuestionInsert");
-				break;
-			case "SH":
-				response_thread = new submitQuestionThread().execute(responses.toString(), "ShortAnswerQuestionInsert");
-				break;
-			case "PR":
-				response_thread = new submitQuestionThread().execute(responses.toString(), "ProgramQuestionInsert");
-				break;
-		}
-			
-		try {
-			String response = response_thread.get();
-			JSONObject JSON = new JSONObject(response);
-			if(JSON.getString("questionCreated").equals("Success")){
-				return true;
-			}
-			else
-				return false;
-		} catch (InterruptedException | ExecutionException | JSONException e) {
-			e.printStackTrace();
-		}
-		return false; 
-	}
-
-//--------------------------------------------------------------------------------------------------------------
 	public QuestionObject createQuestion(String questionId,String questionType,String question) {
 		ContentValues values = new ContentValues();
 
@@ -141,6 +107,12 @@ public class QuestionSql {
 			cursor.moveToFirst();
 			QuestionObject newQuestion = cursorToQuestion(cursor);
 			cursor.close();
+			
+			Log.i("quesiontSql: ", "Question: " +
+					newQuestion.getQuestion() + " / Type: " +
+					newQuestion.getType()
+			);
+			
 			return newQuestion;
 		}
 	}
