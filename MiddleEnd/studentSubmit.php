@@ -52,7 +52,7 @@
         $userID = $json_obj["userID"];
         $examID = $json_obj["examID"];
 
-        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/getProgramQuestionQuery.php";
+        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/getProgramQuestionQuery.php";
         $ch = curl_init($URL);
         $postfields = array("examID" => $examID);
 
@@ -83,7 +83,7 @@
                     
                 $userAnswer = $value["userAnswer"];
 
-                $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/programQuestionTextQuery.php";
+                $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/programQuestionTextQuery.php";
 
                 $ch = curl_init($URL); 
 
@@ -110,7 +110,7 @@
                 preg_match("/^.*named ([a-zA-Z0-9]*).*/", $questionText, $matchArray);
                 $methodName = $matchArray[1];
                 
-                $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/programQuestionQuery.php";
+                $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/programQuestionQuery.php";
 
                 $ch = curl_init($URL); 
 
@@ -206,7 +206,7 @@
 
                     $temp = $temp . " Output: " . $userAnswer . ";";
 
-                    $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/insertProgramStudentAnswer.php";
+                    $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/insertProgramStudentAnswer.php";
 
                     $ch2 = curl_init($URL); 
 
@@ -245,7 +245,7 @@
 
         $final_json = json_encode($json_obj);
 
-        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/studentSubmitQuery.php";
+        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/studentSubmitQuery.php";
 
         $ch = curl_init($URL);
 

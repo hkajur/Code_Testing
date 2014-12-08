@@ -108,7 +108,7 @@
 
         $ch = curl_init();
 
-        $URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/BackEnd/insertQuestionQuery.php";
+        $URL = "http://afsaccess1.njit.edu/~caj9/Code_Testing/BackEnd/insertQuestionQuery.php";
 
         curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
