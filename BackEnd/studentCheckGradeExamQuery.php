@@ -32,8 +32,11 @@
                 
             if($this->studentAnswer == $this->correctAnswer)
                 $this->userCorrect = "True";
-            else
-                $this->userCorrect = "False";
+            else {
+                    $this->userCorrect = "False";
+                if($this->questionType != "PM")
+                    $this->earnedPoints = 0;
+            }
 
         }
     }

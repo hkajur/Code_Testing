@@ -26,6 +26,7 @@
 
         echo $page;
     
+        curl_close($ch);    
     } else {
         die(json_encode(array("Error" => "Invalid post")));
     }

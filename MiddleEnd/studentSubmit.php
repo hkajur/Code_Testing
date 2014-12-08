@@ -26,6 +26,19 @@
         
         return $myStr;
     }
+    
+    function isInteger($str){
+    
+        if(preg_match("/^[\d]*$/", $str))
+                return true;
+        return false;
+    }
+
+    function isDouble($str){
+        if(preg_match("/^[\d]+\.[\d]+$/", $str))
+                return true;
+        return false;
+    }
 
     /**
      * Check If Request Method is POST and run
@@ -130,9 +143,19 @@
                 $numOfArgs = count(explode(",", $getArgs));
 
                 if($numOfArgs == 1){
-                    $wrapperText = preg_replace("/function\(oper, fOperand, sOperand\)/", "\"Compile Time Err\"", $wrapperText);
+                    $wrapperText = preg_replace("/function\(arg0, arg1, arg2\)/", "\"Compile Time Err\"", $wrapperText);
                 } else {
-                    $wrapperText = preg_replace("/function\(str\)/", "\"Compile Time Err\"", $wrapperText);
+                        $wrapperText = preg_replace("/function\(arg0\)/", "\"Compile Time Err\"", $wrapperText);
+
+                        $argsArray = explode(",", $getArgs);
+
+                        foreach($argsArray as $k => $v){
+                            if(isInteger($v)){
+                                $wrapperText = preg_replace("/String arg$k = args\[$k\]/", "int arg$k = Integer.parseInt(args[$k])", $wrapperText);
+                            } else if(isDouble($v)){
+                                $wrapperText = preg_replace("/String arg$k = args\[$k\]/", "int arg$k = Double.parseDouble(args[$k])", $wrapperText);
+                            }
+                        }
                 }
                 $wrapperText = preg_replace("/function/", "$methodName", $wrapperText);
 
@@ -149,7 +172,10 @@
                 fwrite($handle, $wrapperText);  
                 fclose($handle);
 
-                
+
+                $handle2 = fopen("kmy.out", "w");
+                fwrite($handle2, $wrapperText);
+                fclose($handle2); 
                 $errorMsg = array(); 
 
                 $compileProg = exec("javac $tmpfnameExtJ 2>&1", $errorMsg);
@@ -236,6 +262,7 @@
         }
 
         echo $page;
+        curl_close($ch);
         
     } else {
         die(json_encode(array(
