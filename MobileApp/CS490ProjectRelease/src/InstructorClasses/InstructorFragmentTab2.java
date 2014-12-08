@@ -76,6 +76,9 @@ public class InstructorFragmentTab2 extends Fragment{
 			questionsSql.open();
 			questions = new ArrayList<QuestionObject>();
 			JSON = thread_response.get().toString();
+			
+			Log.i("Instructor Fragment 2", JSON);
+			
 			JSON_OBJECT = new JSONObject(JSON);
 			JSON_ARRAY = new JSONArray(JSON_OBJECT.get("questions").toString());
 			for(int i = 0; i < JSON_ARRAY.length(); i++)
@@ -84,7 +87,7 @@ public class InstructorFragmentTab2 extends Fragment{
 						JSON_ARRAY.getJSONObject(i).getString("questionID"),
 						JSON_ARRAY.getJSONObject(i).getString("questionType"),
 						JSON_ARRAY.getJSONObject(i).getString("question")
-						);
+						);			
 				questions.add(temp_question);
 			}
 
