@@ -88,15 +88,6 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
             	$studentAnsArr = explode(";", $p["studentAnswer"]);
 
             	if(count($studentAnsArr) > 1){
-                echo "<p>Your Answer:</p><br>";
-                echo "<table border=1>";
-                
-                foreach($studentAnsArr as $k => $v){
-                    $v = preg_replace("/(Input: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
-                    $v = preg_replace("/(Output: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
-                    echo "<tr>" . $v . "</tr>";
-                }
-                echo "</table><br>";
 
             	} else {
                 echo "<p>Your Answer: $p[studentAnswer]</p>";
@@ -105,17 +96,30 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 		$actualAnsArr = explode(";", $p["correctAnswer"]);
 
 		if(count($actualAnsArr) > 1){
-                
-                echo "<p>Correct Answer:</p><br>";
-                echo "<table border=1>";
-                
-                foreach($actualAnsArr as $k => $v){
-                    $v = preg_replace("/(Input: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
-                    $v = preg_replace("/(Output: [a-zA-Z0-9]*)/", "<td>$1</td>", $v);
-                    echo "<tr>" . $v . "</tr>";
-                }
-                
-                echo "</table><br>";
+               
+                echo "<p>Your Answer: </p><br>";
+
+		echo "<table border=1>";
+	
+		$len = count($actualAnsArr);
+	
+		$myIndex = 0;
+	
+		echo "<thead><td>Test case input</td><td>Correct Output</td><td>Student Output</td></thead>";
+		while($myIndex < $len - 1){
+		  
+                    $si = preg_replace("/Input: ([^ ]*).*/", "<td>$1</td>", $actualAnsArr[$myIndex]);
+                    $v = preg_replace("/.*Output: (.*)/", "<td>$1</td>", $actualAnsArr[$myIndex]);
+                    $so = preg_replace("/.*Output: (.*)/", "<td>$1</td>", $studentAnsArr[$myIndex]);
+
+                    $si = preg_replace("/,/", " ", $si);
+		    $str = $si . $v . $so;
+
+		 	echo "<tr>" . $str . "</tr>";
+		    $myIndex++;
+		}
+
+		echo "</table><br>";
 
             	} else {
                 echo "<p>Correct Answer: $p[correctAnswer]</p>";
@@ -123,7 +127,8 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 			if(!empty($p["comment"]) && !is_null($p["comment"])){
                         echo "<p>Feedback: $p[comment]</p>";
                         }
-			
+		
+			echo "Points Earned: " . $p["earnedPoints"] . "<br>";
 			if($p["userCorrect"] == "True"){
 				echo "<div id=\"right\"><p>You are correct</p></div><br>";
 			} 

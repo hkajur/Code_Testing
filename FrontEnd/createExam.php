@@ -17,13 +17,20 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/flick/jquery-ui.css" />
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-
+<script type="text/javascript" src="jquery.simplePagination.js"></script>
 <script>
 	$(function() {
 		$( "#tabs" ).tabs({
 		});
 		$( ".submits" ).button();
 	});
+$(function() {
+    $( "#pagin" ).pagination({
+        items: 100,
+        itemsOnPage: 10,
+        cssStyle: 'light-theme'
+    });
+});
 </script>
 
 </head>
@@ -124,6 +131,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
 		<div id="tabs-2">
                 	<?php
+			
                         foreach($json["questions"] as $key => $value){
                                 $questionID = $value["questionID"];
                                 $question = $value["question"];
@@ -131,13 +139,14 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
                                 if ($questionType == "FB") {
                                         echo "<br>";
 					echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
-                                        echo "<br><hr>";
+					echo "<br><hr>";
                                 } 
                         } ?>
                 </div>
 
 		<div id="tabs-3">
                 	<?php
+			//echo "<div id=\"pagin\">";
                         foreach($json["questions"] as $key => $value){
                                 $questionID = $value["questionID"];
                                 $question = $value["question"];
@@ -145,9 +154,12 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
                                 if ($questionType == "TF") {
                                         echo "<br>";
 					echo "<input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question";
-                                        echo "<br><hr>";
+                                        //echo "<div id=\"pagin\"><input type=\"checkbox\" name=\"questionArray[]\" value=\"$questionID\" > $question</div>";
+					echo "<br><hr>";
                                 } 
-                        } ?>
+                        } 
+			//echo "</div>";
+			?>
                 </div>
 
 		<div id="tabs-4">

@@ -75,12 +75,22 @@ $(function() {
 	<form action="PMSubmit.php" method="post">
 		<div class="Qinput">	
 		Question: <input type="text" name="question" value="" required><br><br>
-		Input 1:  <input type="text" name="input1" value="" required><br>
+		Input 1:  <input type="text" name="input1[]" value="" required><br>
+			  <input type="text" name="input1[]" value="" required><br>
+			  <input type="text" name="input1[]" value="" required><br><br>
 		Output 1: <input type="text" name="output1" value="" required><br><br>
-		Input 2:  <input type="text" name="input2" value="" required><br>
+		Input 2:  <input type="text" name="input2[]" value="" required><br>
+			  <input type="text" name="input2[]" value="" required><br>
+			  <input type="text" name="input2[]" value="" required><br><br>
 		Output 2: <input type="text" name="output2" value="" required><br><br>
-		Input 3:  <input type="text" name="input3" value="" required><br>
+		Input 3:  <input type="text" name="input3[]" value="" required><br>
+			  <input type="text" name="input3[]" value="" required><br>
+			  <input type="text" name="input3[]" value="" required><br><br>
 		Output 3: <input type="text" name="output3" value="" required><br><br>
+		Input 4:  <input type="text" name="input4[]" value="" required><br>
+			  <input type="text" name="input4[]" value="" required><br>
+			  <input type="text" name="input4[]" value="" required><br><br>
+		Output 4: <input type="text" name="output4" value="" required><br><br>
 		<p>
 		<label for="spinner">Points:</label>
 		<input id="spinner" name="points">

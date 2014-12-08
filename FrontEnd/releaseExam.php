@@ -3,8 +3,6 @@
 
 	$userID = $_SESSION["userpid"];
 	$examID = $_GET['id'];
-	echo $examID;
-	echo "User ID " . $userID;
   	$URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/releaseExam.php";
                 
         $ch = curl_init();
@@ -24,7 +22,20 @@
         if(curl_errno($ch)){
             die(json_encode(array("Error" => curl_error($ch))));
         }
-	header("Location: release.php");
+
+	$json = json_decode($page, true);
+	if($json["Update"] == "Success") {
+		echo "<script>
+                alert('Exam Released!');
+                window.location.href='release.php';
+                </script>";	
+	} else {
+		echo "<script>
+                alert('Exam Not Released!');
+                window.location.href='release.php';
+                </script>";	
+		header("Location: release.php");
+	}
 	//echo $page;
         curl_close($ch);
 ?>

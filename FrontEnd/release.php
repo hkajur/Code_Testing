@@ -66,10 +66,33 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 	
 	<div id="examRelease">
 	<?php
-		$listExam = $_SESSION["exams"];
+		$userID = $_SESSION["userpid"];
+        	$postfields = array("userID" => $userID);
+
+        	$ch = curl_init();
+
+        	$URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/selectExamRelease.php";
+
+        	curl_setopt($ch, CURLOPT_URL, $URL);
+        	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        	curl_setopt($ch, CURLOPT_POST, count($postfields));
+        	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+
+        	$page = curl_exec($ch);
+
+        	if(curl_errno($ch)){
+        	    die(json_encode(array("Error" => curl_error($ch))));
+        	}
+
+	
+
+		$json_obj = json_decode($page, true);
+		$listExam = $json_obj;
+		//var_dump($listExam);
 		//echo $listExam[exams][0][examName];
 		//$num = 1;
-		foreach($listExam[exams] as $p) {
+		foreach($listExam["exams"] as $p) {
 			echo "<br>";	
 			if($p[examReleased] == "False"){
 				echo ' ' . "<a href='releaseExam.php?id=$p[examID]'>$p[examName]</a> ";
@@ -81,6 +104,7 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 
 			echo "<br><hr>";
 		}
+
 	?>
 	<br><br>
 	</div>

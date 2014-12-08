@@ -64,7 +64,29 @@ if(!isset($_SESSION["user"]) || empty($_SESSION["user"]))
 	<p>Please select an exam</p><br><br>
 	
 	<?php
-		$listExam = $_SESSION["exams"];
+		$userID = $_SESSION["userpid"];
+        	$postfields = array("userID" => $userID);
+
+        	$ch = curl_init();
+
+        	$URL = "http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/examNotTaken.php";
+
+        	curl_setopt($ch, CURLOPT_URL, $URL);
+        	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        	curl_setopt($ch, CURLOPT_POST, count($postfields));
+        	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+
+        	$page = curl_exec($ch);
+
+        	if(curl_errno($ch)){
+        	    die(json_encode(array("Error" => curl_error($ch))));
+        	}
+
+	
+
+		$json_obj = json_decode($page, true);
+		$listExam = $json_obj;
 		//echo $listExam[exams][0][examName];
 		//$num = 1;
 		foreach($listExam[exams] as $p) {
