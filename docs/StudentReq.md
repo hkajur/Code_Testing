@@ -244,6 +244,8 @@ Output:
 				"questionID" : "1",
 				"question" : "What is an assignment statement?",
 				"questionType" : "MC",
+				"points" : 5,
+				"earnedPoints" : 5,
 				"studentAnswer" : "Assigning a value to a variable",
 				"correctAnswer" : "Assigning a value to a variable",
 				"userCorrect" : "True",
@@ -253,6 +255,8 @@ Output:
 				"questionID" : "2",
 				"question" : "Which of the following is not a keyword in Java?",
 				"questionType" : "MC",
+				"points" : 5,
+				"earnedPoints" : 5,
 				"studentAnswer" : "Assigning a multiplication",
 				"correctAnswer" : "Assigning a value to a variable",
 				"userCorrect" : "True",
@@ -262,11 +266,24 @@ Output:
 				"questionID":"16",
 				"question":"Another term for _______________ is data hiding.",
 				"questionType":"FB",
+				"points" : 10,
+				"earnedPoints" : 10,
 				"studentAnswer":"Cool_Test",
 				"correctAnswer":"encapsulation",
 				"userCorrect":"False",
 				"comment": null
-			}
+			},
+			{  
+			         "questionID":"118",
+			         "question":"Write a function named operation that takes in 3 parameters and gives the result of operation",
+			         "questionType":"PM",
+			         "studentAnswer":"Input: *,3,4 Output: 12;Input: +,7,9 Output: 16;Input: -,9,4 Output: -5;Input: \/,10,5 Output: -5;",
+			         "correctAnswer":"Input: *,3,4 Output: 12;Input: +,7,9 Output: 16;Input: -,9,4 Output: 5;Input: \/,10,5 Output: 2;",
+			         "points":"15",
+			         "earnedPoints":7.5,
+			         "userCorrect":"False",
+			         "comment":null
+		      }
 		]
 }
 ```
@@ -278,3 +295,7 @@ If no exams are graded
 	"exam" : []
 }
 ```
+
+points represent the total possible points a student can earn for that question
+earnedPoints represent the points that the student earned for that particular question
+For example, open ended question allows partial credit
