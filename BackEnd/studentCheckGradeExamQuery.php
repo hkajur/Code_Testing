@@ -8,13 +8,15 @@
         public $studentAnswer;
         public $correctAnswer;
         public $points;
+        public $earnedPoints;
 
         public $userCorrect;
         public $comment;
 
 
-        public function __construct($p, $id, $q, $type, $sAns, $cAns, $com){
-            $this->points = $p; 
+        public function __construct($p, $eP, $id, $q, $type, $sAns, $cAns, $com){
+                $this->points = $p; 
+                $this->earnedPoints = $eP;
             $this->questionID = $id;
             $this->question = $q;
             $this->questionType = $type;
@@ -73,6 +75,7 @@
                 $studentExam->exam[$index] = 
                         new questionInfo(
                         $row["Points"], 
+                        $row["Points"], 
                         $row["QuestionID"], 
                         $row["Question"], 
                         $row["QuestionType"], 
@@ -105,6 +108,7 @@
                 $studentExam->exam[$index] = 
                         new questionInfo(
                         $row["Points"], 
+                        $row["Points"], 
                         $row["QuestionID"], 
                         $row["Question"], 
                         $row["QuestionType"], 
@@ -126,19 +130,38 @@
 
 
         while($row = mysql_fetch_assoc($result)){
+    
+            $studentArr = explode(";", $row["studentAnswer"]);
+            $actualArr = explode(";", $row["correctAnswer"]);
 
-                $studentExam->exam[$index] = 
+            $len = count($studentArr);
+    
+            $i = 0;
+            $nRight = 0;
+
+            while($i < $len - 1){
+
+                if($studentArr[$i] == $actualArr[$i]){
+                    $nRight++;
+                } 
+                $i++;
+            }
+
+            $tot = $row["Points"] * ($nRight / ($len - 1));
+
+            $studentExam->exam[$index] = 
                         new questionInfo(
                         $row["Points"], 
+                        $tot,
                         $row["QuestionID"], 
                         $row["Question"], 
                         $row["QuestionType"], 
                         $row["studentAnswer"], 
                         $row["correctAnswer"]);
                 
-                $studentExam->exam[$index]->checkCorrect();
+            $studentExam->exam[$index]->checkCorrect();
 
-                $index++;
+            $index++;
         }
         echo json_encode($studentExam);
 

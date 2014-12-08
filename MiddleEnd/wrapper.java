@@ -1,1 +1,1 @@
-public class wrapper { public static void main(String[] args) throws Exception{ String str = args[0]; System.out.println(function(str)); }
+public class wrapper { public static void main(String[] args) throws Exception{ if(args.length == 1) { String str = args[0]; System.out.println(function(str)); } else if(args.length == 3){ String oper = args[0]; int fOperand = Integer.parseInt(args[1]); int sOperand = Integer.parseInt(args[2]); System.out.println(function(oper, fOperand, sOperand)); } }

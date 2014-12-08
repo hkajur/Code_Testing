@@ -16,6 +16,17 @@
         return false;
     }
 
+    function decodeCommaSep($str){
+        $arr = explode(",", $str);
+    
+        $myStr = "";
+        foreach($arr as $key => $val){
+            $myStr = $myStr . "\"$val\" ";
+        }
+        
+        return $myStr;
+    }
+
     /**
      * Check If Request Method is POST and run
      * Otherwise die and reply a error JSON
@@ -114,6 +125,15 @@
 
                 $wrapperText = file_get_contents("wrapper.java");
                 $wrapperText = $wrapperText . " " . $userAnswer . " }";
+                $getArgs = $json_question_io["Input"][0];
+
+                $numOfArgs = count(explode(",", $getArgs));
+
+                if($numOfArgs == 1){
+                    $wrapperText = preg_replace("/function\(oper, fOperand, sOperand\)/", "\"Compile Time Err\"", $wrapperText);
+                } else {
+                    $wrapperText = preg_replace("/function\(str\)/", "\"Compile Time Err\"", $wrapperText);
+                }
                 $wrapperText = preg_replace("/function/", "$methodName", $wrapperText);
 
                 $tmpfname = tempnam("/tmp", "FOO");
@@ -130,7 +150,8 @@
                 fclose($handle);
 
                 
-                $errorMsg = ""; 
+                $errorMsg = array(); 
+
                 $compileProg = exec("javac $tmpfnameExtJ 2>&1", $errorMsg);
 
                 $compErr = false;
@@ -148,9 +169,11 @@
 
 
                     $temp = $temp . "Input: " . $arg;
+
+                    $arg = decodeCommaSep($arg);    
                     
                     if($compErr){
-                        $userAnswer = "Compile Time Error";
+                        $userAnswer = $errorMsg[0];
                     } else {
                         $userAnswer = exec("cd /tmp/ && java $fname $arg 2>&1");
                     }

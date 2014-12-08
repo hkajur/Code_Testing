@@ -49,8 +49,8 @@
             
             $obj = json_decode($page, true);
         
-            $questionRight = intval($obj["numCorrect"]);
-            $totalQuestions = intval($obj["totalQuestions"]);
+            $questionRight = doubleval($obj["numCorrect"]);
+            $totalQuestions = doubleval($obj["totalQuestions"]);
 
             if($totalQuestions == 0){
                 die(json_encode(array("Error" => "Num of questions = 0")));
