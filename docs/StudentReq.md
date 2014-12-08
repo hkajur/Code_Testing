@@ -10,10 +10,60 @@ All the requests students should make
 
 Links to own page
 
+* [Exam Not taken](#examnottakenphp)
 * [Student Exams](#studentexamsphp)
 * [Student Submit Exam](#studentsubmitphp)
 * [Student Graded Exams](#studentgradedexamsphp)
 * [Student Check Graded Exams](#studentcheckgradedexamphp)
+
+
+###examNotTaken.php
+
+Action: Gives a list of exams that the student has not taken
+
+Purpose: So the front end doesn't have to store this information in a session at login. Because when a student takes an exam, I don't want that student to take that exam again. If you use session to store this info, then it won't update until you logout and log back in.
+
+Request URL: http://afsaccess1.njit.edu/~vk255/Code_Testing/MiddleEnd/examNotTaken.php
+
+Input Request Type: POST
+
+Input Variables: userID
+
+Output:
+
+```JSON
+{  
+   "userID":"2",
+   "exams":[  
+      {  
+         "examID":"1",
+         "examName":"Exam_1",
+         "examTaken":"False"
+      },
+      {  
+         "examID":"6",
+         "examName":"android exam",
+         "examTaken":"False"
+      },
+      {  
+         "examID":"7",
+         "examName":"Permanent_Exam_1",
+         "examTaken":"False"
+      },
+      {  
+         "examID":"8",
+         "examName":"Permanent_Exam_2",
+         "examTaken":"False"
+      },
+      {  
+         "examID":"20",
+         "examName":"jdxh",
+         "examTaken":"False"
+      }
+   ]
+}
+```
+Returns a JSON of all the exams that the student has not taken yet
 
 ###studentExams.php
 
